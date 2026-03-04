@@ -85,8 +85,8 @@
     <div class="fr-footer__bottom justify-center">
       <ul class="fr-footer__bottom-list footer-links flex justify-center items-baseline">
         {#each links as { label, ...props } (props.href)}
-          <li class="fr-footer__bottom-item">
-            <a class="fr-footer__bottom-link" {...props}>{label}</a>
+          <li class="fr-footer__bottom-item text-center">
+            <a class="fr-footer__bottom-link flex-row justify-center" {...props}>{label}</a>
           </li>
         {/each}
         <!-- <li class="fr-footer__bottom-item">
@@ -120,10 +120,14 @@
 </footer>
 
 <style>
-  @media (max-width: 61.99em) {
+  @media (max-width: 40em) {
     .footer-links {
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-links :global(.fr-footer__bottom-item) {
+      flex-basis: 50%;
+      text-align: center;
     }
     .footer-links :global(.fr-footer__bottom-item::before) {
       display: none;
