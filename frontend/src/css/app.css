@@ -2,10 +2,17 @@
 @import '@gouvfr/dsfr/dist/utility/icons/icons.css';
 @import './icons.css';
 
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-display: swap;
+}
+
 :root {
   /* CUSTOM DSFR LIKE ADDITION */
-  --cg-blue-france-main-525-hover: #9898f8;
-  --cg-blue-france-main-525-active: #aeaef9;
+  --cg-blue-france-main-525-hover: #1111cc;
+  --cg-blue-france-main-525-active: #6464e6;
   --outline-color: #0a76f6;
 
   /* CUSTOM */
@@ -62,4 +69,33 @@ main {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+
+a, button, .fr-btn, .fr-link, .fr-nav__link {
+  transition: background-color 0.5s ease-out, color 0.5s ease-out, border-color 0.5s ease-out;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', arial, sans-serif !important;
+}
+
+.text-primary {
+  color: transparent !important;
+  background: linear-gradient(
+    to right,
+    var(--blue-france-main-525) 0%,
+    var(--blue-france-main-525) 65%,
+    hsl(from var(--blue-france-main-525) calc(h - 30) s l) 100%
+  ) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+}
+
+#start_arena_btn {
+  background-color: var(--blue-france-main-525) !important;
+  border-color: var(--blue-france-main-525) !important;
+}
+#start_arena_btn:hover {
+  background: hsl(from var(--blue-france-main-525) calc(h - 30) s l) !important;
+  border-color: var(--cg-blue-france-main-525-hover) !important;
 }

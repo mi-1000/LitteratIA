@@ -2,7 +2,7 @@
   import { page } from '$app/state'
   import { Button, Link } from '$components/dsfr'
   import { m } from '$lib/i18n/messages'
-  import { getLocale } from '$lib/i18n/runtime'
+  // import { getLocale } from '$lib/i18n/runtime'
   import { LanguageSelector, Menubar, VoteGauge } from '.'
 
   let {
@@ -21,7 +21,7 @@
     small?: boolean
   } = $props()
 
-  const locale = getLocale() in ["fr", "en"] ? getLocale() : "en"
+  // const locale = getLocale() in ["fr", "en"] ? getLocale() : "en"
 </script>
 
 {#snippet helpLink()}
@@ -46,7 +46,7 @@
           class={['fr-header__brand fr-enlarge-link', { 'lg:-translate-x-1/8 lg:scale-75': small }]}
         >
           <div class="fr-header__brand-top w-auto!">
-            <div class="fr-header__logo">
+            <!-- <div class="fr-header__logo">
               {#if locale === 'fr' || locale === 'en'}
                 <p class="fr-logo">
                   République<br />Française
@@ -69,13 +69,13 @@
                   class="max-h-[68px]"
                 />
               {/if}
-            </div>
+            </div> -->
           </div>
           <div
             class="fr-header__service mx-1! sm:mx-3! sm:w-auto md:px-3! flex w-1/2 grow items-center before:content-none!"
           >
             <img
-              src="/orgs/comparia.png"
+              src="/orgs/logo_litteratia_upscaled.png"
               aria-hidden="true"
               alt=""
               width="46"

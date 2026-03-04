@@ -1300,12 +1300,12 @@
                 "title": "Donner mon avis sur le comparateur - ouvre une nouvelle fenêtre"
             }
         },
-        "homeTitle": "Accueil - compar:IA",
+        "homeTitle": "Accueil - Littérat'IA",
         "logoAlt": "République Française",
         "menu": "Menu",
         "startDiscussion": "Commencer à discuter",
-        "subtitle": "Le comparateur d’IA conversationnelles",
-        "title": "compar:IA",
+        "subtitle": "L'arène aux robots",
+        "title": "Littérat'IA",
         "votes": {
             "count": "{count} votes",
             "legend": "Légende",
