@@ -36,13 +36,13 @@ CREATE TABLE votes (
     conv_superficial_b BOOLEAN,
     conv_instructions_not_followed_a BOOLEAN,
     conv_instructions_not_followed_b BOOLEAN,
-    archived BOOLEAN DEFAULT FALSE,
+    archived BOOLEAN DEFAULT FALSE--,
 );
 
-GRANT ALL PRIVILEGES ON TABLE votes TO "languia";
-GRANT ALL PRIVILEGES ON TABLE reactions TO "languia-prd";
-GRANT ALL PRIVILEGES ON TABLE logs TO "languia";
-GRANT ALL PRIVILEGES ON TABLE conversations TO "languia";
+--GRANT ALL PRIVILEGES ON TABLE votes TO "languia";
+--GRANT ALL PRIVILEGES ON TABLE reactions TO "languia-prd";
+--GRANT ALL PRIVILEGES ON TABLE logs TO "languia";
+--GRANT ALL PRIVILEGES ON TABLE conversations TO "languia";
 
 
-GRANT USAGE, SELECT ON SEQUENCE votes_id_seq TO "languia";
+-- GRANT USAGE, SELECT ON SEQUENCE votes_id_seq TO "languia";

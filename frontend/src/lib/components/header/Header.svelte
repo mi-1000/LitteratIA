@@ -6,9 +6,9 @@
   import { LanguageSelector, Menubar, VoteGauge } from '.'
 
   let {
-    hideNavigation = false,
+    hideNavigation = true,
     hideLanguageSelector = false,
-    hideVoteGauge = false,
+    hideVoteGauge = true,
     hideDiscussBtn = false,
     showHelpLink = false,
     small
@@ -21,7 +21,7 @@
     small?: boolean
   } = $props()
 
-  const locale = getLocale()
+  const locale = getLocale() in ["fr", "en"] ? getLocale() : "en"
 </script>
 
 {#snippet helpLink()}
@@ -99,7 +99,7 @@
               </p>
             </div>
           </div>
-          <div class="fr-header__navbar mt-0! self-auto!">
+          <div class="fr-header__navbar mt-0! self-auto! relative z-2">
             <button
               class="fr-btn fr-btn--menu -ms-1! me-3!"
               data-fr-opened="false"
@@ -112,7 +112,7 @@
           </div>
         </div>
 
-        <div class="gap-3 p-4 lg:flex ms-auto hidden items-center">
+        <div class="gap-3 p-4 lg:flex ms-auto hidden items-center relative z-2">
           {#if !hideVoteGauge}
             <VoteGauge id="vote-gauge" />
           {/if}
@@ -124,6 +124,13 @@
           {#if !hideLanguageSelector}
             <LanguageSelector id="translate" />
           {/if}
+          <button
+            aria-controls="footer-display"
+            data-fr-opened="false"
+            class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline"
+          >
+            {m['components.theme.title']()}
+          </button>
 
           {#if !hideDiscussBtn}
             <Link
@@ -160,6 +167,13 @@
         {#if !hideLanguageSelector}
           <LanguageSelector id="mobile-translate" />
         {/if}
+        <button
+          aria-controls="footer-display"
+          data-fr-opened="false"
+          class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline"
+        >
+          {m['components.theme.title']()}
+        </button>
       </div>
 
       {#if !hideNavigation}

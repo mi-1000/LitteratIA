@@ -185,7 +185,7 @@
     </div>
   </section>
 
-  <section class="fr-container--fluid md:py-15 py-10">
+  <!-- <section class="fr-container--fluid md:py-15 py-10">
     <div class="fr-container">
       <h3 class="mb-3! text-center">{m['home.use.title']()}</h3>
       <p class="mb-8! text-grey text-center">{m['home.use.desc']()}</p>
@@ -211,10 +211,10 @@
         {/each}
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- TODO remove hidden -->
-  <section
+  <!-- <section
     id="european"
     class="fr-container--fluid bg-light-info pb-18 lg:pb-25 pt-10 lg:pt-20 hidden"
   >
@@ -266,9 +266,9 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
-  <section class="fr-container--fluid bg-very-light-grey py-10 lg:py-14">
+  <!-- <section class="fr-container--fluid bg-very-light-grey py-10 lg:py-14">
     <div class="fr-container">
       <div class="cg-border xl:p-13! bg-white px-4 py-10">
         <h4 class="mb-2! text-center">{m['home.vote.title']()}</h4>
@@ -300,9 +300,9 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
-  <section class="fr-container--fluid bg-light-grey py-10 lg:py-20">
+  <!-- <section class="fr-container--fluid bg-light-grey py-10 lg:py-20">
     <div class="fr-container">
       <h3 class="mb-2! text-center">{m['home.usage.title']()}</h3>
       <p class="fr-mb-4w text-grey text-center">{m['home.vote.desc']()}</p>
@@ -317,11 +317,10 @@
         {/each}
       </div>
     </div>
-  </section>
+  </section> -->
 
-  <section class="fr-container--fluid bg-very-light-grey lg:pb-38 py-12 lg:pt-20">
+  <!-- <section class="fr-container--fluid bg-very-light-grey lg:pb-38 py-12 lg:pt-20">
     <div class="fr-container gap-10 lg:grid-cols-2 lg:gap-6 grid">
-      <!-- i18n: specific to locales -->
       <div class="cg-border bg-white px-5 py-10 md:px-8">
         <h5>{m['home.origin.team.title']()}</h5>
         <p>{m['home.origin.team.desc']()}</p>
@@ -361,9 +360,9 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
-  <section class="fr-container--fluid pb-18 lg:pb-25 pt-10 lg:pt-20">
+  <!-- <section class="fr-container--fluid pb-18 lg:pb-25 pt-10 lg:pt-20">
     <div class="fr-container">
       <h3 class="mb-8! lg:mb-10! text-center">{m['home.faq.title']()}</h3>
 
@@ -379,11 +378,11 @@
         <Link button size="lg" href="/product/faq" text={m['home.faq.discover']()} />
       </div>
     </div>
-  </section>
+  </section> -->
 
-  {#if locale === 'fr'}
+  <!-- {#if locale === 'fr'}
     <Newsletter />
-  {/if}
+  {/if} -->
 </main>
 
 <style lang="postcss">

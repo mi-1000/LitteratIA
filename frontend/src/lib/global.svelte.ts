@@ -3,9 +3,9 @@ import { env } from '$env/dynamic/public'
 import { getLocale, type Locale } from '$lib/i18n/runtime'
 import { getContext, setContext } from 'svelte'
 
-const disabledLocaleCodes = env.PUBLIC_DISABLED_LOCALES
-  ? env.PUBLIC_DISABLED_LOCALES.split(',').map((code) => code.trim())
-  : null
+const disabledLocaleCodes = ["da", "lt", "sv"] //env.PUBLIC_DISABLED_LOCALES
+  // ? env.PUBLIC_DISABLED_LOCALES.split(',').map((code) => code.trim())
+  // : null
 
 export type LocaleOption = { code: Locale; short: string; long: string; host: string }
 

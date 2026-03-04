@@ -2,6 +2,7 @@
   import { browser } from '$app/environment'
   import { goto } from '$app/navigation'
   import { page } from '$app/state'
+  import ThemeSelector from '$components/ThemeSelector.svelte'
   import Toaster from '$components/Toaster.svelte'
   import { setI18nContext, setVotesContext } from '$lib/global.svelte'
   import { useToast } from '$lib/helpers/useToast.svelte'
@@ -46,4 +47,14 @@
 
 {@render children()}
 
+<div class="theme-selector-global">
+  <ThemeSelector />
+</div>
+
 <div id="tooltips"></div>
+
+<style>
+  .theme-selector-global > :global(button) {
+    display: none;
+  }
+</style>

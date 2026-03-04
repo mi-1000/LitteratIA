@@ -25,15 +25,15 @@
 
 <Header hideDiscussBtn={isHome} />
 
-{#if isHome}
+<!-- {#if isHome}
   <Link button href="/ranking" text={m['header.banner']()} cornered class="w-auto!" />
-{/if}
+{/if} -->
 
-<div
+<!-- <div
   class="fr-container--fluid bg-light-grey lg:hidden flex h-[48px] items-center justify-center drop-shadow-[--raised-shadow]"
 >
   <VoteGauge id="mobile-vote-gauge" />
-</div>
+</div> -->
 
 {@render children()}
 

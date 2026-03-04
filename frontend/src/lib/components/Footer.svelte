@@ -1,5 +1,4 @@
 <script lang="ts">
-  import ThemeSelector from '$components/ThemeSelector.svelte'
   import { getI18nContext } from '$lib/global.svelte'
   import { m } from '$lib/i18n/messages'
   import { getLocale } from '$lib/i18n/runtime'
@@ -14,8 +13,8 @@
       { href: '/modalites', labelKey: 'tos' },
       { href: '/donnees-personnelles', labelKey: 'privacy' },
       { href: '/accessibilite', labelKey: 'accessibility' },
-      { href: '/ecoconception', labelKey: 'rgesn' },
-      { href: 'https://github.com/betagouv/languia', labelKey: 'sources' }
+      // { href: '/ecoconception', labelKey: 'rgesn' },
+      // { href: 'https://github.com/betagouv/languia', labelKey: 'sources' }
     ] as const
   ).map(({ href, labelKey }) => {
     return {
@@ -29,7 +28,7 @@
 
 <footer class="fr-footer fr-pb-2w" id="main-footer">
   <div class="fr-container">
-    <div class="fr-footer__body">
+    <!-- <div class="fr-footer__body">
       <div class="gap-8 lg:basis-1/2 flex flex-wrap">
         <div class="fr-footer__brand fr-enlarge-link">
           <div class="">
@@ -82,7 +81,7 @@
           )}
         </p>
       </div>
-    </div>
+    </div> -->
     <div class="fr-footer__bottom">
       <ul class="fr-footer__bottom-list">
         {#each links as { label, ...props } (props.href)}
@@ -90,7 +89,7 @@
             <a class="fr-footer__bottom-link" {...props}>{label}</a>
           </li>
         {/each}
-        <li class="fr-footer__bottom-item">
+        <!-- <li class="fr-footer__bottom-item">
           <a
             class="fr-footer__bottom-link"
             href="http://metabase.comparia.beta.gouv.fr/public/dashboard/8d5418a6-40cb-4cdb-8384-101ee6cca0be"
@@ -99,10 +98,10 @@
           >
             Matrice d'impact
           </a>
-        </li>
-        <li class="fr-footer__bottom-item">
+        </li> -->
+        <!-- <li class="fr-footer__bottom-item">
           <ThemeSelector />
-        </li>
+        </li> -->
       </ul>
       <div class="fr-footer__bottom-copy">
         <p>
