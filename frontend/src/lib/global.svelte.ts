@@ -1,5 +1,5 @@
 import { dev } from '$app/environment'
-import { env } from '$env/dynamic/public'
+// import { env } from '$env/dynamic/public'
 import { getLocale, type Locale } from '$lib/i18n/runtime'
 import { getContext, setContext } from 'svelte'
 

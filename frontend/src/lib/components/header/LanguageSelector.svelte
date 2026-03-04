@@ -30,7 +30,7 @@
       title={m['actions.selectLanguage']()}
       variant="tertiary-no-outline"
       native
-      class="fr-translate__btn before:content-none!"
+      class="fr-translate__btn before:content-none! rounded-lg! h-[40px]!"
     >
       <img
         src={`/flags/${currentLocale}.png`}

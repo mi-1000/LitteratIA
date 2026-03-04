@@ -2,7 +2,7 @@
   import { page } from '$app/state'
   import { Button, Link } from '$components/dsfr'
   import { m } from '$lib/i18n/messages'
-  // import { getLocale } from '$lib/i18n/runtime'
+// import { getLocale } from '$lib/i18n/runtime'
   import { LanguageSelector, Menubar, VoteGauge } from '.'
 
   let {
@@ -79,7 +79,7 @@
               aria-hidden="true"
               alt=""
               width="46"
-              class="me-4 sm:block hidden h-max"
+              class="me-4 sm:block hidden h-max rounded-lg"
             />
             <div>
               <p class="fr-header__service-title mb-0! leading-normal!">
@@ -127,7 +127,7 @@
           <button
             aria-controls="footer-display"
             data-fr-opened="false"
-            class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline"
+            class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg!"
           >
             {m['components.theme.title']()}
           </button>
@@ -170,7 +170,7 @@
         <button
           aria-controls="footer-display"
           data-fr-opened="false"
-          class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline"
+          class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg!"
         >
           {m['components.theme.title']()}
         </button>

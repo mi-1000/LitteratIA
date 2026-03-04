@@ -1330,24 +1330,24 @@
             "title": "Vos questions les plus courantes"
         },
         "intro": {
-            "desc": "Discutez avec deux IA à l’aveugle et évaluez leurs réponses",
+            "desc": "Discutez avec deux grands modèles de langage à l’aveugle et évaluez leurs réponses",
             "steps": {
-                "a11yDesc": "1. Je discute avec deux IA anonymes : échangez aussi longtemps que vous le souhaitez. 2. Je donne mon avis : vous contribuez ainsi à l'amélioration des modèles d’IA. 3. Les modèles sont démasqués : apprenez-en plus sur les modèles d’IA et leurs caractéristiques.",
+                "a11yDesc": "1. Je discute avec deux modèles d'IA anonymes : échangez aussi longtemps que vous le souhaitez. 2. Je donne mon avis : vous contribuez ainsi à l'amélioration des modèles d’IA. 3. Les modèles sont démasqués : apprenez-en plus sur les modèles d’IA et leurs caractéristiques.",
                 "one": {
                     "desc": "Échangez aussi longtemps que vous le souhaitez",
-                    "title": "Je discute avec deux IA anonymes"
+                    "title": "Discutez avec deux IA anonymes"
                 },
                 "three": {
-                    "desc": "Apprenez en plus sur les modèles d’IA et leurs caractéristiques",
-                    "title": "Les modèles sont démasqués !"
+                    "desc": "Merci d'avoir contribué à la recherche en IA pour l'éducation !",
+                    "title": "Des données anonymes sont collectées"
                 },
                 "title": "Comment ça marche",
                 "two": {
-                    "desc": "Vous contribuez ainsi à l'amélioration des modèles d’IA",
-                    "title": "Je donne mon avis"
+                    "desc": "Choisissez votre modèle préféré",
+                    "title": "Donnez votre avis"
                 }
             },
-            "title": "Ne vous fiez pas aux réponses <span {props}>d’une seule IA</span>",
+            "title": "Discutez avec <span {props}>deux modèles d’IA</span> à la fois",
             "tos": {
                 "accept": "J'accepte les <a {linkProps}>conditions générales d’utilisation</a>",
                 "error": "Vous devez accepter les modalités d'utilisation pour continuer",

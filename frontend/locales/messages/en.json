@@ -1209,24 +1209,24 @@
             "title": "Your frequently asked questions"
         },
         "intro": {
-            "desc": "Have a blind discussion with two AIs and evaluate their answers",
+            "desc": "Have a blind discussion with two large language models and evaluate their answers",
             "steps": {
-                "a11yDesc": "1. I chat with two hidden AIs: Chat for as long as you like. 2. I give my preference: By doing so, you'll help improve the AI models. 3. The model identities are revealed: Learn more about them and their characteristics.",
+                "a11yDesc": "1. I chat with two hidden AI models: Chat for as long as you like. 2. I give my preference: By doing so, you'll help improve the AI models. 3. The model identities are revealed: Learn more about them and their characteristics.",
                 "one": {
                     "desc": "Chat as long as you like",
-                    "title": "I chat with two hidden AIs"
+                    "title": "Chat with two hidden AI models"
                 },
                 "three": {
-                    "desc": "Learn more about AI models and their characteristics",
-                    "title": "The model identities are revealed!"
+                    "desc": "Thank you for helping research in AI for education!",
+                "title": "Anonymous data is collected"
                 },
                 "title": "How it works",
                 "two": {
-                    "desc": "By doing so, you'll help improve the AI models",
-                    "title": "I give my preference"
+                    "desc": "Choose your favourite model",
+                    "title": "Give your preference"
                 }
             },
-            "title": "Don't trust the answers <span {props}>of a single AI</span>",
+            "title": "Chat with <span {props}>two AI models</span> at once",
             "tos": {
                 "accept": "I accept the <a {linkProps}>terms of use</a>",
                 "error": "You must accept the terms of use to continue",
