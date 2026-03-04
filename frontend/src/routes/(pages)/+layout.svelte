@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { page } from '$app/state'
-  import { Icon, Link } from '$components/dsfr'
+  // import { Icon, Link } from '$components/dsfr'
   import Footer from '$components/Footer.svelte'
-  import { Header, VoteGauge } from '$components/header'
-  import { m } from '$lib/i18n/messages'
+  import { Header/*, VoteGauge*/ } from '$components/header'
+  // import { m } from '$lib/i18n/messages'
   import { getLocale } from '$lib/i18n/runtime'
 
   let { children } = $props()
@@ -37,7 +37,7 @@
 
 {@render children()}
 
-{#if isFr}
+<!-- {#if isFr}
   <button
     data-tally-open="1AVpXL"
     data-tally-hide-title="1"
@@ -48,6 +48,6 @@
     <Icon icon="i-ri-feedback-line" class="text-white" />
     <span class="text-sm font-medium">Votre avis</span>
   </button>
-{/if}
+{/if} -->
 
 <Footer />

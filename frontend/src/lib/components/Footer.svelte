@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { getI18nContext } from '$lib/global.svelte'
+  // import { getI18nContext } from '$lib/global.svelte'
   import { m } from '$lib/i18n/messages'
-  import { getLocale } from '$lib/i18n/runtime'
+  // import { getLocale } from '$lib/i18n/runtime'
   import { externalLinkProps, sanitize } from '$lib/utils/commons'
 
-  const locale = getLocale()
-  const i18nData = getI18nContext()
+  // const locale = getLocale()
+  // const i18nData = getI18nContext()
 
   const links = (
     [
@@ -82,8 +82,8 @@
         </p>
       </div>
     </div> -->
-    <div class="fr-footer__bottom">
-      <ul class="fr-footer__bottom-list">
+    <div class="fr-footer__bottom justify-center">
+      <ul class="fr-footer__bottom-list footer-links flex justify-center items-baseline">
         {#each links as { label, ...props } (props.href)}
           <li class="fr-footer__bottom-item">
             <a class="fr-footer__bottom-link" {...props}>{label}</a>
@@ -103,7 +103,7 @@
           <ThemeSelector />
         </li> -->
       </ul>
-      <div class="fr-footer__bottom-copy">
+      <div class="fr-footer__bottom-copy justify-center">
         <p>
           {@html sanitize(
             m['footer.license.mention']({
@@ -118,3 +118,15 @@
     </div>
   </div>
 </footer>
+
+<style>
+  @media (max-width: 61.99em) {
+    .footer-links {
+      flex-direction: column;
+      align-items: center;
+    }
+    .footer-links :global(.fr-footer__bottom-item::before) {
+      display: none;
+    }
+  }
+</style>

@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { Accordion, AccordionGroup, Button, Checkbox, Icon, Link } from '$components/dsfr'
+  import { /*Accordion, AccordionGroup,*/ Button, Checkbox/*, Icon, Link*/ } from '$components/dsfr'
   import HowItWorks from '$components/HowItWorks.svelte'
-  import Newsletter from '$components/Newsletter.svelte'
+  // import Newsletter from '$components/Newsletter.svelte'
   import * as env from '$env/static/public'
-  import { getI18nContext } from '$lib/global.svelte'
+  // import { getI18nContext } from '$lib/global.svelte'
   import { useLocalStorage } from '$lib/helpers/useLocalStorage.svelte'
   import { m } from '$lib/i18n/messages'
   import { getLocale, type Locale } from '$lib/i18n/runtime'
-  import { externalLinkProps, propsToAttrs, sanitize } from '$lib/utils/commons'
+  import { /*externalLinkProps,*/ propsToAttrs, sanitize } from '$lib/utils/commons'
   import type { HTMLImgAttributes } from 'svelte/elements'
 
   const locale = getLocale()
-  const i18nData = getI18nContext()
+  // const i18nData = getI18nContext()
   const acceptTos = useLocalStorage('comparia:tos', false)
   let tosError = $state<string>()
 
@@ -32,120 +32,120 @@
   }
 
   const localeOrDefault = $derived(['da', 'sv', 'en', 'fr'].includes(locale) ? locale : 'en')
-  const utilyCards = $derived(
-    (
-      [
-        {
-          i18nKey: 'compare',
-          src: `/home/comparer-${localeOrDefault}.png`,
-          srcDark: `/home/comparer-dark-${localeOrDefault}.png`
-        },
-        { i18nKey: 'test', src: '/home/tester.png', srcDark: '/home/tester-dark.jpg' },
-        {
-          i18nKey: 'measure',
-          src: `/home/mesurer-${localeOrDefault}.png`,
-          srcDark: `/home/mesurer-dark-${localeOrDefault}.png`
-        }
-      ] as const
-    ).map(({ i18nKey, ...card }) => ({
-      ...card,
-      title: m[`home.use.${i18nKey}.title`](),
-      desc: m[`home.use.${i18nKey}.desc`](),
-      alt: m[`home.use.${i18nKey}.alt`]()
-    }))
-  )
+//   const utilyCards = $derived(
+//     (
+//       [
+//         {
+//           i18nKey: 'compare',
+//           src: `/home/comparer-${localeOrDefault}.png`,
+//           srcDark: `/home/comparer-dark-${localeOrDefault}.png`
+//         },
+//         { i18nKey: 'test', src: '/home/tester.png', srcDark: '/home/tester-dark.jpg' },
+//         {
+//           i18nKey: 'measure',
+//           src: `/home/mesurer-${localeOrDefault}.png`,
+//           srcDark: `/home/mesurer-dark-${localeOrDefault}.png`
+//         }
+//       ] as const
+//     ).map(({ i18nKey, ...card }) => ({
+//       ...card,
+//       title: m[`home.use.${i18nKey}.title`](),
+//       desc: m[`home.use.${i18nKey}.desc`](),
+//       alt: m[`home.use.${i18nKey}.alt`]()
+//     }))
+//   )
 
-  const europeCards = [
-    {
-      title: '/compar:IA',
-      link: 'https://comparia.beta.gouv.fr/arene',
-      desc: m['home.europe.languages.fr'](),
-      flag: '🇫🇷'
-    },
-    {
-      title: '/palyginti:AI',
-      link: 'https://comparia.beta.gouv.fr/arene',
-      desc: m['home.europe.languages.lt'](),
-      flag: '🇱🇹'
-    },
-    {
-      title: '/jämföra:AI',
-      link: 'https://comparia.beta.gouv.fr/arene',
-      desc: m['home.europe.languages.sv'](),
-      flag: '🇸🇪'
-    },
-    {
-      title: '/xxxxxx:AI',
-      link: 'https://comparia.beta.gouv.fr/arene',
-      desc: m['home.europe.languages.da'](),
-      flag: '🇩🇰'
-    }
-  ]
+//   const europeCards = [
+//     {
+//       title: '/compar:IA',
+//       link: 'https://comparia.beta.gouv.fr/arene',
+//       desc: m['home.europe.languages.fr'](),
+//       flag: '🇫🇷'
+//     },
+//     {
+//       title: '/palyginti:AI',
+//       link: 'https://comparia.beta.gouv.fr/arene',
+//       desc: m['home.europe.languages.lt'](),
+//       flag: '🇱🇹'
+//     },
+//     {
+//       title: '/jämföra:AI',
+//       link: 'https://comparia.beta.gouv.fr/arene',
+//       desc: m['home.europe.languages.sv'](),
+//       flag: '🇸🇪'
+//     },
+//     {
+//       title: '/xxxxxx:AI',
+//       link: 'https://comparia.beta.gouv.fr/arene',
+//       desc: m['home.europe.languages.da'](),
+//       flag: '🇩🇰'
+//     }
+//   ]
 
-  const whyVoteCards = (
-    [
-      { i18nKey: 'prefs', src: '/home/prefs.svg' },
-      { i18nKey: 'datasets', src: '/home/datasets.svg' },
-      { i18nKey: 'finetune', src: '/home/finetune.svg' }
-    ] as const
-  ).map(({ i18nKey, ...card }) => ({
-    ...card,
-    title: m[`home.vote.steps.${i18nKey}.title`](),
-    desc: m[`home.vote.steps.${i18nKey}.desc`]()
-  }))
+//   const whyVoteCards = (
+//     [
+//       { i18nKey: 'prefs', src: '/home/prefs.svg' },
+//       { i18nKey: 'datasets', src: '/home/datasets.svg' },
+//       { i18nKey: 'finetune', src: '/home/finetune.svg' }
+//     ] as const
+//   ).map(({ i18nKey, ...card }) => ({
+//     ...card,
+//     title: m[`home.vote.steps.${i18nKey}.title`](),
+//     desc: m[`home.vote.steps.${i18nKey}.desc`]()
+//   }))
 
-  const usageCards = (
-    [
-      { i18nKey: 'use', icon: 'i-ri-database-line' },
-      { i18nKey: 'explore', icon: 'i-ri-search-line' },
-      { i18nKey: 'educate', icon: 'i-ri-presentation-line' }
-    ] as const
-  ).map(({ i18nKey, ...card }) => ({
-    ...card,
-    title: m[`home.usage.${i18nKey}.title`](),
-    desc: m[`home.usage.${i18nKey}.desc`]()
-  }))
+//   const usageCards = (
+//     [
+//       { i18nKey: 'use', icon: 'i-ri-database-line' },
+//       { i18nKey: 'explore', icon: 'i-ri-search-line' },
+//       { i18nKey: 'educate', icon: 'i-ri-presentation-line' }
+//     ] as const
+//   ).map(({ i18nKey, ...card }) => ({
+//     ...card,
+//     title: m[`home.usage.${i18nKey}.title`](),
+//     desc: m[`home.usage.${i18nKey}.desc`]()
+//   }))
 
-  // FIXME i18n specific logos
-  const localizedLogos = (
-    {
-      da: [],
-      en: [],
-      fr: [
-        {
-          class: 'max-h-[95px]',
-          src: '/orgs/minicult.svg',
-          alt: 'Ministère de la Culture',
-          title: 'Ministère de la Culture'
-        },
-        {
-          class: 'max-h-[95px] dark:invert',
-          src: '/orgs/ateliernumerique.png',
-          alt: 'Atelier numérique',
-          title: 'Atelier numérique'
-        }
-      ],
-      lt: [],
-      sv: []
-    } satisfies Record<Locale, HTMLImgAttributes[]>
-  )[locale === 'en' ? 'fr' : locale]
+//   // FIXME i18n specific logos
+//   const localizedLogos = (
+//     {
+//       da: [],
+//       en: [],
+//       fr: [
+//         {
+//           class: 'max-h-[95px]',
+//           src: '/orgs/minicult.svg',
+//           alt: 'Ministère de la Culture',
+//           title: 'Ministère de la Culture'
+//         },
+//         {
+//           class: 'max-h-[95px] dark:invert',
+//           src: '/orgs/ateliernumerique.png',
+//           alt: 'Atelier numérique',
+//           title: 'Atelier numérique'
+//         }
+//       ],
+//       lt: [],
+//       sv: []
+//     } satisfies Record<Locale, HTMLImgAttributes[]>
+//   )[locale === 'en' ? 'fr' : locale]
 
-  const reducedFAQ = (
-    [
-      { id: 'usage', index: '2' },
-      { id: 'models', index: '1' },
-      { id: 'datasets', index: '2' },
-      { id: 'ecology', index: '1' },
-      { id: 'i18n', index: '1' }
-    ] as const
-  ).map(({ id, index }) => ({
-    id,
-    title: m[`faq.${id}.questions.${index}.title`](),
-    desc: m[`faq.${id}.questions.${index}.desc`]()
-  }))
-</script>
+//   const reducedFAQ = (
+//     [
+//       { id: 'usage', index: '2' },
+//       { id: 'models', index: '1' },
+//       { id: 'datasets', index: '2' },
+//       { id: 'ecology', index: '1' },
+//       { id: 'i18n', index: '1' }
+//     ] as const
+//   ).map(({ id, index }) => ({
+//     id,
+//     title: m[`faq.${id}.questions.${index}.title`](),
+//     desc: m[`faq.${id}.questions.${index}.desc`]()
+//   }))
+// </script>
 
-<main id="content" class="">
+<main id="content" class="bg-light-grey justify-center">
   <section class="fr-container--fluid bg-light-grey pb-13 lg:pt-18 pt-10 lg:pb-28">
     <div
       class="fr-container gap-20 md:flex-row md:items-center md:gap-0 flex max-w-[1070px]! flex-col"
