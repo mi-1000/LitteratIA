@@ -1,68 +1,68 @@
 <script lang="ts">
-  import AILogo from '$components/AILogo.svelte'
-  import { Badge, Button, Icon, Search } from '$components/dsfr'
-  import Selector from '$components/Selector.svelte'
-  import type { APIModeAndPromptData } from '$lib/chatService.svelte'
-  import { modeInfos as modeChoices } from '$lib/chatService.svelte'
-  import { m } from '$lib/i18n/messages'
-  import type { BotModel } from '$lib/models'
-  import { fade } from 'svelte/transition'
+  // import AILogo from '$components/AILogo.svelte'
+  // import { Badge, Button, Icon, Search } from '$components/dsfr'
+  // import Selector from '$components/Selector.svelte'
+  // import type { APIModeAndPromptData } from '$lib/chatService.svelte'
+  // import { modeInfos as modeChoices } from '$lib/chatService.svelte'
+  // import { m } from '$lib/i18n/messages'
+  // import type { BotModel } from '$lib/models'
+  // import { fade } from 'svelte/transition'
 
-  let {
-    models,
-    mode = $bindable(),
-    modelsSelection = $bindable(),
-    disabled = false
-  }: {
-    models: BotModel[]
-    mode: APIModeAndPromptData['mode']
-    modelsSelection: string[]
-    disabled?: boolean
-  } = $props()
+  // let {
+  //   models,
+  //   mode = $bindable(),
+  //   modelsSelection = $bindable(),
+  //   disabled = false
+  // }: {
+  //   models: BotModel[]
+  //   mode: APIModeAndPromptData['mode']
+  //   modelsSelection: string[]
+  //   disabled?: boolean
+  // } = $props()
 
-  let neverClicked = $state(true)
+  // let neverClicked = $state(true)
   let showModelsSelection = $state(false)
   let search = $state('')
 
-  const filteredModels = $derived.by(() => {
-    const _search = search.toLowerCase()
-    return models
-      .filter((m) => !_search || m.search.includes(_search))
-      .map((m) => ({
-        ...m,
-        label: m.simple_name,
-        value: m.id
-      }))
-  })
+  // const filteredModels = $derived.by(() => {
+  //   const _search = search.toLowerCase()
+  //   return models
+  //     .filter((m) => !_search || m.search.includes(_search))
+  //     .map((m) => ({
+  //       ...m,
+  //       label: m.simple_name,
+  //       value: m.id
+  //     }))
+  // })
 
-  const choice = $derived(modeChoices.find((c) => c.value === mode) || modeChoices[0])
-  const { modelA, modelB } = $derived({
-    modelA: models.find((model) => model.id === modelsSelection[0]),
-    modelB: models.find((model) => model.id === modelsSelection[1])
-  })
-  const altLabel = $derived.by(() => {
-    if ((mode == 'custom' && modelsSelection.length < 1) || (mode == 'random' && neverClicked)) {
-      return m['arenaHome.modelSelection']()
-    } else {
-      return choice.alt_label
-    }
-  })
+  // const choice = $derived(modeChoices.find((c) => c.value === mode) || modeChoices[0])
+  // const { modelA, modelB } = $derived({
+  //   modelA: models.find((model) => model.id === modelsSelection[0]),
+  //   modelB: models.find((model) => model.id === modelsSelection[1])
+  // })
+  // const altLabel = $derived.by(() => {
+  //   if ((mode == 'custom' && modelsSelection.length < 1) || (mode == 'random' && neverClicked)) {
+  //     return m['arenaHome.modelSelection']()
+  //   } else {
+  //     return choice.alt_label
+  //   }
+  // })
 
-  function toggleModelSelection(): void {
-    // If clicked on second model, close model selection modal
-    if (modelsSelection.length === 2) {
-      const modeSelectionModal = document.getElementById('modal-mode-selection')
-      if (modeSelectionModal) {
-        window.setTimeout(() => {
-          // @ts-expect-error - DSFR is globally available
-          window.dsfr(modeSelectionModal).modal.conceal()
-        }, 300)
-      }
-    }
-  }
+  // function toggleModelSelection(): void {
+  //   // If clicked on second model, close model selection modal
+  //   if (modelsSelection.length === 2) {
+  //     const modeSelectionModal = document.getElementById('modal-mode-selection')
+  //     if (modeSelectionModal) {
+  //       window.setTimeout(() => {
+  //         // @ts-expect-error - DSFR is globally available
+  //         window.dsfr(modeSelectionModal).modal.conceal()
+  //       }, 300)
+  //     }
+  //   }
+  // }
 </script>
 
-<div class="gap-3 md:col-span-5 md:flex-row flex flex-col">
+<!-- <div class="gap-3 md:col-span-5 md:flex-row flex flex-col">
   <Button
     variant="secondary"
     native
@@ -103,7 +103,7 @@
       {/if}
     </Button>
   {/if}
-</div>
+</div> -->
 
 <dialog aria-labelledby="modal-mode-selection-title" id="modal-mode-selection" class="fr-modal">
   <div class="fr-container fr-container--fluid fr-container-md">
@@ -120,15 +120,15 @@
               { 'top-0 md:sticky z-1': showModelsSelection }
             ]}
           >
-            <Button
+            <!-- <Button
               variant="tertiary-no-outline"
               text={m['words.close']()}
               title={m['closeModal']()}
               aria-controls="modal-mode-selection"
               class="fr-btn--close"
-            />
+            /> -->
 
-            <div class="mt-2 w-full self-start">
+            <!-- <div class="mt-2 w-full self-start">
               {#if showModelsSelection == false}
                 <h6 id="modal-mode-selection-title" class="mb-3!">
                   {m['arenaHome.selectModels.question']()}
@@ -153,10 +153,10 @@
                   />
                 </div>
               {/if}
-            </div>
+            </div> -->
           </div>
           <div class="fr-modal__content m-0! pb-12!">
-            {#if showModelsSelection == false}
+            <!-- {#if showModelsSelection == false}
               <Selector
                 id="mode-selector"
                 bind:value={mode}
@@ -220,9 +220,9 @@
                   {/snippet}
                 </Selector>
               </div>
-            {/if}
+            {/if} -->
           </div>
-          {#if showModelsSelection == true}
+          <!-- {#if showModelsSelection == true}
             <div class="fr-modal__footer p-4! md:px-5!">
               <div class="gap-4 md:flex-row flex w-full flex-col-reverse">
                 <Button
@@ -247,7 +247,7 @@
                 </div>
               </div>
             </div>
-          {/if}
+          {/if} -->
         </div>
       </div>
     </div>

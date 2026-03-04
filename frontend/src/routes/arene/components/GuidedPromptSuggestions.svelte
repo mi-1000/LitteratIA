@@ -1,100 +1,101 @@
 <script lang="ts">
-  import { Button, Icon, Tooltip } from '$components/dsfr'
-  import RadioGroupCard from '$components/RadioGroupCard.svelte'
-  import { SUGGESTIONS } from '$lib/generated/suggestions'
-  import { m } from '$lib/i18n/messages'
-  import { getLocale } from '$lib/i18n/runtime'
-  import { selectRandomFromArray, shuffleArray } from '$lib/utils/commons'
+  // import { Button, Icon, Tooltip } from '$components/dsfr'
+  // import RadioGroupCard from '$components/RadioGroupCard.svelte'
+  // import { SUGGESTIONS } from '$lib/generated/suggestions'
+  // import { m } from '$lib/i18n/messages'
+  // import { getLocale } from '$lib/i18n/runtime'
+  // import { selectRandomFromArray, shuffleArray } from '$lib/utils/commons'
 
-  let {
-    onPromptSelected
-  }: {
-    onPromptSelected: (text: string, selectionStart?: number, selectionEnd?: number) => void
-  } = $props()
+  // let {
+  //   onPromptSelected
+  // }: {
+  //   onPromptSelected: (text: string, selectionStart?: number, selectionEnd?: number) => void
+  // } = $props()
 
-  const locale = getLocale()
-  const suggestionsCategories = $derived.by(() => {
-    if (!(locale in SUGGESTIONS)) return []
-    let categories = [...SUGGESTIONS[locale as keyof typeof SUGGESTIONS]]
-    if (locale === 'fr') {
-      const iasummit = categories.splice(
-        categories.findIndex((c) => c.icon === 'iasummit'),
-        1
-      )
-      return [iasummit[0], ...shuffleArray(categories)]
-    }
-    return shuffleArray(categories)
-  })
-  const suggestionsCategoriesCards = $derived(
-    suggestionsCategories.slice(0, 4).map((c) => ({
-      ...c,
-      label: c.description,
-      value: c.title.toLowerCase().replace(/[^a-z]/g, '')
-    }))
-  )
+  // const locale = getLocale()
+  // const suggestionsCategories = $derived.by(() => {
+  //   if (!(locale in SUGGESTIONS)) return []
+  //   let categories = [...SUGGESTIONS[locale as keyof typeof SUGGESTIONS]]
+  //   if (locale === 'fr') {
+  //     const iasummit = categories.splice(
+  //       categories.findIndex((c) => c.icon === 'iasummit'),
+  //       1
+  //     )
+  //     return [iasummit[0], ...shuffleArray(categories)]
+  //   }
+  //   return shuffleArray(categories)
+  // })
+  // const suggestionsCategoriesCards = $derived(
+  //   suggestionsCategories.slice(0, 4).map((c) => ({
+  //     ...c,
+  //     label: c.description,
+  //     value: c.title.toLowerCase().replace(/[^a-z]/g, '')
+  //   }))
+  // )
 
-  let selected = $state<string>()
+  // let selected = $state<string>()
 
   // Helper function to dispatch prompt with or without selection
-  function dispatchPromptWithSelection(promptText: string, origin: string) {
-    let selectionStart: number | undefined = undefined
-    let selectionEnd: number | undefined = undefined
-    const startIndex = promptText.indexOf('[')
-    const endIndex = promptText.indexOf(']')
+  // function dispatchPromptWithSelection(promptText: string, origin: string) {
+  //   let selectionStart: number | undefined = undefined
+  //   let selectionEnd: number | undefined = undefined
+  //   const startIndex = promptText.indexOf('[')
+  //   const endIndex = promptText.indexOf(']')
 
-    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-      selectionStart = startIndex // Include the opening bracket
-      selectionEnd = endIndex + 1 // Include the closing bracket
-    }
+  //   if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+  //     selectionStart = startIndex // Include the opening bracket
+  //     selectionEnd = endIndex + 1 // Include the closing bracket
+  //   }
 
-    if (selectionStart !== undefined && selectionEnd !== undefined) {
-      console.log(
-        `[GuidedPromptSuggestions] ${origin}: dispatching promptselected with selection. Text: "${promptText}", Start: ${selectionStart}, End: ${selectionEnd}`
-      )
-      onPromptSelected(promptText, selectionStart, selectionEnd)
-    } else {
-      console.log(
-        `[GuidedPromptSuggestions] ${origin}: dispatching promptselected without selection. Text: "${promptText}"`
-      )
-      onPromptSelected(promptText)
-    }
-  }
+  //   if (selectionStart !== undefined && selectionEnd !== undefined) {
+  //     console.log(
+  //       `[GuidedPromptSuggestions] ${origin}: dispatching promptselected with selection. Text: "${promptText}", Start: ${selectionStart}, End: ${selectionEnd}`
+  //     )
+  //     onPromptSelected(promptText, selectionStart, selectionEnd)
+  //   } else {
+  //     console.log(
+  //       `[GuidedPromptSuggestions] ${origin}: dispatching promptselected without selection. Text: "${promptText}"`
+  //     )
+  //     onPromptSelected(promptText)
+  //   }
+  // }
 
-  function shufflePrompts() {
-    if (selected) {
-      const categorySuggestions =
-        suggestionsCategoriesCards.find((c) => c.value === selected)?.suggestions ?? []
-      const randomPromptText = selectRandomFromArray(categorySuggestions)
+  // function shufflePrompts() {
+  //   if (selected) {
+  //     const categorySuggestions =
+  //       suggestionsCategoriesCards.find((c) => c.value === selected)?.suggestions ?? []
+  //     const randomPromptText = selectRandomFromArray(categorySuggestions)
 
-      if (randomPromptText) {
-        dispatchPromptWithSelection(randomPromptText, 'shufflePrompts')
-      } else {
-        console.warn(
-          `[GuidedPromptSuggestions] No prompts found for the current category: ${selected}.`
-        )
-      }
-    } else {
-      console.warn('No category currently selected. Cannot shuffle prompts.')
-    }
-  }
+  //     if (randomPromptText) {
+  //       dispatchPromptWithSelection(randomPromptText, 'shufflePrompts')
+  //     } else {
+  //       console.warn(
+  //         `[GuidedPromptSuggestions] No prompts found for the current category: ${selected}.`
+  //       )
+  //     }
+  //   } else {
+  //     console.warn('No category currently selected. Cannot shuffle prompts.')
+  //   }
+  // }
 
-  function handleCardSelect(categoryValue: string) {
-    const promptsForCategory =
-      suggestionsCategoriesCards.find((c) => c.value === categoryValue)?.suggestions ?? []
-    const randomPromptText = selectRandomFromArray(promptsForCategory)
+//   function handleCardSelect(categoryValue: string) {
+//     const promptsForCategory =
+//       suggestionsCategoriesCards.find((c) => c.value === categoryValue)?.suggestions ?? []
+//     const randomPromptText = selectRandomFromArray(promptsForCategory)
 
-    if (randomPromptText) {
-      dispatchPromptWithSelection(randomPromptText, 'handleCardSelect')
-    } else {
-      const fallbackText = `Explorer la catégorie : ${categoryValue}`
-      console.warn(
-        `[GuidedPromptSuggestions] No prompts found for category: ${categoryValue}. Using fallback: "${fallbackText}"`
-      )
-      onPromptSelected(fallbackText) // No selection for fallback
-    }
-  }
-</script>
+//     if (randomPromptText) {
+//       dispatchPromptWithSelection(randomPromptText, 'handleCardSelect')
+//     } else {
+//       const fallbackText = `Explorer la catégorie : ${categoryValue}`
+//       console.warn(
+//         `[GuidedPromptSuggestions] No prompts found for category: ${categoryValue}. Using fallback: "${fallbackText}"`
+//       )
+//       onPromptSelected(fallbackText) // No selection for fallback
+//     }
+//   }
+// </script>
 
+<!-- 
 {#if suggestionsCategoriesCards.length}
   <div class="fr-container px-0!">
     <h4 class="mb-4! text-dark-grey md:mb-5! md:text-base! text-[14px]!">
@@ -146,7 +147,7 @@
       </div>
     {/if}
   </div>
-{/if}
+{/if} -->
 
 <style lang="postcss">
   :global(.iasummit) {

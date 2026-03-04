@@ -22,8 +22,8 @@
   }
 </script>
 
-<nav class="fr-translate fr-nav">
-  <div class="fr-nav__item">
+<nav class="fr-translate fr-nav my-0! py-0!">
+  <div class="fr-nav__item py-0!">
     <Button
       aria-controls={id}
       aria-expanded="false"

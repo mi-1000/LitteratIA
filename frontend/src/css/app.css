@@ -100,7 +100,7 @@ body, h1, h2, h3, h4, h5, h6 {
   border-color: var(--cg-blue-france-main-525-hover) !important;
 }
 
-a {
+a:not([href="/"]) {
   background-image: none !important;
   color: transparent !important;
   background: color-mix(in srgb, gray, var(--blue-france-main-525));
@@ -108,7 +108,7 @@ a {
   -webkit-background-clip: text !important;
 }
 
-a:hover {
+a:not([href="/"]):hover {
   background: linear-gradient(
     to right,
     color-mix(in srgb, gray, hsl(from var(--blue-france-main-525) calc(h - 30) s l)) 0%, 
@@ -116,7 +116,6 @@ a:hover {
     hsl(from var(--blue-france-main-525) calc(h - 30) s l) 100%
   ) !important;
   color: transparent !important;
-  background: color-mix(in srgb, gray, var(--blue-france-main-525));
   background-clip: text !important;
   -webkit-background-clip: text !important;
 }

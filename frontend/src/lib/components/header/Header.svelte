@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/state'
   import { Button, Link } from '$components/dsfr'
   import { m } from '$lib/i18n/messages'
 // import { getLocale } from '$lib/i18n/runtime'
-  import { LanguageSelector, Menubar, VoteGauge } from '.'
+  import { LanguageSelector, Menubar } from '.'
 
   let {
     hideNavigation = true,
@@ -24,7 +23,7 @@
   // const locale = getLocale() in ["fr", "en"] ? getLocale() : "en"
 </script>
 
-{#snippet helpLink()}
+<!-- {#snippet helpLink()}
   <Link
     href="https://adtk8x51mbw.eu.typeform.com/to/duuGRyEX"
     text={m['header.help.link.content']()}
@@ -36,14 +35,14 @@
     native
     hideExternalIcon
   />
-{/snippet}
+{/snippet} -->
 
 <header id="main-header" class="fr-header lg:overflow-visible overflow-hidden">
   <div class="fr-header__body">
     <div class="fr-container">
       <div class={['fr-header__body-row', { 'lg:py-1!': small }]}>
         <div
-          class={['fr-header__brand fr-enlarge-link', { 'lg:-translate-x-1/8 lg:scale-75': small }]}
+          class={['fr-header__brand fr-enlarge-link lg:rounded-full', { 'lg:-translate-x-1/8 lg:scale-75': small }]}
         >
           <div class="fr-header__brand-top w-auto!">
             <!-- <div class="fr-header__logo">
@@ -100,7 +99,7 @@
           </div>
           <div class="fr-header__navbar mt-0! self-auto! relative z-2">
             <button
-              class="fr-btn fr-btn--menu -ms-1! me-3!"
+              class="fr-btn fr-btn--menu -ms-1! me-3! rounded-full"
               data-fr-opened="false"
               aria-controls="fr-modal-menu"
               aria-haspopup="menu"
