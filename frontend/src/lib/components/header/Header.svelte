@@ -85,7 +85,6 @@
               <p class="fr-header__service-title mb-0! leading-normal!">
                 <a
                   href="/"
-                  target={page.url.pathname.includes('arene') ? '_blank' : undefined}
                   title={m['header.homeTitle']()}
                 >
                   {m['header.title']()}
@@ -113,13 +112,13 @@
         </div>
 
         <div class="gap-3 p-4 lg:flex ms-auto hidden items-center relative z-2">
-          {#if !hideVoteGauge}
+          <!-- {#if !hideVoteGauge}
             <VoteGauge id="vote-gauge" />
-          {/if}
+          {/if} -->
 
-          {#if showHelpLink}
+          <!-- {#if showHelpLink}
             {@render helpLink()}
-          {/if}
+          {/if} -->
 
           {#if !hideLanguageSelector}
             <LanguageSelector id="translate" />
@@ -160,9 +159,9 @@
       />
 
       <div class="fr-header__menu-links after:mt-4! lg:hidden">
-        {#if showHelpLink}
+        <!-- {#if showHelpLink}
           {@render helpLink()}
-        {/if}
+        {/if} -->
 
         {#if !hideLanguageSelector}
           <LanguageSelector id="mobile-translate" />
