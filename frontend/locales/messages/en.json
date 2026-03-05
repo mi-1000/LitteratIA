@@ -1958,7 +1958,7 @@
             "selectedLabel": "I dislike (selected)"
         },
         "introA": "Before finding out the identity of the models, we need your vote.",
-        "introB": "It allows us to improve the compar:IA datasets, the objective of which is to refine future AI models on less-resourced languages",
+        "introB": "It allows us to build up a dataset in order to analyze the properties of each model regarding AI-powered language learning.",
         "like": {
             "label": "I like",
             "selectedLabel": "I like (selected)"

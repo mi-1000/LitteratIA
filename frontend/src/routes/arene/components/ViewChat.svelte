@@ -43,7 +43,7 @@
     // keep a map of reactions by message index and compute canVote from all reactions
     reactionsByIndex = { ...reactionsByIndex, [reaction.index]: reaction }
     const reactions = Object.values(reactionsByIndex)
-    canVote = reactions.length === 0 ? true : !reactions.some((r) => r.liked !== null)
+    canVote = reactions.length === 0 ? true : !reactions.some((r) => r.liked !== null) // TODO update backend to enforce voting even if there are already reactions (and leave canVote always true)
     await updateReaction(reaction)
   }
 

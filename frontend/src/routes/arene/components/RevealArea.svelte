@@ -55,7 +55,7 @@
           {@html sanitize(model.desc).replaceAll('<p>', '<p class="fr-text--sm text-grey!">')}
         </div>
 
-        <h6 class="mb-5! text-base! mt-auto!">
+        <!-- <h6 class="mb-5! text-base! mt-auto!">
           {m['reveal.impacts.title']()}
           <Tooltip id="impact-{pos}" text={m['reveal.impacts.tooltip']()} />
         </h6>
@@ -118,9 +118,9 @@
               class="h-fit"
             />
           </div>
-        </div>
+        </div> -->
 
-        <h6 class="mt-9! mb-5! text-base! md:mt-14!">{m['reveal.equivalent.title']()}</h6>
+        <!-- <h6 class="mt-9! mb-5! text-base! md:mt-14!">{m['reveal.equivalent.title']()}</h6>
         <div class="gap-2 grid grid-cols-3">
           <MiniCard
             id="co2-{pos}"
@@ -155,16 +155,16 @@
               )
             })}
           />
-        </div>
+        </div> -->
 
-        <div class="mt-7 text-center">
+        <!-- <div class="mt-7 text-center">
           <Button
             text={m['actions.seeMore']()}
             data-fr-opened="false"
             aria-controls="modal-model-reveal-{model.id}"
             size="sm"
           />
-        </div>
+        </div> -->
       </div>
 
       <ModelInfoModal {model} modalId="modal-model-reveal-{model.id}" />
@@ -242,7 +242,7 @@
   </div>
 </div>
 
-{#if ['fr', 'en'].includes(locale)}
+<!-- {#if ['fr', 'en'].includes(locale)}
   <section class="fr-container--fluid bg-light-info">
     <div class="fr-container">
       <div class="gap-x-15 lg:gap-x-30 lg:px-15 gap-y-10 py-8 md:flex-row flex flex-col">
@@ -275,7 +275,7 @@
       </div>
     </div>
   </section>
-{/if}
+{/if} -->
 
 <style>
   #reveal-area {
