@@ -132,22 +132,19 @@ body, h1, h2, h3, h4, h5, h6 {
 
 a:not([href="/"]) {
   background-image: none !important;
-  color: transparent !important;
-  background: color-mix(in srgb, gray, var(--text-action-high-blue-france)) !important;
+  background: var(--cg-gradient-primary) !important;
   background-clip: text !important;
   -webkit-background-clip: text !important;
+  -webkit-text-fill-color: var(--text-action-high-blue-france);
+  transition: -webkit-text-fill-color 0.3s ease-out !important;
 }
 
 a:not([href="/"]):hover {
-  background: linear-gradient(
-    to right,
-    color-mix(in srgb, gray, var(--cg-blue-france-shifted)) 0%, 
-    var(--text-action-high-blue-france) 65%,
-    var(--cg-blue-france-shifted) 100%
-  ) !important;
-  color: transparent !important;
-  background-clip: text !important;
-  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
+
+a:not([href="/"])::after {
+  display: none !important;
 }
 
 textarea:focus, textarea:focus-visible, input:focus, input:focus-visible {  
