@@ -1,17 +1,14 @@
 <script lang="ts">
   import { m } from '$lib/i18n/messages'
-  import darkPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/environment/moon.svg?no-inline'
-  import lightPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/environment/sun.svg?no-inline'
-  import systemPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/system/system.svg?no-inline'
 
   const options = [
-    { value: 'light', label: m['components.theme.options.light'](), imgSrc: lightPictoSrc },
-    { value: 'dark', label: m['components.theme.options.dark'](), imgSrc: darkPictoSrc },
+    { value: 'light', label: m['components.theme.options.light'](), icon: 'i-bi-sun' },
+    { value: 'dark', label: m['components.theme.options.dark'](), icon: 'i-bi-moon-stars' },
     {
       value: 'system',
       label: m['components.theme.options.system'](),
       subLabel: m['components.theme.options.systemSub'](),
-      imgSrc: systemPictoSrc
+      icon: 'i-bi-display'
     }
   ]
 </script>
@@ -72,21 +69,8 @@
                           <span class="fr-hint-text">{option.subLabel}</span>
                         {/if}
                       </label>
-                      <div class="fr-radio-rich__pictogram">
-                        <svg
-                          aria-hidden="true"
-                          class="fr-artwork"
-                          viewBox="0 0 80 80"
-                          width="80px"
-                          height="80px"
-                        >
-                          <use
-                            class="fr-artwork-decorative"
-                            href={option.imgSrc + '#artwork-decorative'}
-                          />
-                          <use class="fr-artwork-minor" href={option.imgSrc + '#artwork-minor'} />
-                          <use class="fr-artwork-major" href={option.imgSrc + '#artwork-major'} />
-                        </svg>
+                      <div class="fr-radio-rich__pictogram flex items-center justify-center">
+                        <span class="{option.icon} text-2xl" aria-hidden="true"></span>
                       </div>
                     </div>
                   </div>
