@@ -43,9 +43,9 @@
 
 <div class="flex flex-col">
   <div
-    class="message-bot cg-border rounded-lg! bg-white px-5 relative flex h-full flex-col overflow-scroll"
+    class="message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col"
   >
-    <div>
+    <div class="overflow-y-auto flex-1 px-5">
       <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
         <div class="c-bot-disk-{bot}"></div>
         <h3 class="ms-2! mb-0! text-base!">{m[`models.names.${bot}`]()}</h3>
@@ -88,7 +88,7 @@
       {/if}
     </div>
 
-    <div class="bottom-0 bg-white py-3 sticky mt-auto flex">
+    <div class="bg-white px-5 py-3 border-t border-(--border-default-grey) flex shrink-0 sticky bottom-0 z-2">
       <Copy value={message.content} />
 
       <div class="gap-2 ms-auto flex">

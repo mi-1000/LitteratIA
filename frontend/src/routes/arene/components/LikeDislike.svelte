@@ -13,7 +13,7 @@
 <IconButton
   {disabled}
   border={true}
-  icon={disabled ? 'thumb-up-line' : liked === true ? 'thumb-up-fill' : 'thumb-up-line'}
+  icon={disabled ? 'i-bi-hand-thumbs-up' : liked === true ? 'i-bi-hand-thumbs-up-fill' : 'i-bi-hand-thumbs-up'}
   label={m[`vote.like.${liked === true ? 'selectedLabel' : 'label'}`]()}
   highlight={liked === true}
   onclick={() => {
@@ -25,7 +25,7 @@
 <IconButton
   {disabled}
   border={true}
-  icon={disabled ? 'thumb-down-line' : liked === false ? 'thumb-down-fill' : 'thumb-down-line'}
+  icon={disabled ? 'i-bi-hand-thumbs-down' : liked === false ? 'i-bi-hand-thumbs-down-fill' : 'i-bi-hand-thumbs-down'}
   label={m[`vote.dislike.${liked === false ? 'selectedLabel' : 'label'}`]()}
   highlight={liked === false}
   onclick={() => {

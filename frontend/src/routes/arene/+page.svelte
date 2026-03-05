@@ -46,7 +46,7 @@
 {#snippet extra()}
   {#if arena.chat.step == 1}
     <div
-      class="cg-border rounded-lg! mt-2 bg-white py-1 text-sm md:mt-0 md:py-3 w-full border-dashed! text-center"
+      class="cg-border rounded-lg! mt-2 bg-white py-1 text-sm md:mt-0 md:py-3 w-full border-dashed! text-center" id="chatting-mode-indicator"
     >
       <Icon icon={mode!.icon} size="sm" class="text-primary" />
       &nbsp;<strong>{mode!.title}</strong>
@@ -84,7 +84,7 @@
   >
     <div class="fr-container gap-3 md:flex-row flex flex-col items-center">
       <div class="gap-3 md:flex-row flex basis-2/3 flex-col items-center">
-        <div class="bg-primary px-4 py-2 font-bold text-white rounded-[3.75rem] text-nowrap">
+        <div class="bg-primary px-4 py-2 font-bold text-white rounded-[3.75rem] text-nowrap" id="step-indicator-pill">
           {m['header.chatbot.step']()}
           {arena.chat.step}/2
         </div>

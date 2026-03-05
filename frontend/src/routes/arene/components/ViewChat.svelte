@@ -4,12 +4,12 @@
   import TextPrompt from '$components/TextPrompt.svelte'
   import type { OnReactionFn, RevealData, VoteData } from '$lib/chatService.svelte'
   import {
-    arena,
-    askChatBots,
-    getReveal,
-    postVoteGetReveal,
-    retryAskChatBots,
-    updateReaction
+      arena,
+      askChatBots,
+      getReveal,
+      postVoteGetReveal,
+      retryAskChatBots,
+      updateReaction
   } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
   import { ChatBot, RevealArea, VoteArea } from '.'
@@ -106,7 +106,7 @@
       class="bg-very-light-grey bottom-0 gap-3 px-4 py-3 md:px-[20%] sticky z-2 mt-auto flex flex-col items-center"
     >
       {#if step === 'chat'}
-        <div class="gap-3 md:flex-row flex w-full flex-col">
+        <div class="relative flex w-full items-end">
           <TextPrompt
             id="chatbot-prompt"
             bind:value={prompt}
@@ -115,19 +115,29 @@
             error={promptError}
             hideLabel
             rows={1}
-            maxRows={4}
+            maxRows={10}
             onSubmit={onPromptSubmit}
-            class="mb-0! w-full"
+            class="mb-0! w-full md:pr-14!"
           />
 
-          <Button
+          <button
             id="send-btn"
-            text={m['words.send']()}
             disabled={arena.chat.status !== 'complete' || prompt === ''}
-            class="md:w-auto! md:self-end! w-full! btn-color"
+            class="send-inside-btn"
             onclick={onPromptSubmit}
-          />
+            title={m['words.send']()}
+          >
+            <i class="i-bi-arrow-up block text-lg"></i>
+          </button>
         </div>
+
+        <Button
+          id="send-btn-mobile"
+          text={m['words.send']()}
+          disabled={arena.chat.status !== 'complete' || prompt === ''}
+          class="md:hidden! w-full! btn-color"
+          onclick={onPromptSubmit}
+        />
       {/if}
 
       <Button
@@ -139,3 +149,38 @@
     </div>
   {/if}
 </div>
+
+<style>
+  .send-inside-btn {
+    display: none;
+  }
+
+  @media (min-width: 48em) {
+    .send-inside-btn {
+      display: flex;
+      position: absolute;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      border: none;
+      background: var(--text-action-high-blue-france);
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      z-index: 2;
+    }
+
+    .send-inside-btn:hover {
+      background: var(--cg-blue-france-main-525-hover);
+    }
+
+    .send-inside-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+</style>

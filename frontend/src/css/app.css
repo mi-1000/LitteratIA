@@ -192,3 +192,16 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
 .fr-btn--menu {
   color: var(--blue-france-main-525) !important;
 }
+
+#step-indicator-pill {
+  background: linear-gradient(
+    to right,
+    var(--blue-france-main-525) 0%,
+    var(--blue-france-main-525) 25%,
+    var(--cg-blue-france-shifted) 100%
+  ) !important;
+}
+
+#chatting-mode-indicator {
+  display: none; /* Can be changed later if needed, but for now, we hide this to the user */
+}

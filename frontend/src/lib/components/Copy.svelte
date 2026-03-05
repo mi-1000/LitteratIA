@@ -27,5 +27,5 @@
 <IconButton
   onclick={onCopy}
   label={m[`actions.copyMessage.${copied ? 'done' : 'do'}`]()}
-  icon={copied ? 'i-ri-check-line' : 'i-ri-file-copy-line'}
+  icon={copied ? 'i-bi-check-lg' : 'i-bi-clipboard'}
 />
