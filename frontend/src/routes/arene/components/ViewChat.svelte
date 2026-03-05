@@ -126,7 +126,7 @@
           <button
             id="send-btn"
             disabled={arena.chat.status !== 'complete' || prompt === ''}
-            class="send-inside-btn"
+            class="send-inside-btn btn-color"
             onclick={onPromptSubmit}
             title={m['words.send']()}
           >

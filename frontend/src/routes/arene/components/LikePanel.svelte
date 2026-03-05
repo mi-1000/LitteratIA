@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button, Icon } from '$components/dsfr'
+  import { Button } from '$components/dsfr'
   import Selector from '$components/Selector.svelte'
   import {
-    APINegativeReactions,
-    APIPositiveReactions,
-    type APIReactionPref
+      APINegativeReactions,
+      APIPositiveReactions,
+      type APIReactionPref
   } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
   import { noop } from '$lib/utils/commons'
@@ -41,7 +41,7 @@
   const reactions = {
     like: {
       label: m['vote.choices.positive.question'](),
-      icon: 'thumb-up-fill',
+      icon: 'i-bi-hand-thumbs-up-fill',
       choices: APIPositiveReactions.map((value) => ({
         value,
         label: m[`vote.choices.positive.${value}`]()
@@ -49,7 +49,7 @@
     },
     dislike: {
       label: m['vote.choices.negative.question'](),
-      icon: 'thumb-down-fill',
+      icon: 'i-bi-hand-thumbs-down-fill',
       choices: APINegativeReactions.map((value) => ({
         value,
         label: m[`vote.choices.negative.${value}`]()
@@ -105,8 +105,8 @@
   class:hidden={show === false}
   class:flex={mode === 'vote'}
 >
-  <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'}">
-    <Icon icon={reaction.icon} class="text-primary" />
+  <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'} flex items-center">
+    <i class="{reaction.icon} block text-lg" style="color: {kind === 'like' ? 'var(--cg-green)' : '#e1000f'}"></i>
     <span
       class="ms-2 font-bold text-dark-grey md:text-base text-[14px]"
       class:sr-only={mode === 'vote'}
@@ -122,14 +122,32 @@
     multiple
     {disabled}
     containerClass="flex flex-wrap gap-3"
-    choiceClass="px-2 py-1 md:px-3 text-[14px]! rounded-full! font-medium! text-grey! has-checked:text-primary! border-1! m-0!"
+    choiceClass="like-choice"
     onChange={onSelectionChange}
   >
+    {#snippet option(choice, props, _input)}
+      <button
+        type="button"
+        {disabled}
+        class={[props.class, selection.includes(choice.value) ? 'is-selected' : '']}
+        onclick={() => {
+          if (disabled) return
+          if (selection.includes(choice.value)) {
+            selection = selection.filter((v) => v !== choice.value)
+          } else {
+            selection = [...selection, choice.value]
+          }
+          onSelectionChange(selection)
+        }}
+      >
+        {choice.label}
+      </button>
+    {/snippet}
     {#snippet extra(props)}
       {#if mode === 'react'}
         <button
           {disabled}
-          class={[props.class, comment !== '' ? 'border-primary! text-primary!' : '']}
+          class={[props.class, comment !== '' ? 'is-selected' : '']}
           data-fr-opened="false"
           aria-controls="{id}-modal"
         >
@@ -178,7 +196,7 @@
                 ></textarea>
                 <Button
                   aria-controls="{id}-modal"
-                  class="mt-8!"
+                  class="mt-8! btn-color"
                   onclick={() => onCommentChange(comment)}
                 >
                   {m['words.send']()}
@@ -196,5 +214,49 @@
   .modal-title {
     font-weight: 700;
     font-size: 1.1em;
+  }
+
+  :global(.like-choice) {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-default-grey);
+    background: var(--background-default-grey);
+    color: var(--text-mention-grey);
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+    margin: 0;
+    user-select: none;
+  }
+
+  :global(.like-choice:hover) {
+    border-color: var(--text-action-high-blue-france);
+    color: var(--text-action-high-blue-france);
+  }
+
+  :global(.like-choice.is-selected) {
+    border-color: var(--blue-france-main-525);
+    background: var(--blue-france-975-75);
+    color: var(--blue-france-main-525);
+    font-weight: 600;
+    border-width: 2px;
+    padding: calc(0.375rem - 1px) calc(0.75rem - 1px);
+  }
+
+  :global(.like-choice.is-selected:active) {
+    background: var(--hover-tint, var(--blue-france-975-75));
+  }
+
+  :global(.like-choice:focus-visible) {
+    outline: 2px solid var(--outline-color);
+    outline-offset: 2px;
+  }
+
+  :global(.like-choice:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>

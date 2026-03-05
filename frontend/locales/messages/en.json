@@ -1937,7 +1937,7 @@
             "negative": {
                 "incorrect": "Incorrect",
                 "instructions_not_followed": "Instructions not followed",
-                "question": "Why did you not like the answer",
+                "question": "What did you dislike about the answer?",
                 "superficial": "Superficial"
             },
             "other": "Other…",
