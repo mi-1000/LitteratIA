@@ -145,7 +145,7 @@
         type="submit"
         text={m['words.send']()}
         disabled={prompt == '' || !!promptError || disabled}
-        class="md:w-auto! md:order-none order-2 w-full! min-w-[130px] place-self-end"
+        class="md:w-auto! md:order-none order-2 w-full! min-w-[130px] md:col-span-full md:justify-self-center btn-color"
         onclick={() => dispatchSubmit()}
       />
     </div>

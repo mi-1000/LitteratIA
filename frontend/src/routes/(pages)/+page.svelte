@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { /*Accordion, AccordionGroup,*/ Button, Checkbox/*, Icon, Link*/ } from '$components/dsfr'
+  import { /*Accordion, AccordionGroup,*/ Button, Checkbox /*, Icon, Link*/ } from '$components/dsfr'
   import HowItWorks from '$components/HowItWorks.svelte'
-  // import Newsletter from '$components/Newsletter.svelte'
+// import Newsletter from '$components/Newsletter.svelte'
   import * as env from '$env/static/public'
   // import { getI18nContext } from '$lib/global.svelte'
   import { useLocalStorage } from '$lib/helpers/useLocalStorage.svelte'
   import { m } from '$lib/i18n/messages'
-  import { getLocale, type Locale } from '$lib/i18n/runtime'
+// import { getLocale, type Locale} from '$lib/i18n/runtime'
   import { /*externalLinkProps,*/ propsToAttrs, sanitize } from '$lib/utils/commons'
-  import type { HTMLImgAttributes } from 'svelte/elements'
+  // import type { HTMLImgAttributes } from 'svelte/elements'
 
-  const locale = getLocale()
+  // const locale = getLocale()
   // const i18nData = getI18nContext()
   const acceptTos = useLocalStorage('comparia:tos', false)
   let tosError = $state<string>()
@@ -25,13 +25,13 @@
 
   function handleRedirect() {
     if (acceptTos.value) {
-      window.location.href = '/arene/?cgu_acceptees'
+      window.location.href = '/arene'
     } else {
       tosError = m['home.intro.tos.error']()
     }
   }
 
-  const localeOrDefault = $derived(['da', 'sv', 'en', 'fr'].includes(locale) ? locale : 'en')
+  // const localeOrDefault = $derived(['da', 'sv', 'en', 'fr'].includes(locale) ? locale : 'en')
 //   const utilyCards = $derived(
 //     (
 //       [
@@ -175,7 +175,7 @@
           type="submit"
           text={m['header.startDiscussion']()}
           size="lg"
-          class="md:max-w-[355px] w-full!"
+          class="md:max-w-[355px] w-full! btn-color"
           onclick={handleRedirect}
         />
       </div>

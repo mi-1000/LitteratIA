@@ -124,7 +124,7 @@
             id="send-btn"
             text={m['words.send']()}
             disabled={arena.chat.status !== 'complete' || prompt === ''}
-            class="md:w-auto! md:self-end! w-full!"
+            class="md:w-auto! md:self-end! w-full! btn-color"
             onclick={onPromptSubmit}
           />
         </div>

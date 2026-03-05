@@ -64,7 +64,7 @@
     bind:value
     bind:this={el}
     {rows}
-    class="fr-input cg-border rounded-t-md! bg-white! md:min-h-10! rounded-b-none! border-solid!"
+    class="fr-input cg-border rounded-md! bg-white! md:min-h-10! border-solid!"
     {...nativeTextAreaProps}
     aria-describedby="messages-{id}"
     {onkeydown}

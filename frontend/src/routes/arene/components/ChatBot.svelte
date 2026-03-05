@@ -89,7 +89,7 @@
                 icon="refresh-line"
                 iconPos="right"
                 variant="secondary"
-                href="../arene/?cgu_acceptees"
+                href="../arene"
                 text={m['words.restart']()}
                 class="w-full!"
               />
