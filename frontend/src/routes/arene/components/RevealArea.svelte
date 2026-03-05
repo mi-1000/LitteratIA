@@ -1,18 +1,18 @@
 <script lang="ts">
   import AILogo from '$components/AILogo.svelte'
-  import { Badge, Button, Link, Tooltip } from '$components/dsfr'
+  import { Badge, Button/*, Link, Tooltip*/ } from '$components/dsfr'
   import ModelInfoModal from '$components/ModelInfoModal.svelte'
   import type { RevealData } from '$lib/chatService.svelte'
   import { scrollTo } from '$lib/helpers/attachments'
   import { useToast } from '$lib/helpers/useToast.svelte'
   import { m } from '$lib/i18n/messages'
-  import { getLocale } from '$lib/i18n/runtime'
-  import { externalLinkProps, sanitize } from '$lib/utils/commons'
-  import { MiniCard } from '.'
+  // import { getLocale } from '$lib/i18n/runtime'
+  import { /*externalLinkProps,*/ sanitize } from '$lib/utils/commons'
+  // import { MiniCard } from '.'
 
   let { data }: { data: RevealData } = $props()
 
-  const locale = getLocale()
+  // const locale = getLocale()
 
   const { selected, modelsData, shareB64Data } = data
 
@@ -27,11 +27,11 @@
 
 <div id="reveal-area" class="fr-container mt-8! md:mt-10!" {@attach scrollTo}>
   <div class="gap-5 lg:grid-cols-2 lg:gap-6 grid">
-    {#each modelsData as { model, pos, kwh, co2, tokens, lightbulb, streaming } (pos)}
+    {#each modelsData as { model, pos/*, kwh, co2, tokens, lightbulb, streaming*/ } (pos)}
       {@const modelBadges = (['license', 'size', 'releaseDate'] as const)
         .map((k) => model.badges[k])
         .filter((b) => !!b)}
-      {@const wh = kwh * 1000}
+      <!-- {@const wh = kwh * 1000} -->
 
       <div class="cg-border bg-white p-5 md:p-7 md:pb-10 flex flex-col">
         <div>
