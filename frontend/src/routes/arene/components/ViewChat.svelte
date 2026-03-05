@@ -81,9 +81,12 @@
   // Compute second header height for autoscrolling
   let footer = $state<HTMLElement>()
   let footerSize: number = $derived(step && footer ? footer.offsetHeight : 0)
+  let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1024)
+  const inputMaxRows = $derived(innerWidth < 768 ? 2 : 5)
 
   function onResize() {
     footerSize = footer ? footer.offsetHeight : 0
+    innerWidth = window.innerWidth
   }
 </script>
 
@@ -115,7 +118,7 @@
             error={promptError}
             hideLabel
             rows={1}
-            maxRows={10}
+            maxRows={inputMaxRows}
             onSubmit={onPromptSubmit}
             class="mb-0! w-full md:pr-14!"
           />

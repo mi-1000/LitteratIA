@@ -43,7 +43,7 @@
 
 <div class="flex flex-col">
   <div
-    class="message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col"
+    class="message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden"
   >
     <div class="overflow-y-auto flex-1 px-5">
       <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
@@ -88,7 +88,7 @@
       {/if}
     </div>
 
-    <div class="bg-white px-5 py-3 border-t border-(--border-default-grey) flex shrink-0 sticky bottom-0 z-2">
+    <div class="icon-bar bg-white px-5 py-3 flex shrink-0 sticky bottom-0 z-2">
       <Copy value={message.content} />
 
       <div class="gap-2 ms-auto flex">
@@ -120,15 +120,31 @@
 <style>
   .message-bot {
     --extra-margin: 2.5rem;
-    height: calc(
+    --five-lines: 5rem;
+    max-height: calc(
       100vh - var(--second-header-size) - var(--footer-size) - var(--message-size) -
-        var(--extra-margin)
+        var(--extra-margin) - var(--five-lines)
     );
-    min-height: 50vh;
+    min-height: 30vh;
   }
   @media (min-width: 48em) {
     .message-bot {
       --extra-margin: 3.5rem;
     }
+  }
+
+  .icon-bar {
+    position: relative;
+  }
+
+  .icon-bar::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 2rem;
+    background: linear-gradient(to bottom, transparent, var(--cg-very-light-grey));
+    pointer-events: none;
   }
 </style>

@@ -135,7 +135,7 @@ a:not([href="/"]) {
   background: var(--cg-gradient-primary) !important;
   background-clip: text !important;
   -webkit-background-clip: text !important;
-  -webkit-text-fill-color: var(--text-action-high-blue-france);
+  -webkit-text-fill-color: var(--bg-colortext-action-high-blue-france);
   transition: -webkit-text-fill-color 0.3s ease-out !important;
 }
 
