@@ -28,14 +28,14 @@
   <div class="fr-container fr-container--fluid fr-container-md">
     <div class="fr-grid-row fr-grid-row--center">
       <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
-        <div class="fr-modal__body">
+        <div class="fr-modal__body rounded-md">
           <div class="fr-modal__header">
             <button
               aria-controls="footer-display"
               title={m['closeModal']()}
               type="button"
               id="button-14"
-              class="fr-btn--close fr-btn"
+              class="fr-btn--close fr-btn rounded-md"
             >
               {m['words.close']()}
             </button>

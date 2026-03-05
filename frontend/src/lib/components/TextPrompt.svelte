@@ -7,8 +7,8 @@
     label: string
     value: string
     hideLabel?: boolean
+    minRows?: number
     maxRows?: number
-    lineHeightPx?: number
     error?: string
     autofocus?: boolean
     autoscroll?: boolean
@@ -23,8 +23,8 @@
     value = $bindable(),
     hideLabel = false,
     rows = 1,
-    maxRows = 4,
-    lineHeightPx = 16 * 1.5,
+    minRows,
+    maxRows = 15,
     error = $bindable(),
     autofocus = false,
     autoscroll = false,
@@ -34,14 +34,20 @@
     ...nativeTextAreaProps
   }: TextAreaProps = $props()
 
-  const updateRows: Attachment<HTMLTextAreaElement> = (el) => {
-    if (rows >= maxRows) return
+  const baseRows = minRows ?? rows
 
-    const scrollOffset = el.scrollHeight - el.clientHeight
-    if (value && scrollOffset > 0) {
-      rows = Math.min(Math.ceil(scrollOffset / lineHeightPx), maxRows)
-    }
-  }
+  $effect(() => {
+    if (!el) return
+    // Access value to establish reactivity
+    void value
+
+    // Shrink to minimum to measure true scrollHeight
+    el.rows = baseRows
+    const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 24
+    const needed = Math.ceil(el.scrollHeight / lineHeight)
+    rows = Math.max(baseRows, Math.min(needed, maxRows))
+    el.rows = rows
+  })
 
   const updateAuto: Attachment<HTMLTextAreaElement> = (el) => {
     if (autofocus) el.focus()
@@ -69,7 +75,6 @@
     aria-describedby="messages-{id}"
     {onkeydown}
     {@attach updateAuto}
-    {@attach updateRows}
   ></textarea>
   <div class="fr-messages-group" id="messages-{id}" aria-live="polite">
     {#if error}
