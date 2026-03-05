@@ -125,6 +125,7 @@
           <button
             aria-controls="footer-display"
             data-fr-opened="false"
+            title={m['components.theme.title']()}
             class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg!"
           >
             {m['components.theme.title']()}
@@ -168,6 +169,7 @@
         <button
           aria-controls="footer-display"
           data-fr-opened="false"
+          title={m['components.theme.title']()}
           class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg!"
         >
           {m['components.theme.title']()}

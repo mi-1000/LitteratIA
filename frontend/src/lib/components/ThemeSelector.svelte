@@ -1,8 +1,8 @@
 <script lang="ts">
-  import lightPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/environment/sun.svg?no-inline'
-  import darkPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/environment/moon.svg?no-inline'
-  import systemPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/system/system.svg?no-inline'
   import { m } from '$lib/i18n/messages'
+  import darkPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/environment/moon.svg?no-inline'
+  import lightPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/environment/sun.svg?no-inline'
+  import systemPictoSrc from '@gouvfr/dsfr/dist/artwork/pictograms/system/system.svg?no-inline'
 
   const options = [
     { value: 'light', label: m['components.theme.options.light'](), imgSrc: lightPictoSrc },
@@ -28,7 +28,7 @@
   <div class="fr-container fr-container--fluid fr-container-md">
     <div class="fr-grid-row fr-grid-row--center">
       <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
-        <div class="fr-modal__body rounded-md">
+        <div class="fr-modal__body rounded-md pb-0!">
           <div class="fr-modal__header">
             <button
               aria-controls="footer-display"
@@ -40,7 +40,7 @@
               {m['words.close']()}
             </button>
           </div>
-          <div class="fr-modal__content">
+          <div class="fr-modal__content mb-0!">
             <h2 id="footer-display-title" class="fr-modal__title">
               {m['components.theme.title']()}
             </h2>
@@ -105,3 +105,26 @@
     </div>
   </div>
 </dialog>
+
+<style>
+  .fr-radio-rich {
+    border-radius: 0.375rem;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px var(--border-default-grey);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .fr-radio-rich:has(input:checked) {
+    box-shadow: inset 0 0 0 2px var(--blue-france-main-525);
+  }
+
+  .fr-radio-rich :global(input[type="radio"] + label),
+  .fr-radio-rich :global(.fr-radio-rich__pictogram) {
+    background-image: none !important;
+  }
+
+  .fr-radio-rich :global(input[type="radio"]:checked + label) {
+    color: var(--blue-france-main-525);
+    font-weight: 700;
+  }
+</style>

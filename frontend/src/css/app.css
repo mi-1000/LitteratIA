@@ -160,3 +160,11 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   color: var(--text-mention-grey) !important;
   opacity: 0.6 !important;
 }
+
+.fr-radio-rich {
+  border: 1px solid var(--border-default-grey) !important;
+}
+.fr-radio-rich:has(input[type="radio"]:checked) {
+  border-color: var(--blue-france-main-525) !important;
+  box-shadow: 0 0 0 1px var(--blue-france-main-525) !important;
+}
