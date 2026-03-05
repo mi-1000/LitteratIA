@@ -22,18 +22,12 @@
   <div class="gap-5 md:flex md:justify-center grid auto-rows-max grid-cols-3">
     {#each choices as { value, label } (value)}
       <div class="h-full">
-        <input
-          type="radio"
-          id="radio-{value}"
-          name="vote-radio-group"
-          {value}
-          {disabled}
-          bind:group={selected}
-          class="sr-only"
-        />
-        <label
-          class="cg-border md:rounded-[56px]! px-3 py-4 font-medium md:flex-row md:justify-center flex h-full flex-col items-center justify-center text-center"
-          for="radio-{value}"
+        <button
+          type="button"
+          class="cg-border md:rounded-[56px]! px-3 py-4 font-medium md:flex-row md:justify-center flex h-full flex-col items-center justify-center text-center btn-color btn-vote-models"
+          aria-pressed={selected === value}
+          disabled={disabled}
+          on:click={() => { if (!disabled) selected = value }}
         >
           {#if value === 'both_equal'}
             <svg
@@ -52,7 +46,7 @@
             <div class="c-bot-disk-{value}"></div>
           {/if}
           <span class="mt-3 md:ms-3 md:mt-0">{label}</span>
-        </label>
+        </button>
       </div>
     {/each}
   </div>
@@ -67,5 +61,18 @@
     border: 2px solid var(--blue-france-main-525);
     background: var(--blue-france-975-75);
     color: var(--blue-france-main-525);
+  }
+  
+  .c-bot-disk-a,
+  .c-bot-disk-b,
+  .btn-color svg {
+    border-radius: 50%;
+    border: none;
+    box-sizing: border-box;
+  }
+
+  .btn-vote-models[aria-pressed="true"] .c-bot-disk-a,
+  .btn-vote-models[aria-pressed="true"] .c-bot-disk-b { 
+    border: 1px solid var(--border-default-grey) !important;
   }
 </style>

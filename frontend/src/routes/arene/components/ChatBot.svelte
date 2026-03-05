@@ -91,7 +91,7 @@
                 variant="secondary"
                 href="../arene"
                 text={m['words.restart']()}
-                class="w-full!"
+                class="w-full! btn-color"
               />
             {:else}
               <Button

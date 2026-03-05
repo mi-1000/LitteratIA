@@ -1169,7 +1169,7 @@
                 "title": "What do you think of the answers?"
             },
             "stepTwo": {
-                "description": "Discover the environmental impact of your conversations with each model",
+                "description": "Discover the models behind the responses",
                 "title": "Models are revealed!"
             }
         },

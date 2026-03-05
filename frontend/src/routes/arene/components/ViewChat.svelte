@@ -2,7 +2,7 @@
   import { Button } from '$components/dsfr'
   import Footer from '$components/Footer.svelte'
   import TextPrompt from '$components/TextPrompt.svelte'
-  import type { OnReactionFn, RevealData, VoteData } from '$lib/chatService.svelte'
+  import type { APIReactionData, OnReactionFn, RevealData, VoteData } from '$lib/chatService.svelte'
   import {
       arena,
       askChatBots,
@@ -18,6 +18,7 @@
   let prompt = $state('')
   let promptError = $state<string>()
   let canVote = $state<boolean | null>(true)
+  let reactionsByIndex = $state<Record<number, APIReactionData>>({})
   let voteData = $state<VoteData>({
     selected: undefined,
     a: {
@@ -39,7 +40,10 @@
   )
 
   const onReactionChange: OnReactionFn = async (reaction) => {
-    canVote = reaction.liked === null
+    // keep a map of reactions by message index and compute canVote from all reactions
+    reactionsByIndex = { ...reactionsByIndex, [reaction.index]: reaction }
+    const reactions = Object.values(reactionsByIndex)
+    canVote = reactions.length === 0 ? true : !reactions.some((r) => r.liked !== null)
     await updateReaction(reaction)
   }
 

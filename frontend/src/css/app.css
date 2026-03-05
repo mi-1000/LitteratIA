@@ -119,15 +119,31 @@ body, h1, h2, h3, h4, h5, h6 {
   border-color: var(--blue-france-main-525) !important;
   color: var(--cg-light-grey) !important;
 }
-.btn-color:hover {
+.btn-color:not(.btn-vote-models):not(:disabled):not([disabled]):hover {
   background: var(--cg-blue-france-shifted) !important;
   border-color: var(--cg-blue-france-main-525-hover) !important;
 }
-.btn-color:disabled, .btn-color[disabled], .fr-btn.btn-color:disabled, .fr-btn.btn-color[disabled] {
+.btn-color:disabled,
+.btn-color[disabled],
+.fr-btn.btn-color:disabled,
+.fr-btn.btn-color[disabled],
+.btn-color:disabled:hover,
+.btn-color[disabled]:hover,
+.fr-btn.btn-color:disabled:hover,
+.fr-btn.btn-color[disabled]:hover {
   background-color: color-mix(in srgb, gray 50%, var(--blue-france-main-525)) !important;
-  border-color: color-mix(in srgb, gray 50%, var(--cg-light-grey)) !important;
+  border: none;
   color: color-mix(in srgb, gray 50%, var(--cg-very-light-grey)) !important;
   opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+
+button:disabled,
+button[disabled] {
+  &[class*="i-bi-"], &[class*="i-bi-"]::before {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+  }
 }
 
 a:not([href="/"]) {
@@ -212,4 +228,26 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
 
 .c-bot-disk-b {
   background-color: var(--cg-blue-france-shifted) !important;
+}
+
+.btn-vote-models {
+    background: var(--cg-light-grey) !important;
+    color: var(--dark-grey) !important;
+    border: 2px solid var(--cg-light-grey) !important;
+    /* transition: background 0.2s, border-color 0.2s !important; */
+  &:hover {
+    background: var(--cg-light-grey) !important;
+    border-color: var(--blue-france-main-525) !important;
+    color: var(--blue-france-main-525) !important;
+  }
+  &[aria-pressed="true"] {
+    background: var(--blue-france-main-525) !important;
+    border-color: var(--blue-france-main-525) !important;
+    color: var(--cg-light-grey) !important;
+  }
+}
+
+.like-choice[disabled]:hover {
+  cursor: default !important;
+  pointer-events: none !important;
 }

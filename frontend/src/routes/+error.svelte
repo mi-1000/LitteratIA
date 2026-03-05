@@ -34,9 +34,10 @@
             <Link
               button
               variant="secondary"
-              href="https://adtk8x51mbw.eu.typeform.com/to/duuGRyEX"
+              href="_blank"
               text={m['actions.contact']()}
             />
+            <!-- "https://adtk8x51mbw.eu.typeform.com/to/duuGRyEX" -->
           </li>
         </ul>
       </div>

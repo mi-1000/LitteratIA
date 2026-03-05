@@ -37,7 +37,7 @@
   {disabled}
   aria-label={label}
   aria-haspopup={hasPopup}
-  title={label}
+  title={!disabled ? label : undefined}
   class:pending
   class:padded
   class:border
@@ -79,6 +79,7 @@
     opacity: 0.5;
     box-shadow: none;
     background-color: var(--grey-950-100) !important;
+    pointer-events: none;
   }
   button.border.highlight[disabled] {
     border: 1px solid #606367 !important;
@@ -91,10 +92,10 @@
     background: var(--bg-color);
   }
 
-  button:hover,
-  button.highlight,
-  button:hover > *,
-  button.highlight > * {
+  button:not([disabled]):hover,
+  button:not([disabled]).highlight,
+  button:not([disabled]):hover > *,
+  button:not([disabled]).highlight > * {
     cursor: pointer;
     color: var(--blue-france-main-525);
   }

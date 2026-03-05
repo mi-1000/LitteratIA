@@ -173,12 +173,11 @@
 
   <div class="feedback py-7">
     <div class="fr-container md:max-w-[280px]! gap-4 flex flex-col items-center">
-      <Link
-        button
+      <Button
         icon="edit-line"
-        href="../arene"
         text={m['header.chatbot.newDiscussion']()}
-        class="md:hidden! w-full!"
+        class="md:hidden! w-full! btn-color btn-new-discussion"
+        onclick={() => (window.location.href = '/arene')}
       />
 
       <!-- TODO missing share page, hide btn for now -->
