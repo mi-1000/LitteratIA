@@ -150,6 +150,12 @@
           class={[props.class, comment !== '' ? 'is-selected' : '']}
           data-fr-opened="false"
           aria-controls="{id}-modal"
+          onclick={() => {
+            // Focus textarea once DSFR modal finishes opening
+            setTimeout(() => {
+              document.querySelector<HTMLTextAreaElement>(`#${id}-modal textarea`)?.focus()
+            }, 400)
+          }}
         >
           {m['vote.choices.other']()}
         </button>
@@ -193,13 +199,28 @@
                   class="fr-input"
                   rows="4"
                   bind:value={comment}
+                  onkeydown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      onCommentChange(comment)
+                      const dialog = document.getElementById(`${id}-modal`)
+                      // @ts-expect-error - DSFR is globally available
+                      if (dialog) window.dsfr(dialog).modal.conceal()
+                    } else if (e.key === 'Escape') {
+                      onCommentChange(comment)
+                      const dialog = document.getElementById(`${id}-modal`)
+                      // @ts-expect-error - DSFR is globally available
+                      if (dialog) window.dsfr(dialog).modal.conceal()
+                    }
+                  }}
+                  enterkeyhint="send"
                 ></textarea>
                 <Button
                   aria-controls="{id}-modal"
-                  class="mt-8! btn-color"
+                  class="mt-4! mb-2! mx-auto! block! btn-color"
                   onclick={() => onCommentChange(comment)}
                 >
-                  {m['words.send']()}
+                  {m['words.save']()}
                 </Button>
               </div>
             </div>

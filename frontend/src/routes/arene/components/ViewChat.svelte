@@ -109,7 +109,7 @@
       class="bg-very-light-grey bottom-0 gap-3 px-4 py-3 md:px-[20%] sticky z-2 mt-auto flex flex-col items-center"
     >
       {#if step === 'chat'}
-        <div class="relative flex w-full items-end">
+        <div class="chat-input-wrapper">
           <TextPrompt
             id="chatbot-prompt"
             bind:value={prompt}
@@ -120,7 +120,7 @@
             rows={1}
             maxRows={inputMaxRows}
             onSubmit={onPromptSubmit}
-            class="mb-0! w-full md:pr-14!"
+            class="mb-0! w-full"
           />
 
           <button
@@ -154,6 +154,20 @@
 </div>
 
 <style>
+  .chat-input-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  /* Make textarea leave space for the button on desktop */
+  @media (min-width: 48em) {
+    .chat-input-wrapper :global(textarea) {
+      padding-right: 3.25rem !important;
+    }
+  }
+
   .send-inside-btn {
     display: none;
   }
@@ -162,23 +176,18 @@
     .send-inside-btn {
       display: flex;
       position: absolute;
-      right: 0.75rem;
-      bottom: 0.75rem;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
       width: 2.25rem;
       height: 2.25rem;
       align-items: center;
       justify-content: center;
       border-radius: 0.5rem;
       border: none;
-      background: var(--text-action-high-blue-france);
-      color: white;
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
       z-index: 2;
-    }
-
-    .send-inside-btn:hover {
-      background: var(--cg-blue-france-main-525-hover);
     }
 
     .send-inside-btn:disabled {

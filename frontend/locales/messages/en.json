@@ -1998,6 +1998,7 @@
         "retry": "Start again",
         "search": "Search",
         "send": "Send",
+        "save": "Save",
         "tooltip": "Tooltip",
         "validate": "Validate"
     }
