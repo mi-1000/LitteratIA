@@ -67,7 +67,7 @@
             "finished": "Raisonnement terminé",
             "inProgress": "Raisonnement en cours…"
         },
-        "revealButton": "Passer à la révélation des modèles"
+        "revealButton": "Révéler les modèles"
     },
     "closeModal": "Fermer la fenêtre modale",
     "components": {
@@ -258,7 +258,7 @@
         "helpUs": "Aidez-nous à améliorer ce service !",
         "license": {
             "linkTitle": "Licence etalab - nouvelle fenêtre",
-            "mention": "Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous <a {linkProps}>licence etalab-2.0</a>"
+            "mention": "Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous <a {linkProps}>licence etalab-2.0</a>."
         },
         "links": {
             "accessibility": "Accessibilité : non conforme",
@@ -1335,7 +1335,7 @@
                 "a11yDesc": "1. Je discute avec deux modèles d'IA anonymes : échangez aussi longtemps que vous le souhaitez. 2. Je donne mon avis : vous contribuez ainsi à l'amélioration des modèles d’IA. 3. Les modèles sont démasqués : apprenez-en plus sur les modèles d’IA et leurs caractéristiques.",
                 "one": {
                     "desc": "Échangez aussi longtemps que vous le souhaitez",
-                    "title": "Discutez avec deux IA anonymes"
+                    "title": "Discutez avec deux IA mystère"
                 },
                 "three": {
                     "desc": "Merci de contribuer à la recherche !",

@@ -115,8 +115,8 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-color {
-  background-color: var(--text-action-high-blue-france) !important;
-  border-color: var(--text-action-high-blue-france) !important;
+  background-color: var(--blue-france-main-525) !important;
+  border-color: var(--blue-france-main-525) !important;
   color: var(--cg-light-grey) !important;
 }
 .btn-color:hover {
@@ -124,7 +124,7 @@ body, h1, h2, h3, h4, h5, h6 {
   border-color: var(--cg-blue-france-main-525-hover) !important;
 }
 .btn-color:disabled, .btn-color[disabled], .fr-btn.btn-color:disabled, .fr-btn.btn-color[disabled] {
-  background-color: color-mix(in srgb, gray 50%, var(--text-action-high-blue-france)) !important;
+  background-color: color-mix(in srgb, gray 50%, var(--blue-france-main-525)) !important;
   border-color: color-mix(in srgb, gray 50%, var(--cg-light-grey)) !important;
   color: color-mix(in srgb, gray 50%, var(--cg-very-light-grey)) !important;
   opacity: 0.7 !important;
@@ -204,4 +204,12 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
 
 #chatting-mode-indicator {
   display: none; /* Can be changed later if needed, but for now, we hide this to the user */
+}
+
+.c-bot-disk-a {
+  background-color: var(--blue-france-main-525) !important;
+}
+
+.c-bot-disk-b {
+  background-color: var(--cg-blue-france-shifted) !important;
 }

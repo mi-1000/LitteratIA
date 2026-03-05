@@ -258,7 +258,7 @@
         "helpUs": "Help us improve the product!",
         "license": {
             "linkTitle": "Etalab license - new window",
-            "mention": "Unless otherwise explicitly stated as third-party intellectual property, the contents of this site are offered under the <a {linkProps}>Etalab 2.0 license</a>"
+            "mention": "Unless otherwise explicitly stated as third-party intellectual property, the contents of this site are offered under the <a {linkProps}>Etalab 2.0 license</a>."
         },
         "links": {
             "accessibility": "Accessibility: non-compliant",

@@ -33,12 +33,12 @@
   }
 
   .disc.left {
-    background-color: var(--cg-orange);
+    background-color: var(--blue-france-main-525);
     animation: animate-left 1.5s infinite ease-in-out;
   }
 
   .disc.right {
-    background-color: var(--cg-purple);
+    background-color: var(--cg-blue-france-shifted);
     animation: animate-right 1.5s infinite ease-in-out;
   }
 

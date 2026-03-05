@@ -146,7 +146,7 @@
       <Button
         text={m['chatbot.revealButton']()}
         disabled={revealDisabled}
-        class="md:w-fit! w-full!"
+        class="md:w-fit! w-full! btn-color"
         onclick={onRevealModels}
       />
     </div>

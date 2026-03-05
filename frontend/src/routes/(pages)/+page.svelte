@@ -170,14 +170,19 @@
           />
         </div>
 
-        <Button
-          id="start_arena_btn"
-          type="submit"
-          text={m['header.startDiscussion']()}
-          size="lg"
-          class="md:max-w-[355px] w-full! btn-color"
-          onclick={handleRedirect}
-        />
+        <div class="md:max-w-[355px] w-full! m-auto">
+          <Button
+            id="start_arena_btn"
+            type="submit"
+            text={m['header.startDiscussion']()}
+            size="lg"
+            class="w-full! btn-color"
+            onclick={handleRedirect}
+          />
+          <p class="text-grey mt-2! text-[15px]! leading-snug text-center break-words w-full">
+            {m['welcome.privacy']()}
+          </p>
+        </div>
       </div>
       <div class="bg-light-grey px-4 md:me-0 md:px-0 m-auto max-w-[545px] grow">
         <HowItWorks />
