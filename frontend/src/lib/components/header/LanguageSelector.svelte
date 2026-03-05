@@ -91,6 +91,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.375rem 0.625rem;
+    height: 40px;
     border-radius: 0.5rem;
     border: none;
     background: transparent;

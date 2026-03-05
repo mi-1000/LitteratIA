@@ -2076,14 +2076,14 @@
             "placeholder": "Vous pouvez ajouter des précisions sur cette réponse du modèle {model}"
         },
         "dislike": {
-            "label": "je n'apprécie pas",
-            "selectedLabel": "je n'apprécie pas (sélectionné)"
+            "label": "Je n'apprécie pas",
+            "selectedLabel": "Je n'apprécie pas (sélectionné)"
         },
         "introA": "Avant de découvrir l’identité des modèles, nous avons besoin de votre préférence.",
         "introB": "Elle permet d'enrichir les jeux de données compar:IA dont l’objectif est d’affiner les futurs modèles d’IA sur le français",
         "like": {
-            "label": "j'apprécie",
-            "selectedLabel": "j'apprécie (sélectionné)"
+            "label": "J'apprécie",
+            "selectedLabel": "J'apprécie (sélectionné)"
         },
         "qualify": {
             "addDetails": "Ajouter des détails",
