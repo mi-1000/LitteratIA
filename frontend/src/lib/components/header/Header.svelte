@@ -99,7 +99,7 @@
           </div>
           <div class="fr-header__navbar mt-0! self-auto! relative z-2">
             <button
-              class="fr-btn fr-btn--menu -ms-1! me-3! rounded-full"
+              class="fr-btn fr-btn--menu -ms-1! me-3! shadow-none!"
               data-fr-opened="false"
               aria-controls="fr-modal-menu"
               aria-haspopup="menu"

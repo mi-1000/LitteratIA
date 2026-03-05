@@ -10,10 +10,18 @@
 }
 
 :root {
+  /* Override DSFR blue-france to a darker shade in light theme */
+  --blue-france-main-525: #6464e6;
+
   /* CUSTOM DSFR LIKE ADDITION */
   --cg-blue-france-main-525-hover: #1111cc;
   --cg-blue-france-main-525-active: #6464e6;
   --outline-color: #0a76f6;
+  --text-action-high-blue-france: #5829c5;
+  --background-action-high-blue-france: var(--blue-france-main-525);
+  --background-action-high-blue-france-hover: var(--cg-blue-france-main-525-hover);
+  --background-action-high-blue-france-active: var(--cg-blue-france-main-525-active);
+  --border-action-high-blue-france: var(--blue-france-main-525);
 
   /* CUSTOM */
   --cg-very-light-grey: #fcfcfd;
@@ -40,6 +48,10 @@
 }
 
 :root[data-fr-theme='dark'] {
+  /* Restore original DSFR value for dark theme */
+  --blue-france-main-525: #6a6af4;
+  --text-action-high-blue-france: var(--blue-france-main-525);
+
   --cg-very-light-grey: #0a0a0b;
   --cg-light-grey: #1c1e22;
   /* FIXME need equivalent in dark */
@@ -95,9 +107,16 @@ body, h1, h2, h3, h4, h5, h6 {
   -webkit-background-clip: text !important;
 }
 
+.fr-btn--menu {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
 .btn-color {
-  background-color: var(--blue-france-main-525) !important;
-  border-color: var(--blue-france-main-525) !important;
+  background-color: var(--text-action-high-blue-france) !important;
+  border-color: var(--text-action-high-blue-france) !important;
   color: var(--cg-light-grey) !important;
 }
 .btn-color:hover {
@@ -105,7 +124,7 @@ body, h1, h2, h3, h4, h5, h6 {
   border-color: var(--cg-blue-france-main-525-hover) !important;
 }
 .btn-color:disabled, .btn-color[disabled], .fr-btn.btn-color:disabled, .fr-btn.btn-color[disabled] {
-  background-color: color-mix(in srgb, gray 50%, var(--blue-france-main-525)) !important;
+  background-color: color-mix(in srgb, gray 50%, var(--text-action-high-blue-france)) !important;
   border-color: color-mix(in srgb, gray 50%, var(--cg-light-grey)) !important;
   color: color-mix(in srgb, gray 50%, var(--cg-very-light-grey)) !important;
   opacity: 0.7 !important;
@@ -114,7 +133,7 @@ body, h1, h2, h3, h4, h5, h6 {
 a:not([href="/"]) {
   background-image: none !important;
   color: transparent !important;
-  background: color-mix(in srgb, gray, var(--blue-france-main-525));
+  background: color-mix(in srgb, gray, var(--text-action-high-blue-france)) !important;
   background-clip: text !important;
   -webkit-background-clip: text !important;
 }
@@ -123,7 +142,7 @@ a:not([href="/"]):hover {
   background: linear-gradient(
     to right,
     color-mix(in srgb, gray, var(--cg-blue-france-shifted)) 0%, 
-    var(--blue-france-main-525) 65%,
+    var(--text-action-high-blue-france) 65%,
     var(--cg-blue-france-shifted) 100%
   ) !important;
   color: transparent !important;
@@ -171,4 +190,8 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   & [class*="i-bi-"] {
     color: var(--blue-france-main-525) !important;
   }
+}
+
+.fr-btn--menu {
+  color: var(--blue-france-main-525) !important;
 }
