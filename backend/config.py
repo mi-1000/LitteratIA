@@ -33,7 +33,9 @@ class Settings(BaseSettings):
     HF_INFERENCE_KEY: str | None = None
     ORDBOGEN_API_KEY: str | None = None
     HF_PUSH_DATASET_KEY: str = ""
-    REPO_ORG: str = "ministere-culture"
+    REPO_ORG: str = "ministere-culture/"
+    # Default local Ollama API base (can be overridden in .env)
+    OLLAMA_API_BASE: str | None = "http://127.0.0.1:11434"
 
     enable_postgres_handler: bool = True
 
@@ -45,7 +47,8 @@ os.makedirs(settings.LOGDIR, exist_ok=True)
 
 # HTTP timeout for API calls to LLM providers
 # Structure: total timeout, read, write, connect (all in seconds)
-GLOBAL_TIMEOUT = Timeout(15.0, read=15.0, write=5.0, connect=15.0)
+# Increased to 30s to accommodate slower local model startup/generation
+GLOBAL_TIMEOUT = Timeout(30.0, read=30.0, write=10.0, connect=30.0)
 
 # Available country portals
 CountryPortal = Literal["fr", "da"]

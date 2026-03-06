@@ -112,28 +112,38 @@ function isMaybeArch(arch: AllArchs): arch is MaybeArchs {
 
 export function parseModel(model: APIBotModel) {
   const params_display = formatParams(model.params)
+  const getMsg = (key: string) => {
+    // defensive: messages generated map may not contain every dynamic key
+    const fn = (m as any)[key]
+    return typeof fn === 'function' ? fn() : ''
+  }
 
   return {
     ...model,
     params_display,
     consumption_wh: Math.round(model.wh_per_million_token / 1000),
-    desc: m[`generated.models.${model.simple_name}.desc`](),
-    sizeDesc: m[`generated.models.${model.simple_name}.size_desc`](),
-    fyi: m[`generated.models.${model.simple_name}.fyi`](),
+    desc: getMsg(`generated.models.${model.simple_name}.desc`),
+    sizeDesc: getMsg(`generated.models.${model.simple_name}.size_desc`),
+    fyi: getMsg(`generated.models.${model.simple_name}.fyi`),
     licenseInfos:
       model.license === 'proprietary'
         ? {
-            desc: m[`generated.licenses.proprio.${model.organisation}.license_desc`](),
-            reuseSpecificities:
-              m[`generated.licenses.proprio.${model.organisation}.reuse_specificities`](),
-            commercialUseSpecificities:
-              m[`generated.licenses.proprio.${model.organisation}.commercial_use_specificities`]()
+            desc: getMsg(`generated.licenses.proprio.${model.organisation}.license_desc`),
+            reuseSpecificities: getMsg(
+              `generated.licenses.proprio.${model.organisation}.reuse_specificities`
+            ),
+            commercialUseSpecificities: getMsg(
+              `generated.licenses.proprio.${model.organisation}.commercial_use_specificities`
+            )
           }
         : {
-            desc: m[`generated.licenses.os.${model.license}.license_desc`](),
-            reuseSpecificities: m[`generated.licenses.os.${model.license}.reuse_specificities`](),
-            commercialUseSpecificities:
-              m[`generated.licenses.os.${model.license}.commercial_use_specificities`]()
+            desc: getMsg(`generated.licenses.os.${model.license}.license_desc`),
+            reuseSpecificities: getMsg(
+              `generated.licenses.os.${model.license}.reuse_specificities`
+            ),
+            commercialUseSpecificities: getMsg(
+              `generated.licenses.os.${model.license}.commercial_use_specificities`
+            )
           },
     badges: {
       license: {
@@ -179,8 +189,12 @@ export function parseModel(model: APIBotModel) {
       arch: {
         id: `model-arch-${model.id}`,
         variant: 'yellow' as const,
-        text: m[`generated.archs.${isMaybeArch(model.arch) ? 'na' : model.arch}.title`](),
-        tooltip: m[`generated.archs.${isMaybeArch(model.arch) ? 'na' : model.arch}.desc`]()
+        text: getMsg(
+          `generated.archs.${isMaybeArch(model.arch) ? 'na' : model.arch}.title`
+        ),
+        tooltip: getMsg(
+          `generated.archs.${isMaybeArch(model.arch) ? 'na' : model.arch}.desc`
+        )
       },
       reasoning: model.reasoning ? ({ variant: '', text: 'Modèle de raisonnement' } as const) : null
     },

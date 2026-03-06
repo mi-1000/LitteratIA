@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Generator, TypedDict, Union, cast
 import litellm
 
 from backend.config import GLOBAL_TIMEOUT, settings
-from backend.errors import ContextTooLongError
+from backend.errors import ContextTooLongError, EmptyResponseError
 
 if TYPE_CHECKING:
     from fastapi import Request
@@ -104,13 +104,24 @@ def litellm_stream_iter(
         Dict containing: content, reasoning, output_tokens, generation_id
     """
 
-    # Build LiteLLM model identifier (e.g., "openai/gpt-4", "google/gemini-pro")
-    litellm_model_name = f"{endpoint.api_type}/{endpoint.api_model_id}"
-    # Retrieve API key from environment or config
-    api_key = get_api_key(endpoint)
+    # Determine base_url and LiteLLM model identifier.
+    # If endpoint is not provided, fall back to global OLLAMA_API_BASE and assume Ollama provider.
+    if endpoint is None:
+        base_url = settings.OLLAMA_API_BASE
+        litellm_model_name = f"ollama/{model_name}"
+        api_key = None
+        endpoint_dump = None
+    else:
+        base_url = endpoint.api_base or settings.OLLAMA_API_BASE
+        litellm_model_name = f"{endpoint.api_type}/{endpoint.api_model_id}"
+        api_key = get_api_key(endpoint)
+        try:
+            endpoint_dump = endpoint.model_dump(mode="json")
+        except Exception:
+            endpoint_dump = None
 
     logger.info(
-        f"using endpoint {litellm_model_name} for {model_name}: {endpoint.model_dump(mode="json")}",
+        f"using endpoint {litellm_model_name} for {model_name}: {endpoint_dump}",
         extra={"request": request},
     )
 
@@ -124,8 +135,11 @@ def litellm_stream_iter(
         litellm.input_callback = ["sentry"]  # adds sentry breadcrumbing
         litellm.failure_callback.append("sentry")
 
-    # Set Vertex AI location for Google Cloud models
-    litellm.vertex_location = endpoint.vertex_ai_location or settings.VERTEXAI_LOCATION
+    # Set Vertex AI location for Google Cloud models (fallback to settings)
+    litellm.vertex_location = (
+        (endpoint.vertex_ai_location if endpoint and getattr(endpoint, 'vertex_ai_location', None) else None)
+        or settings.VERTEXAI_LOCATION
+    )
 
     # nice to have: openrouter specific params
     # completion = client.chat.completions.create(
@@ -135,16 +149,31 @@ def litellm_stream_iter(
     #   },
 
     # Build parameters for LiteLLM API call
+    # Prepare messages to send to LiteLLM: exclude a trailing empty assistant message
+    # since some provider prompt transformers expect the last message to be a user/assistant pair
+    messages_to_send = list(messages)
+    if messages_to_send:
+        last = messages_to_send[-1]
+        if getattr(last, "role", None) == "assistant" and (
+            not getattr(last, "content", None) or not str(last.content).strip()
+        ):
+            messages_to_send = messages_to_send[:-1]
+
+    # Serialize messages for LiteLLM (only role and content)
+    serialized_messages = [msg.model_dump(include={"role", "content"}) for msg in messages_to_send]
+
+    logger.debug("Serialized messages for LLM: %s", serialized_messages)
+
     kwargs = {
         "timeout": GLOBAL_TIMEOUT,
         "stream_timeout": 30,
-        "api_version": endpoint.api_version,
-        "base_url": endpoint.api_base,
+        "api_version": (endpoint.api_version if endpoint is not None else None),
+        "base_url": base_url,
         "api_key": api_key,
         # max_retries can be added if needed
         "model": litellm_model_name,
         # Only pass supported message args 'role' and 'content'
-        "messages": [msg.model_dump(include={"role", "content"}) for msg in messages],
+        "messages": serialized_messages,
         "temperature": temperature,
         "max_tokens": max_new_tokens,
         "stream": True,  # Enable streaming for real-time responses
@@ -193,54 +222,130 @@ def litellm_stream_iter(
     }
 
     # Process streaming chunks from the API
-    for chunk in response:
-        # Extract generation ID for tracking/debugging
-        if not data["generation_id"] and chunk.id:
-            data["generation_id"] = chunk.id
-            logger.debug(
-                f"Response stream started for '{litellm_model_name}' with generation_id='{chunk.id}'",
-                extra={"request": request},
-            )
-        # Extract token count from streaming completion (if available)
-        if hasattr(chunk, "usage") and hasattr(chunk.usage, "completion_tokens"):
-            data["output_tokens"] = chunk.usage.completion_tokens
-            logger.debug(
-                f"reported output tokens for api {endpoint.api_base} and model {litellm_model_name}: {data["output_tokens"]}",
-                extra={"request": request},
-            )
-        # Process content chunks
-        if len(chunk.choices) > 0:
-            choice = cast(litellm.types.utils.StreamingChoices, chunk.choices[0])
-
-            # Accumulate text and reasoning across chunks
-            if delta := choice.get("delta"):
-                # Get the text content of this chunk
-                if content := choice.delta.get("content"):
-                    data["content"] += content
-                # Get reasoning content (for reasoning models)
-                if reasoning := delta.get("reasoning_content") or delta.get(
-                    "reasoning"
-                ):
-                    data["reasoning"] += reasoning
-
-            # Check for generation completion signal
-            if choice.finish_reason == "stop":
-                break
-            elif choice.finish_reason == "length":
-                # Output truncated at max_tokens limit — response is still valid
-                logger.warning(
-                    "output_truncated_at_max_tokens: " + str(chunk),
+    try:
+        for chunk in response:
+            # Extract generation ID for tracking/debugging
+            if not data["generation_id"] and chunk.id:
+                data["generation_id"] = chunk.id
+                logger.debug(
+                    f"Response stream started for '{litellm_model_name}' with generation_id='{chunk.id}'",
                     extra={"request": request},
                 )
-                break
+            # Extract token count from streaming completion (if available)
+            if hasattr(chunk, "usage") and hasattr(chunk.usage, "completion_tokens"):
+                data["output_tokens"] = chunk.usage.completion_tokens
+                logger.debug(
+                    f"reported output tokens for api {endpoint.api_base} and model {litellm_model_name}: {data['output_tokens']}",
+                    extra={"request": request},
+                )
+            # Process content chunks
+            if len(chunk.choices) > 0:
+                choice = cast(litellm.types.utils.StreamingChoices, chunk.choices[0])
 
-            # Yield partial results for streaming to frontend
-            yield data
+                # Accumulate text and reasoning across chunks
+                if delta := choice.get("delta"):
+                    # Get the text content of this chunk
+                    if content := choice.delta.get("content"):
+                        data["content"] += content
+                    # Get reasoning content (for reasoning models)
+                    if reasoning := delta.get("reasoning_content") or delta.get(
+                        "reasoning"
+                    ):
+                        data["reasoning"] += reasoning
 
-    logger.debug(
-        f"Response stream ended for '{litellm_model_name}' with generation_id='{chunk.id}'",
-        extra={"request": request},
-    )
+                # Check for generation completion signal
+                if choice.finish_reason == "stop":
+                    break
+                elif choice.finish_reason == "length":
+                    # Output truncated at max_tokens limit — response is still valid
+                    logger.warning(
+                        "output_truncated_at_max_tokens: " + str(chunk),
+                        extra={"request": request},
+                    )
+                    break
+
+                # Yield partial results for streaming to frontend
+                yield data
+
+    except Exception as e:
+        # Catch upstream API/connection errors coming from LiteLLM (e.g. unparsable
+        # Ollama chunks or timeouts). Try a single non-streaming retry for cases
+        # where the provider emits unparsable streaming chunks (some Ollama models
+        # send empty interim chunks). If retry fails or returns empty, raise
+        # EmptyResponseError so higher layers can handle it explicitly.
+        logger.warning(
+            f"litellm stream error for {litellm_model_name}: {e}",
+            exc_info=False,
+            extra={"request": request},
+        )
+
+        # If the error looks like an Ollama unparsable-chunk, attempt one non-streaming retry
+        try:
+            from litellm import exceptions as _lit_ex
+
+            is_ollama_parse_err = isinstance(e, _lit_ex.APIConnectionError) and "Unable to parse ollama chunk" in str(e)
+        except Exception:
+            is_ollama_parse_err = False
+
+        if is_ollama_parse_err:
+            logger.info(
+                f"Attempting non-streaming retry for {litellm_model_name} after unparsable ollama chunk",
+                extra={"request": request},
+            )
+            # Prepare retry kwargs: copy and switch off streaming
+            retry_kwargs = dict(kwargs)
+            retry_kwargs["stream"] = False
+            # increase timeout for final response
+            retry_kwargs["timeout"] = max(GLOBAL_TIMEOUT, 60)
+            try:
+                final_resp = litellm.completion(**retry_kwargs)
+                # Try to extract text from common response shapes
+                final_text = ""
+                final_gen_id = ""
+                if hasattr(final_resp, "choices") and len(final_resp.choices) > 0:
+                    ch = final_resp.choices[0]
+                    # litellm choice may expose .message, .text or dict-like
+                    if hasattr(ch, "message") and ch.message:
+                        final_text = ch.message.get("content", "") if isinstance(ch.message, dict) else getattr(ch.message, "content", "")
+                    elif hasattr(ch, "text"):
+                        final_text = getattr(ch, "text") or ""
+                    elif isinstance(ch, dict):
+                        final_text = ch.get("text") or (ch.get("message") and (ch.get("message").get("content") if isinstance(ch.get("message"), dict) else "")) or ""
+                if hasattr(final_resp, "id") and final_resp.id:
+                    final_gen_id = final_resp.id
+
+                if final_text and final_text.strip():
+                    data["content"] = final_text
+                    if final_gen_id:
+                        data["generation_id"] = final_gen_id
+                    yield data
+                    return
+                else:
+                    logger.warning(
+                        f"Non-streaming retry returned empty for {litellm_model_name}",
+                        extra={"request": request},
+                    )
+                    raise EmptyResponseError(response=e)
+            except Exception as retry_e:
+                logger.error(
+                    f"Non-streaming retry failed for {litellm_model_name}: {retry_e}",
+                    exc_info=True,
+                    extra={"request": request},
+                )
+                raise EmptyResponseError(response=retry_e) from retry_e
+        else:
+            # For other errors, log full exception and raise EmptyResponseError
+            logger.error(
+                f"litellm stream fatal error for {litellm_model_name}: {e}",
+                exc_info=True,
+                extra={"request": request},
+            )
+            raise EmptyResponseError(response=e)
+    else:
+        logger.debug(
+            f"Response stream ended for '{litellm_model_name}' with generation_id='{chunk.id}'",
+            extra={"request": request},
+        )
 
     # Final yield after loop completes
     yield data

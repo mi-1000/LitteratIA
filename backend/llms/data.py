@@ -42,8 +42,8 @@ class LLMsData(BaseModel):
             for _id, model in values.items()
             if model["status"] != "disabled"
             and (
-                not model["specific_portals"]
-                or country_portal in model["specific_portals"]
+                not model.get("specific_portals")
+                or country_portal in model.get("specific_portals", [])
             )
         }
 
