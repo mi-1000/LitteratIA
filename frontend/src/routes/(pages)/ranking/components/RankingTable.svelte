@@ -219,7 +219,7 @@
       {#if model.distribution === 'api-only'}
         <span class="text-xs">{m['ranking.table.data.estimation']()}</span>
       {:else}
-        {m['ranking.table.data.billions']({ count: model.params })}
+        {model.params_display} {m['models.parameters_suffix']()}
       {/if}
     {:else if col.id === 'release'}
       {`${model.release_date.getMonth() + 1}/${model.release_date.getFullYear().toString().slice(2)}`}

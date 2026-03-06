@@ -1519,7 +1519,13 @@
                 "ram": "La mémoire vive stocke les données traitées par un LLM en temps réel. Plus le modèle est grand, plus il a besoin de mémoire vive pour fonctionner."
             }
         },
-        "parameters": "{number} mds de paramètres",
+        "parameters": "{number} de paramètres",
+        "parameters_units": {
+            "million": "Mio",
+            "billion": "Mds",
+            "trillion": "Bio"
+        },
+        "parameters_suffix": "de paramètres",
         "ram": "{min} à {max} Go",
         "release": "Sortie {date}",
         "size": {

@@ -1,6 +1,41 @@
 import { ARCHS, LICENSES, MAYBE_ARCHS, MODELS, ORGANISATIONS } from '$lib/generated/models'
+import { getLocale } from '$lib/i18n/runtime'
 import { getContext, setContext } from 'svelte'
 import { m } from './i18n/messages'
+
+// Format parameter counts: multiply input (assumed in billions) by 1_000_000_000
+// and return a localized, human-friendly string with unit suffixes.
+export function formatParams(countInBillions: number, localeOverride?: string) {
+  const value = Number(countInBillions) * 1_000_000_000
+  const locale = (localeOverride ?? (typeof getLocale === 'function' ? getLocale() : undefined) ?? 'fr').toString()
+  const abs = Math.abs(value)
+  const unitMillion = m['models.parameters_units.million']()
+  const unitBillion = m['models.parameters_units.billion']()
+  const unitTrillion = m['models.parameters_units.trillion']()
+
+  let divisor = 1
+  let unit = ''
+  if (abs >= 1e12) {
+    divisor = 1e12
+    unit = unitTrillion
+  } else if (abs >= 1e9) {
+    divisor = 1e9
+    unit = unitBillion
+  } else if (abs >= 1e6) {
+    divisor = 1e6
+    unit = unitMillion
+  } else {
+    // less than 1 million: show plain number localized
+    return new Intl.NumberFormat(locale).format(value)
+  }
+
+  const scaled = value / divisor
+  const hasFraction = Math.abs(scaled - Math.trunc(scaled)) >= 0.1
+  const nf = new Intl.NumberFormat(locale, { maximumFractionDigits: hasFraction ? 1 : 0 })
+  const formatted = nf.format(scaled)
+  const sep = locale.startsWith('fr') ? '\u00A0' : ''
+  return `${formatted}${sep}${unit}`
+}
 
 export const SIZES = ['XS', 'S', 'M', 'L', 'XL'] as const
 export const CONSO_SIZES = ['S', 'M', 'L'] as const
@@ -76,8 +111,11 @@ function isMaybeArch(arch: AllArchs): arch is MaybeArchs {
 }
 
 export function parseModel(model: APIBotModel) {
+  const params_display = formatParams(model.params)
+
   return {
     ...model,
+    params_display,
     consumption_wh: Math.round(model.wh_per_million_token / 1000),
     desc: m[`generated.models.${model.simple_name}.desc`](),
     sizeDesc: m[`generated.models.${model.simple_name}.size_desc`](),
@@ -133,7 +171,7 @@ export function parseModel(model: APIBotModel) {
         variant: 'info' as const,
         text:
           model.distribution === 'open-weights' || model.distribution === 'fully-open-source'
-            ? m['models.parameters']({ number: model.params })
+            ? `${params_display} ${m['models.parameters_suffix']()}`
             : m['models.size.estimated']({ size: model.friendly_size }),
         tooltip:
           model.distribution === 'api-only' ? m['models.openWeight.tooltips.params']() : undefined

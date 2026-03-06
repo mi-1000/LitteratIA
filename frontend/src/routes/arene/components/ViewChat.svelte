@@ -130,21 +130,24 @@
           <button
             id="send-btn"
             disabled={arena.chat.status !== 'complete' || prompt === ''}
-            class="send-inside-btn btn-color"
+            class="send-inside-btn btn-color hidden md:flex"
+            onclick={onPromptSubmit}
+            title={m['words.send']()}
+          >
+            <i class="i-bi-arrow-up block text-lg"></i>
+          </button>
+
+          <button
+            id="send-btn-mobile"
+            aria-label={m['words.send']()}
+            disabled={arena.chat.status !== 'complete' || prompt === ''}
+            class="send-inside-btn btn-color flex md:hidden"
             onclick={onPromptSubmit}
             title={m['words.send']()}
           >
             <i class="i-bi-arrow-up block text-lg"></i>
           </button>
         </div>
-
-        <Button
-          id="send-btn-mobile"
-          text={m['words.send']()}
-          disabled={arena.chat.status !== 'complete' || prompt === ''}
-          class="md:hidden! w-full! btn-color"
-          onclick={onPromptSubmit}
-        />
       {/if}
 
       <Button
@@ -162,41 +165,35 @@
     position: relative;
     display: flex;
     width: 100%;
-    align-items: stretch;
+    align-items: center;
   }
 
-  /* Make textarea leave space for the button on desktop */
-  @media (min-width: 48em) {
-    .chat-input-wrapper :global(textarea) {
-      padding-right: 3.25rem !important;
-    }
+  /* Leave space for the floating button (works on mobile & desktop) */
+  .chat-input-wrapper :global(textarea) {
+    padding-right: 3.25rem !important;
   }
 
   .send-inside-btn {
-    display: none;
+    display: flex;
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.25rem;
+    height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    z-index: 2;
+    padding: 0;
+    min-width: 0;
   }
 
-  @media (min-width: 48em) {
-    .send-inside-btn {
-      display: flex;
-      position: absolute;
-      right: 0.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 2.25rem;
-      height: 2.25rem;
-      align-items: center;
-      justify-content: center;
-      border-radius: 0.5rem;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, opacity 0.2s;
-      z-index: 2;
-    }
-
-    .send-inside-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
+  .send-inside-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 </style>
