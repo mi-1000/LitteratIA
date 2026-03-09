@@ -256,3 +256,8 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   cursor: default !important;
   pointer-events: none !important;
 }
+
+#checkbox-error-message-error::before {
+  content: '' !important;
+  display: none !important;
+}

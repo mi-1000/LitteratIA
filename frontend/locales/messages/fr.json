@@ -266,7 +266,7 @@
             "privacy": "Politique de confidentialité",
             "rgesn": "Écoconception",
             "sources": "Code source",
-            "tos": "Modalités d'utilisation"
+            "tos": "Conditions générales d'utilisation"
         },
         "writeUs": "Si vous rencontrez un problème ou si vous avez un commentaire sur le comparateur, n'hésitez pas à nous écrire <a {formLinkProps}>via ce formulaire</a>, nous lisons tous vos messages.<br />Merci !"
     },
@@ -453,7 +453,7 @@
             "dispoWarranty": "Il n’est pas garanti que le service soit exempt d’anomalies ou d'erreurs. Le service est donc mis à disposition sans garantie sur sa disponibilité et ses performances.",
             "evoDesc": "Les modalités d’utilisation peuvent être modifiées ou complétées à tout moment, sans préavis, en fonction des modifications apportées aux services, de l’évolution de la législation ou pour tout autre motif jugé nécessaire.",
             "evoDescMore": "Ces modifications et mises à jour s’imposent à l’utilisateur ou l’utilisatrice qui doit, en conséquence, se référer régulièrement à cette rubrique pour vérifier les modalités générales en vigueur.",
-            "evoTitle": "8. Évolution des modalités d'utilisation",
+            "evoTitle": "8. Évolution des conditions générales d'utilisation",
             "featuresDatasets": "Le service collecte les données de dialogue (questions, réponses des deux modèles) et les préférences des utilisateurs (vote, métadonnées associées). Ces données servent à la fois à constituer des jeux de données partagés et à établir un classement des modèles d'IA affiché sur la plateforme, basé sur les votes exprimés.",
             "featuresDatasetsMore": "L’éditeur se réserve le droit de distribuer sous licence ouverte 2.0 les données de dialogue et de préférence de l’utilisateur. Le jeu de données est diffusé sur la plateforme Hugging Face à travers le compte du ministère de la culture (<a {linkProps}>https://huggingface.co/ministere-culture</a>).",
             "featuresDesc": "Afin de répondre au double objectif de sensibiliser les citoyens aux grands modèles de langage et collecter les préférences des utilisateurs et utilisatrices, les services rendus par la plateforme sans restriction d’accès sont les suivants :",
@@ -1350,7 +1350,7 @@
             "title": "Discutez avec <span {props}>deux modèles d’IA</span> à la fois",
             "tos": {
                 "accept": "J'accepte les <a {linkProps}>conditions générales d’utilisation</a>",
-                "error": "Vous devez accepter les modalités d'utilisation pour continuer",
+                "error": "Vous devez accepter les conditions générales d'utilisation pour continuer",
                 "help": "Vos données sont partagées à des fins de recherche"
             }
         },
