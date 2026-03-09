@@ -135,7 +135,7 @@
     },
     "errors": {
         "404": {
-            "desc": "If you typed the URL into your browser, check if it's correct. The page may no longer be available. <br />You can continue by visiting our homepage. <br /> If you struggle to find a page you are looking for, contact us so we can redirect you to the correct URL.",
+            "desc": "If you typed the URL into your browser, check if it's correct. The page may no longer be available. <br />You can continue by visiting our homepage.",
             "error": "Error 404",
             "sorry": "The page you are looking for cannot be found. We apologize for the inconvenience.",
             "title": "Page not found"

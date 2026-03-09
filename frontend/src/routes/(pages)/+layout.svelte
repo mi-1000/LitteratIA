@@ -23,7 +23,7 @@
   })
 </script>
 
-<Header hideDiscussBtn={isHome} />
+<Header hideDiscussBtn={true} />
 
 <!-- {#if isHome}
   <Link button href="/ranking" text={m['header.banner']()} cornered class="w-auto!" />

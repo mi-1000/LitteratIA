@@ -137,9 +137,10 @@ def litellm_stream_iter(
 
     # Set Vertex AI location for Google Cloud models (fallback to settings)
     litellm.vertex_location = (
-        (endpoint.vertex_ai_location if endpoint and getattr(endpoint, 'vertex_ai_location', None) else None)
-        or settings.VERTEXAI_LOCATION
-    )
+        endpoint.vertex_ai_location
+        if endpoint and getattr(endpoint, "vertex_ai_location", None)
+        else None
+    ) or settings.VERTEXAI_LOCATION
 
     # nice to have: openrouter specific params
     # completion = client.chat.completions.create(
@@ -160,7 +161,9 @@ def litellm_stream_iter(
             messages_to_send = messages_to_send[:-1]
 
     # Serialize messages for LiteLLM (only role and content)
-    serialized_messages = [msg.model_dump(include={"role", "content"}) for msg in messages_to_send]
+    serialized_messages = [
+        msg.model_dump(include={"role", "content"}) for msg in messages_to_send
+    ]
 
     logger.debug("Serialized messages for LLM: %s", serialized_messages)
 
@@ -283,7 +286,9 @@ def litellm_stream_iter(
         try:
             from litellm import exceptions as _lit_ex
 
-            is_ollama_parse_err = isinstance(e, _lit_ex.APIConnectionError) and "Unable to parse ollama chunk" in str(e)
+            is_ollama_parse_err = isinstance(
+                e, _lit_ex.APIConnectionError
+            ) and "Unable to parse ollama chunk" in str(e)
         except Exception:
             is_ollama_parse_err = False
 
@@ -306,11 +311,26 @@ def litellm_stream_iter(
                     ch = final_resp.choices[0]
                     # litellm choice may expose .message, .text or dict-like
                     if hasattr(ch, "message") and ch.message:
-                        final_text = ch.message.get("content", "") if isinstance(ch.message, dict) else getattr(ch.message, "content", "")
+                        final_text = (
+                            ch.message.get("content", "")
+                            if isinstance(ch.message, dict)
+                            else getattr(ch.message, "content", "")
+                        )
                     elif hasattr(ch, "text"):
                         final_text = getattr(ch, "text") or ""
                     elif isinstance(ch, dict):
-                        final_text = ch.get("text") or (ch.get("message") and (ch.get("message").get("content") if isinstance(ch.get("message"), dict) else "")) or ""
+                        final_text = (
+                            ch.get("text")
+                            or (
+                                ch.get("message")
+                                and (
+                                    ch.get("message").get("content")
+                                    if isinstance(ch.get("message"), dict)
+                                    else ""
+                                )
+                            )
+                            or ""
+                        )
                 if hasattr(final_resp, "id") and final_resp.id:
                     final_gen_id = final_resp.id
 

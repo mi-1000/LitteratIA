@@ -61,8 +61,8 @@
 
   {#if errorString}
     <div class={['fr-container', { 'mt-10': rounds.length < 2 }]}>
-      <div class="cg-border pe-13 lg:max-w-1/2 gap-4 bg-white p-4 pb-7 m-auto flex">
-        <Icon icon="warning-fill" class="text-error" />
+      <div class="cg-border pe-13 lg:max-w-1/2 gap-4 bg-white p-4 pb-7 m-auto flex items-center">
+        <Icon icon="bi i-bi-exclamation-diamond-fill" class="text-error self-center mr-2" />
         <div>
           {#if errorString === 'Context too long.'}
             <h6 class="mb-2!">{m['chatbot.errors.tooLong.title']()}</h6>
@@ -77,7 +77,7 @@
               {m['chatbot.errors.other.message']()}<br />
               {m['chatbot.errors.other.retry']()}{#if rounds.length > 1}&nbsp;{m[
                   'chatbot.errors.other.vote'
-                ]()}{/if}.
+                ]()}{/if}
               <span class="hidden">{errorString}</span>
             </p>
           {/if}
@@ -99,7 +99,7 @@
                 iconPos="right"
                 text={m['words.retry']()}
                 onclick={() => onRetry()}
-                class="w-full!"
+                class="w-full! btn-color"
               />
             {/if}
 
@@ -109,7 +109,7 @@
                 iconPos="right"
                 text={m['actions.vote']()}
                 onclick={() => onVote()}
-                class="w-full!"
+                class="w-full! btn-color"
               />
             {/if}
           </div>

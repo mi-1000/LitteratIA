@@ -135,7 +135,7 @@
     },
     "errors": {
         "404": {
-            "desc": "Si vous avez tapé l'adresse web dans le navigateur, vérifiez qu'elle est correcte. La page n’est peut-être plus disponible.<br />Dans ce cas, pour continuer votre visite vous pouvez consulter notre page d’accueil.<br />Sinon contactez-nous pour que l’on puisse vous rediriger vers la bonne information.",
+            "desc": "Si vous avez tapé l'adresse web dans le navigateur, vérifiez qu'elle est correcte. La page n’est peut-être plus disponible.<br />Dans ce cas, pour continuer votre visite, vous pouvez retourner sur notre page d’accueil.",
             "error": "Erreur 404",
             "sorry": "La page que vous cherchez est introuvable. Excusez-nous pour la gène occasionnée.",
             "title": "Page non trouvée"
