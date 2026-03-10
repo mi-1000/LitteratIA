@@ -15,7 +15,7 @@
   }: {
     value: VoteData
     disabled?: boolean
-    showModelName?: boolean
+    showModelName?: boolean | 'showA' | 'showB'
   } = $props()
 
   let showComments = $state(false)
@@ -45,7 +45,7 @@
   }
 
   function getModelPartsFor(side: 'a' | 'b') {
-    if (!showModelName) return { provider: '', model: m[`models.names.${side}`]() }
+    if (!shouldShowFor(side)) return { provider: '', model: m[`models.names.${side}`]() }
     try {
       const map = (arena as any).chat?.model_map
       const sideKey = side.toLowerCase()
@@ -90,6 +90,13 @@
     if (prov) return `${prov}${model}`
     return model
   }
+
+  function shouldShowFor(side: 'a' | 'b' | string) {
+    if (showModelName === true) return true
+    if (showModelName === 'showA' && side === 'a') return true
+    if (showModelName === 'showB' && side === 'b') return true
+    return false
+  }
 </script>
 
 <div id="vote-area" class="fr-container py-7 md:py-20" {@attach scrollTo}>
@@ -116,11 +123,11 @@
           <div class="flex items-center">
             <div class="c-bot-disk-{model}"></div>
             <p class="ms-1! mb-0! font-bold">
-              {#if showModelName}
-                {@html getModelHtmlFor(model)}
-              {:else}
-                {m[`models.names.${model}`]()}
-              {/if}
+                {#if shouldShowFor(model)}
+                  {@html getModelHtmlFor(model)}
+                {:else}
+                  {m[`models.names.${model}`]()}
+                {/if}
             </p>
           </div>
 

@@ -12,7 +12,7 @@
     round: ChatRound
     disabled: boolean
     onReactionChange: OnReactionFn
-    showModelName?: boolean
+    showModelName?: boolean | 'showA' | 'showB'
   } = $props()
 
   let userMessageSize = $state(0)

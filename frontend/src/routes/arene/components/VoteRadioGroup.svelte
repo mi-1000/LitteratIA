@@ -7,10 +7,17 @@
   export interface VoteAreaProps {
     value?: BotChoice
     disabled?: boolean
-    showModelName?: boolean
+    showModelName?: boolean | 'showA' | 'showB'
   }
 
   let { value: selected = $bindable(), disabled = false, showModelName = false }: VoteAreaProps = $props()
+
+  function shouldShowFor(side: 'a' | 'b' | string) {
+    if (showModelName === true) return true
+    if (showModelName === 'showA' && side === 'a') return true
+    if (showModelName === 'showB' && side === 'b') return true
+    return false
+  }
 
   function prettifyModelId(id: string) {
     return id.replace(/[-_]+/g, ' ').replace(/(?:^|\s)\S/g, (s) => s.toUpperCase())
@@ -37,7 +44,7 @@
   }
 
   function getModelPartsFor(side: 'a' | 'b') {
-    if (!showModelName) return { provider: '', model: m[`models.names.${side}`]() }
+    if (!shouldShowFor(side)) return { provider: '', model: m[`models.names.${side}`]() }
     try {
       const map = (arena as any).chat?.model_map
       const sideKey = side.toLowerCase()
@@ -84,9 +91,9 @@
   }
 
   const choices = [
-    { value: 'a', label: getModelHtmlFor('a') },
+    { value: 'a', label: shouldShowFor('a') ? getModelHtmlFor('a') : m['models.names.a']() },
     { value: 'both_equal', label: m['vote.bothEqual']() },
-    { value: 'b', label: getModelHtmlFor('b') }
+    { value: 'b', label: shouldShowFor('b') ? getModelHtmlFor('b') : m['models.names.b']() }
   ] as const
 </script>
 
@@ -120,7 +127,7 @@
             <div class="c-bot-disk-{value}"></div>
           {/if}
           <span class="mt-3 md:ms-3 md:mt-0">
-            {#if showModelName && value !== 'both_equal'}
+            {#if value !== 'both_equal' && (value === 'a' || value === 'b') && shouldShowFor(value)}
               {@html label}
             {:else}
               {label}

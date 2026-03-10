@@ -18,11 +18,19 @@
   }
 
   export type MessageBotExtra = {
-    showModelName?: boolean
+    showModelName?: boolean | 'showA' | 'showB'
     side?: 'A' | 'B'
   }
 
   let { message, index, disabled = false, onReactionChange, showModelName = false, side = 'A' }: MessageBotProps & MessageBotExtra = $props()
+
+  function shouldShowFor(sideLocal: string) {
+    const val = showModelName as any
+    if (val === true) return true
+    if (val === 'showA' && sideLocal.toLowerCase() === 'a') return true
+    if (val === 'showB' && sideLocal.toLowerCase() === 'b') return true
+    return false
+  }
 
   const bot = message.metadata.bot
   function prettifyBotId(id: string) {
@@ -43,8 +51,8 @@
   }
 
   function getModelParts(): { provider: string; model: string } {
-    // If anonymized, return empty provider and anonymized label as model
-    if (!showModelName) return { provider: '', model: m['chatbot.modelAnon']({ side }) }
+    // If anonymized for this side, return empty provider and anonymized label as model
+    if (!shouldShowFor(side)) return { provider: '', model: m['chatbot.modelAnon']({ side }) }
 
     // Prefer backend-provided mapping if available
     try {
@@ -136,7 +144,7 @@
       <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
         <div class="c-bot-disk-{bot}"></div>
         <h3 class="ms-2! mb-0! text-base!">
-          {#if !showModelName}
+          {#if !shouldShowFor(side)}
             {m['chatbot.modelAnon']({ side })}
           {:else}
             {@html getModelHtml()}

@@ -18,7 +18,7 @@
     onReactionChange: OnReactionFn
     onRetry: () => void
     onVote: () => void
-    showModelName?: boolean
+    showModelName?: boolean | 'showA' | 'showB'
   } = $props()
 
   const rounds = $derived.by<ChatRound[]>(() => {
