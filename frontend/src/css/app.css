@@ -261,3 +261,8 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   content: '' !important;
   display: none !important;
 }
+
+.provider-name {
+  color: var(--text-mention-grey);
+  font-weight: normal;
+}

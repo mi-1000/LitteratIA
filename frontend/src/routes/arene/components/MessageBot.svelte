@@ -29,38 +29,81 @@
     return id.replace(/[-_]+/g, ' ').replace(/(?:^|\s)\S/g, (s) => s.toUpperCase())
   }
 
-  function getModelDisplay() {
-    if (!showModelName) return m['chatbot.modelAnon']({ side })
-    // If backend provided model ids for positions, prefer those
+  // Always return an object { provider, model }.
+  // If provider is unknown, provider === '' and model contains a readable label.
+  function splitModelId(id: string) {
+    const s = String(id || '')
+    const parts = s.split('/')
+    if (parts.length >= 2) {
+      const provider = parts[0]
+      const model = parts.slice(1).join('/')
+      return { provider, model }
+    }
+    return { provider: '', model: s }
+  }
+
+  function getModelParts(): { provider: string; model: string } {
+    // If anonymized, return empty provider and anonymized label as model
+    if (!showModelName) return { provider: '', model: m['chatbot.modelAnon']({ side }) }
+
+    // Prefer backend-provided mapping if available
     try {
       const map = (arena as any).chat?.model_map
-      const sideKey = (side || 'A').toLowerCase()
+      const sideKey = side.toLowerCase()
       if (map && map[sideKey]) {
         const modelId = map[sideKey]
         try {
           const ctx = getModelsContext()
           if (ctx && ctx.models) {
             const found = ctx.models.find((mm: any) => mm.id === modelId || mm.simple_name === modelId)
-            if (found) return (found.simple_name as string) || modelId
+            if (found) {
+              // Prefer organisation/simple_name if present in models context
+              const provider = found.organisation ? String(found.organisation) : ''
+              const model = String(found.simple_name || modelId)
+              return { provider, model }
+            }
           }
         } catch (e) {
-          // ignore, fallback to prettified id
+          // ignore and fallback
         }
-        return prettifyBotId(modelId)
+        return splitModelId(prettifyBotId(modelId))
       }
     } catch (e) {
       // ignore
     }
+
+    // Try i18n mapping for specific bots
     try {
-      const fn = (m as any)[`models.names.${bot}`]
+      const fn = (m as any)[`models.names.${bot}`](side || 'A')
       if (typeof fn === 'function') {
         const v = fn()
-        if (v && v.toString().trim() !== '') return v
+        if (v && v.toString().trim() !== '') return splitModelId(String(v))
       }
     } catch (e) {
       // ignore
     }
-    return prettifyBotId(bot)
+
+    // Fallback to prettified bot id
+    return splitModelId(prettifyBotId(bot))
+  }
+
+  // Return HTML string with provider in italic and model in bold.
+  function getModelHtml(): string {
+    const parts = getModelParts()
+    // sanitize parts separately to avoid accidental tags in provider/model
+    const prov = parts.provider ? `<span class="provider-name">${escapeHtml(parts.provider)}/</span>` : ''
+    const model = escapeHtml(parts.model)
+    if (prov) return `${prov}${model}`
+    return model
+  }
+
+  function escapeHtml(input: string) {
+    return String(input)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
   }
   const reaction = $state<APIReactionData>({
     index: index * 2 + 1,
@@ -92,7 +135,13 @@
     <div class="overflow-y-auto flex-1 px-5">
       <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
         <div class="c-bot-disk-{bot}"></div>
-        <h3 class="ms-2! mb-0! text-base!">{getModelDisplay()}</h3>
+        <h3 class="ms-2! mb-0! text-base!">
+          {#if !showModelName}
+            {m['chatbot.modelAnon']({ side })}
+          {:else}
+            {@html getModelHtml()}
+          {/if}
+        </h3>
       </div>
 
       {#if message.reasoning.trim() !== ''}
