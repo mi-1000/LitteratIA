@@ -169,6 +169,7 @@ export const arena = $state<{
     model_map?: { a?: string; b?: string }
     error: string | null
   }
+  showModelName: boolean
 }>({
   currentScreen: 'prompt',
   chat: {
@@ -178,7 +179,8 @@ export const arena = $state<{
     b: { status: 'pending', messages: [] },
     model_map: {},
     error: null
-  }
+  },
+  showModelName: false
 })
 
 // API CALLS

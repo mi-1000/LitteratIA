@@ -83,10 +83,12 @@
   >
     <div class="fr-container gap-3 md:flex-row flex flex-col items-center">
       <div class="gap-3 md:flex-row flex basis-2/3 flex-col items-center">
-        <div class="bg-primary px-4 py-2 font-bold text-white rounded-[3.75rem] text-nowrap" id="step-indicator-pill">
-          {m['header.chatbot.step']()}
-          {arena.chat.step}/2
-        </div>
+          {#if !arena.showModelName}
+            <div class="bg-primary px-4 py-2 font-bold text-white rounded-[3.75rem] text-nowrap" id="step-indicator-pill">
+              {m['header.chatbot.step']()}
+              {arena.chat.step}/2
+            </div>
+          {/if}
         <div class="md:text-left flex flex-col text-center">
           <strong class="text-dark-grey">
             {#if arena.chat.step == 1}

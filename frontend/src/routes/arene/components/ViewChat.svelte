@@ -32,8 +32,7 @@
     }
   })
   let revealData = $state<RevealData>()
-  let showModelName = $state<boolean>(false)
-
+  let showModelName = $derived(arena.showModelName)
   const chatbotDisabled = $derived(arena.chat.status !== 'complete' || step !== 'chat')
   const revealDisabled = $derived(
     arena.chat.status !== 'complete' || (step === 'vote' && voteData.selected === undefined)
