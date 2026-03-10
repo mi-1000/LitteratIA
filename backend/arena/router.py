@@ -168,7 +168,16 @@ async def add_first_text(
         # Send session hash first
         import json
 
-        yield f"data: {json.dumps({'type': 'init', 'session_hash': session_hash})}\n\n"
+        # Include chosen model ids so frontend can display model names early
+        init_payload = {
+            "type": "init",
+            "session_hash": session_hash,
+            "models": {
+                "a": conversations.conversation_a.model_name,
+                "b": conversations.conversation_b.model_name,
+            },
+        }
+        yield f"data: {json.dumps(init_payload)}\n\n"
 
         # Stream both model responses
         async for chunk in stream_comparison_messages(conversations, request):
@@ -225,6 +234,13 @@ async def add_text(
 
     # Stream responses
     async def event_stream() -> AsyncGenerator[str]:
+        # Send an init event so the frontend can (re)learn model ids for this session
+        try:
+            yield f"data: {json.dumps({'type': 'init', 'session_hash': conversations.session_hash, 'models': {'a': conversations.conversation_a.model_name, 'b': conversations.conversation_b.model_name}})}\n\n"
+        except Exception:
+            # Fallback: do nothing if init can't be sent
+            pass
+
         async for chunk in stream_comparison_messages(conversations, request):
             yield chunk
 
@@ -346,6 +362,12 @@ async def retry(
 
     # Re-stream responses
     async def event_stream() -> AsyncGenerator[str]:
+        # Send an init event so the frontend can (re)learn model ids for this session
+        try:
+            yield f"data: {json.dumps({'type': 'init', 'session_hash': conversations.session_hash, 'models': {'a': conversations.conversation_a.model_name, 'b': conversations.conversation_b.model_name}})}\n\n"
+        except Exception:
+            pass
+
         async for chunk in stream_comparison_messages(conversations, request):
             yield chunk
 

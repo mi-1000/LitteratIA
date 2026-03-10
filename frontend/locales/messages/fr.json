@@ -67,7 +67,8 @@
             "finished": "Raisonnement terminé",
             "inProgress": "Raisonnement en cours…"
         },
-        "revealButton": "Révéler les modèles"
+        "revealButton": "Révéler les modèles",
+        "modelAnon": "Modèle {side}"
     },
     "closeModal": "Fermer la fenêtre modale",
     "components": {

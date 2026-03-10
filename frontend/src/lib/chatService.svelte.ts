@@ -166,6 +166,7 @@ export const arena = $state<{
     status: ChatStatus
     a: Chat
     b: Chat
+    model_map?: { a?: string; b?: string }
     error: string | null
   }
 }>({
@@ -175,6 +176,7 @@ export const arena = $state<{
     status: 'pending',
     a: { status: 'pending', messages: [] },
     b: { status: 'pending', messages: [] },
+    model_map: {},
     error: null
   }
 })
@@ -184,6 +186,13 @@ export const arena = $state<{
 function onSSEEvent(event: AnySSEEvent) {
   if (event.type === 'init') {
     arena.chat.status = 'pending'
+    if ((event as any).models) {
+      try {
+        arena.chat.model_map = { a: (event as any).models.a, b: (event as any).models.b }
+      } catch (e) {
+        // ignore
+      }
+    }
   } else if (event.type === 'error') {
     arena.chat.error = event.error
     arena.chat.status = 'error'

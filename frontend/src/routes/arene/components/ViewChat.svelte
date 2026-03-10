@@ -33,6 +33,7 @@
     }
   })
   let revealData = $state<RevealData>()
+  let showModelName = $state<boolean>(true)
 
   const chatbotDisabled = $derived(arena.chat.status !== 'complete' || step !== 'chat')
   const revealDisabled = $derived(
@@ -97,7 +98,7 @@
 <svelte:window onresize={onResize} />
 
 <div style="--footer-size: {footerSize}px;" class="flex grow flex-col">
-  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} />
+  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} />
 
   {#if step === 'vote' || (step === 'reveal' && canVote)}
     <VoteArea bind:value={voteData} disabled={step === 'reveal'} />

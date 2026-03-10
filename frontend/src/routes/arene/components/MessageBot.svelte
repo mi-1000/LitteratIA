@@ -4,7 +4,9 @@
   import Markdown from '$components/markdown/MarkdownCode.svelte'
   import Pending from '$components/Pending.svelte'
   import type { APIReactionData, AssistantMessage, OnReactionFn } from '$lib/chatService.svelte'
+  import { arena } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
+  import { getModelsContext } from '$lib/models'
   import { sanitize } from '$lib/utils/commons'
   import { LikeDislike, LikePanel } from '.'
 
@@ -15,9 +17,51 @@
     onReactionChange: OnReactionFn
   }
 
-  let { message, index, disabled = false, onReactionChange }: MessageBotProps = $props()
+  export type MessageBotExtra = {
+    showModelName?: boolean
+    side?: 'A' | 'B'
+  }
+
+  let { message, index, disabled = false, onReactionChange, showModelName = false, side = 'A' }: MessageBotProps & MessageBotExtra = $props()
 
   const bot = message.metadata.bot
+  function prettifyBotId(id: string) {
+    return id.replace(/[-_]+/g, ' ').replace(/(?:^|\s)\S/g, (s) => s.toUpperCase())
+  }
+
+  function getModelDisplay() {
+    if (!showModelName) return m['chatbot.modelAnon']({ side })
+    // If backend provided model ids for positions, prefer those
+    try {
+      const map = (arena as any).chat?.model_map
+      const sideKey = (side || 'A').toLowerCase()
+      if (map && map[sideKey]) {
+        const modelId = map[sideKey]
+        try {
+          const ctx = getModelsContext()
+          if (ctx && ctx.models) {
+            const found = ctx.models.find((mm: any) => mm.id === modelId || mm.simple_name === modelId)
+            if (found) return (found.simple_name as string) || modelId
+          }
+        } catch (e) {
+          // ignore, fallback to prettified id
+        }
+        return prettifyBotId(modelId)
+      }
+    } catch (e) {
+      // ignore
+    }
+    try {
+      const fn = (m as any)[`models.names.${bot}`]
+      if (typeof fn === 'function') {
+        const v = fn()
+        if (v && v.toString().trim() !== '') return v
+      }
+    } catch (e) {
+      // ignore
+    }
+    return prettifyBotId(bot)
+  }
   const reaction = $state<APIReactionData>({
     index: index * 2 + 1,
     bot: message.metadata.bot,
@@ -48,7 +92,7 @@
     <div class="overflow-y-auto flex-1 px-5">
       <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
         <div class="c-bot-disk-{bot}"></div>
-        <h3 class="ms-2! mb-0! text-base!">{m[`models.names.${bot}`]()}</h3>
+        <h3 class="ms-2! mb-0! text-base!">{getModelDisplay()}</h3>
       </div>
 
       {#if message.reasoning.trim() !== ''}

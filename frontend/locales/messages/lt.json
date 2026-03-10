@@ -43,6 +43,7 @@
     "chatbot": {
         "continuePrompt": "Tęsti pokalbį su abiem AI modeliais",
         "conversation": "Pokalbis",
+        "modelAnon": "Modelis {side}",
         "errors": {
             "other": {
                 "message": "Įvyko laikina klaida.",

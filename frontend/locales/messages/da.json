@@ -48,6 +48,7 @@
     "chatbot": {
         "continuePrompt": "Fortsæt chatten med AI-modellerne",
         "conversation": "Chat",
+        "modelAnon": "Model {side}",
         "errors": {
             "other": {
                 "message": "Der er opstået en midlertidig fejl.",

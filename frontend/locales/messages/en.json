@@ -62,6 +62,7 @@
                 "vote": "You can still give your preference on these models or start a conversation with two new ones."
             }
         },
+        "modelAnon": "Model {side}",
         "loading": "Loading answers",
         "reasoning": {
             "finished": "Reasoning completed",
