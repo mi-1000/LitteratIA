@@ -149,10 +149,16 @@
         </div>
       {/if}
       <Button
-        text={showModelName ? m['chatbot.revealButton']() : m['chatbot.voteButton']()}
-        disabled={revealDisabled}
-        class="md:w-fit! w-full! btn-color"
-        onclick={onRevealModels}
+          text={
+            showModelName
+              ? step === 'vote'
+                ? m['chatbot.revealButton']()
+                : m['chatbot.voteButton']()
+              : m['chatbot.revealButton']()
+          }
+          disabled={revealDisabled}
+          class="md:w-fit! w-full! btn-color"
+          onclick={onRevealModels}
       />
     </div>
   {/if}

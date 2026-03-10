@@ -69,7 +69,7 @@
             "inProgress": "Raisonnement en cours…"
         },
         "revealButton": "Révéler les modèles",
-        "voteButton": "Voter le meilleur modèle"
+        "voteButton": "Voter pour le meilleur modèle"
     },
     "closeModal": "Fermer la fenêtre modale",
     "components": {
