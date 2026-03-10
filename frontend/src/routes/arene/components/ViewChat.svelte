@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Button } from '$components/dsfr'
-  import Footer from '$components/Footer.svelte'
   import TextPrompt from '$components/TextPrompt.svelte'
   import type { APIReactionData, OnReactionFn, RevealData, VoteData } from '$lib/chatService.svelte'
   import {
