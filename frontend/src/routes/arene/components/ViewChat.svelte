@@ -33,7 +33,7 @@
     }
   })
   let revealData = $state<RevealData>()
-  let showModelName = $state<boolean>(true)
+  let showModelName = $state<boolean>(false)
 
   const chatbotDisabled = $derived(arena.chat.status !== 'complete' || step !== 'chat')
   const revealDisabled = $derived(
@@ -106,7 +106,6 @@
 
   {#if step === 'reveal' && revealData}
     <RevealArea data={revealData} />
-    <Footer />
   {:else}
     <div
       bind:this={footer}
