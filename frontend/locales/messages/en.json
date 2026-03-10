@@ -1977,7 +1977,7 @@
             "placeholder": "The responses from the {model} model are...",
             "question": "How would you describe its answers?"
         },
-        "title": "Which AI model do you prefer",
+        "title": "Which AI model do you prefer?",
         "yours": "Your vote"
     },
     "welcome": {
