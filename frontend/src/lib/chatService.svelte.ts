@@ -180,7 +180,7 @@ export const arena = $state<{
     model_map: {},
     error: null
   },
-  showModelName: false
+  showModelName: true
 })
 
 // API CALLS

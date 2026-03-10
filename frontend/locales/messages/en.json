@@ -62,13 +62,14 @@
                 "vote": "You can still give your preference on these models or start a conversation with two new ones."
             }
         },
-        "modelAnon": "Model {side}",
         "loading": "Loading answers",
+        "modelAnon": "Model {side}",
         "reasoning": {
             "finished": "Reasoning completed",
             "inProgress": "Reasoning in progress…"
         },
-        "revealButton": "Reveal the models"
+        "revealButton": "Reveal the models",
+        "voteButton": "Vote for the best model"
     },
     "closeModal": "Close the popup",
     "components": {

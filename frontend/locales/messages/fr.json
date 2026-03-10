@@ -63,12 +63,13 @@
             }
         },
         "loading": "Chargement des réponses",
+        "modelAnon": "Modèle {side}",
         "reasoning": {
             "finished": "Raisonnement terminé",
             "inProgress": "Raisonnement en cours…"
         },
         "revealButton": "Révéler les modèles",
-        "modelAnon": "Modèle {side}"
+        "voteButton": "Voter le meilleur modèle"
     },
     "closeModal": "Fermer la fenêtre modale",
     "components": {
