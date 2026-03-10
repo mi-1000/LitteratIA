@@ -2089,6 +2089,7 @@
         },
         "introA": "Avant de découvrir l’identité des modèles, nous avons besoin de votre préférence.",
         "introB": "Elle permet de constituer un jeu de données afin d'analyser les caractéristiques de chaque modèle dans le cadre de l'apprentissage des langues étrangères assisté par IA.",
+        "introC": "Votre vote permet de constituer un jeu de données afin d'analyser les caractéristiques de chaque modèle dans le cadre de l'apprentissage des langues étrangères assisté par IA.",
         "like": {
             "label": "J'apprécie",
             "selectedLabel": "J'apprécie (sélectionné)"

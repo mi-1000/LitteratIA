@@ -100,7 +100,7 @@
   <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} />
 
   {#if step === 'vote' || (step === 'reveal' && canVote)}
-    <VoteArea bind:value={voteData} disabled={step === 'reveal'} />
+    <VoteArea bind:value={voteData} disabled={step === 'reveal'} showModelName={showModelName} />
   {/if}
 
   {#if step === 'reveal' && revealData}

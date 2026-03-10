@@ -1967,6 +1967,7 @@
         },
         "introA": "Before finding out the identity of the models, we need your vote.",
         "introB": "It allows us to build up a dataset in order to analyze the properties of each model regarding AI-powered language learning.",
+        "introC": "Your vote helps us build a dataset to analyze the properties of each model regarding AI-powered language learning.",
         "like": {
             "label": "I like",
             "selectedLabel": "I like (selected)"

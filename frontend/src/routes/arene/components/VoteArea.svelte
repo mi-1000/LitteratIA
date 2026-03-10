@@ -8,10 +8,12 @@
 
   let {
     value: form = $bindable(),
-    disabled = false
+    disabled = false,
+    showModelName = false,
   }: {
     value: VoteData
     disabled?: boolean
+    showModelName?: boolean
   } = $props()
 
   let showComments = $state(false)
@@ -20,7 +22,14 @@
 <div id="vote-area" class="fr-container py-7 md:py-20" {@attach scrollTo}>
   <div class="text-center">
     <h4 class="fr-h6 mb-2!">{m['vote.title']()}</h4>
-    <p class="fr-text--sm text-grey">{m['vote.introA']()}<br />{m['vote.introB']()}</p>
+    <p class="fr-text--sm text-grey">
+      {#if showModelName}
+        {m['vote.introC']()}
+      {:else}
+        {m['vote.introA']()}<br />
+        {m['vote.introB']()}
+      {/if}
+    </p>
   </div>
 
   <VoteRadioGroup bind:value={form.selected} {disabled} />
