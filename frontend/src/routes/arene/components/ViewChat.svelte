@@ -78,6 +78,7 @@
       arena.chat.step = 2
     } else {
       step = 'vote'
+      arena.chat.step = 2
     }
   }
 

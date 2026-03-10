@@ -1171,8 +1171,8 @@
                 "title": "What do you think of the answers?"
             },
             "stepTwo": {
-                "description": "Discover the models behind the responses",
-                "title": "Models are revealed!"
+                "description": "Choose your favourite model",
+                "title": "Time to vote!"
             }
         },
         "help": {
