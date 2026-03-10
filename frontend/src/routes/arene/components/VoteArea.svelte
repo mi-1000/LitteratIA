@@ -2,8 +2,10 @@
   import { Button } from '$components/dsfr'
   import TextPrompt from '$components/TextPrompt.svelte'
   import type { VoteData } from '$lib/chatService.svelte'
+  import { arena } from '$lib/chatService.svelte'
   import { scrollTo } from '$lib/helpers/attachments'
   import { m } from '$lib/i18n/messages'
+  import { getModelsContext } from '$lib/models'
   import { LikePanel, VoteRadioGroup } from '.'
 
   let {
@@ -17,6 +19,77 @@
   } = $props()
 
   let showComments = $state(false)
+
+  function prettifyModelId(id: string) {
+    return id.replace(/[-_]+/g, ' ').replace(/(?:^|\s)\S/g, (s) => s.toUpperCase())
+  }
+
+  function splitModelId(id: string) {
+    const s = String(id || '')
+    const parts = s.split('/')
+    if (parts.length >= 2) {
+      const provider = parts[0]
+      const model = parts.slice(1).join('/')
+      return { provider, model }
+    }
+    return { provider: '', model: s }
+  }
+
+  function escapeHtml(input: string) {
+    return String(input)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+  }
+
+  function getModelPartsFor(side: 'a' | 'b') {
+    if (!showModelName) return { provider: '', model: m[`models.names.${side}`]() }
+    try {
+      const map = (arena as any).chat?.model_map
+      const sideKey = side.toLowerCase()
+      if (map && map[sideKey]) {
+        const modelId = map[sideKey]
+        try {
+          const ctx = getModelsContext()
+          if (ctx && ctx.models) {
+            const found = ctx.models.find((mm: any) => mm.id === modelId || mm.simple_name === modelId)
+            if (found) {
+              const provider = found.organisation ? String(found.organisation) : ''
+              const model = String(found.simple_name || modelId)
+              return { provider, model }
+            }
+          }
+        } catch (e) {
+          // ignore
+        }
+        return splitModelId(prettifyModelId(modelId))
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    try {
+      const fn = (m as any)[`models.names.${side}`]
+      if (typeof fn === 'function') {
+        const v = fn()
+        if (v && v.toString().trim() !== '') return splitModelId(String(v))
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    return splitModelId(prettifyModelId(side))
+  }
+
+  function getModelHtmlFor(side: 'a' | 'b') {
+    const parts = getModelPartsFor(side)
+    const prov = parts.provider ? `<span class="provider-name">${escapeHtml(parts.provider)}/</span>` : ''
+    const model = escapeHtml(parts.model)
+    if (prov) return `${prov}${model}`
+    return model
+  }
 </script>
 
 <div id="vote-area" class="fr-container py-7 md:py-20" {@attach scrollTo}>
@@ -32,7 +105,7 @@
     </p>
   </div>
 
-  <VoteRadioGroup bind:value={form.selected} {disabled} />
+  <VoteRadioGroup bind:value={form.selected} {disabled} {showModelName} />
 
   {#if form.selected}
     <div class="mt-11 gap-6 md:flex-row flex flex-col">
@@ -42,7 +115,13 @@
         >
           <div class="flex items-center">
             <div class="c-bot-disk-{model}"></div>
-            <p class="ms-1! mb-0! font-bold">{m[`models.names.${model}`]()}</p>
+            <p class="ms-1! mb-0! font-bold">
+              {#if showModelName}
+                {@html getModelHtmlFor(model)}
+              {:else}
+                {m[`models.names.${model}`]()}
+              {/if}
+            </p>
           </div>
 
           <p class="mb-0! font-bold">{m['vote.qualify.question']()}</p>
@@ -86,7 +165,7 @@
           variant="secondary"
           text={m['vote.qualify.addDetails']()}
           {disabled}
-          onclick={() => (showComments = true)}
+          on:click={() => (showComments = true)}
         />
       </div>
     {/if}

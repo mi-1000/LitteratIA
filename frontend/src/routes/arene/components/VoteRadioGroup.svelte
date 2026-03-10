@@ -1,18 +1,92 @@
 <script lang="ts">
   import type { BotChoice } from '$lib/chatService.svelte'
+  import { arena } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
+  import { getModelsContext } from '$lib/models'
 
   export interface VoteAreaProps {
     value?: BotChoice
     disabled?: boolean
+    showModelName?: boolean
   }
 
-  let { value: selected = $bindable(), disabled = false }: VoteAreaProps = $props()
+  let { value: selected = $bindable(), disabled = false, showModelName = false }: VoteAreaProps = $props()
+
+  function prettifyModelId(id: string) {
+    return id.replace(/[-_]+/g, ' ').replace(/(?:^|\s)\S/g, (s) => s.toUpperCase())
+  }
+
+  function splitModelId(id: string) {
+    const s = String(id || '')
+    const parts = s.split('/')
+    if (parts.length >= 2) {
+      const provider = parts[0]
+      const model = parts.slice(1).join('/')
+      return { provider, model }
+    }
+    return { provider: '', model: s }
+  }
+
+  function escapeHtml(input: string) {
+    return String(input)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+  }
+
+  function getModelPartsFor(side: 'a' | 'b') {
+    if (!showModelName) return { provider: '', model: m[`models.names.${side}`]() }
+    try {
+      const map = (arena as any).chat?.model_map
+      const sideKey = side.toLowerCase()
+      if (map && map[sideKey]) {
+        const modelId = map[sideKey]
+        try {
+          const ctx = getModelsContext()
+          if (ctx && ctx.models) {
+            const found = ctx.models.find((mm: any) => mm.id === modelId || mm.simple_name === modelId)
+            if (found) {
+              const provider = found.organisation ? String(found.organisation) : ''
+              const model = String(found.simple_name || modelId)
+              return { provider, model }
+            }
+          }
+        } catch (e) {
+          // ignore
+        }
+        return splitModelId(prettifyModelId(modelId))
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    try {
+      const fn = (m as any)[`models.names.${side}`]
+      if (typeof fn === 'function') {
+        const v = fn()
+        if (v && v.toString().trim() !== '') return splitModelId(String(v))
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    return splitModelId(prettifyModelId(side))
+  }
+
+  function getModelHtmlFor(side: 'a' | 'b') {
+    const parts = getModelPartsFor(side)
+    const prov = parts.provider ? `<span class="provider-name">${escapeHtml(parts.provider)}/</span>` : ''
+    const model = escapeHtml(parts.model)
+    if (prov) return `${prov}${model}`
+    return model
+  }
 
   const choices = [
-    { value: 'a', label: m['models.names.a']() },
+    { value: 'a', label: getModelHtmlFor('a') },
     { value: 'both_equal', label: m['vote.bothEqual']() },
-    { value: 'b', label: m['models.names.b']() }
+    { value: 'b', label: getModelHtmlFor('b') }
   ] as const
 </script>
 
@@ -45,7 +119,13 @@
           {:else}
             <div class="c-bot-disk-{value}"></div>
           {/if}
-          <span class="mt-3 md:ms-3 md:mt-0">{label}</span>
+          <span class="mt-3 md:ms-3 md:mt-0">
+            {#if showModelName && value !== 'both_equal'}
+              {@html label}
+            {:else}
+              {label}
+            {/if}
+          </span>
         </button>
       </div>
     {/each}

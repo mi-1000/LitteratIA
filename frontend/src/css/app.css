@@ -26,6 +26,7 @@
   /* CUSTOM */
   --cg-very-light-grey: #fcfcfd;
   --cg-light-grey: #f3f5f9;
+  --cg-grey: #8e8e8e;
   --cg-very-light-blue: #f9fbff;
   --cg-green: #58b77d;
   --cg-purple: #a96afe;
@@ -54,6 +55,7 @@
 
   --cg-very-light-grey: #0a0a0b;
   --cg-light-grey: #1c1e22;
+  --cg-grey: #9a9a9a;
   /* FIXME need equivalent in dark */
   --cg-very-light-blue: #0a0a0b;
 }
@@ -263,6 +265,6 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
 }
 
 .provider-name {
-  color: var(--text-mention-grey);
+  color: var(--cg-grey);
   font-weight: normal;
 }
