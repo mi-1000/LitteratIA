@@ -2106,9 +2106,9 @@
         "errors": "Les IA peuvent faire des erreurs : nous vous encourageons à vérifier les informations communiquées.",
         "go": "C'est parti",
         "privacy": "Ne communiquez pas d’informations personnelles comme votre nom, prénom ou adresse.",
-        "title": "Bienvenue sur compar:IA !",
+        "title": "Bienvenue sur le projet Littérat'IA !",
         "tos": {
-            "desc": "Les conversations et les préférences que vous exprimez sur compar:IA sont utilisées de manière anonyme pour constituer des jeux de données représentatifs des langues et usages européens, afin de réduire les biais culturels et proposer de futurs modèles d’IA plus inclusifs.",
+            "desc": "Les conversations et les préférences que vous exprimez sur ce site sont utilisées de manière anonyme pour constituer des jeux de données qui permettront d'analyser les caractéristiques et les performances des grands modèles de langage dans le cadre de l'apprentissage des langues étrangères assisté par IA, afin de développer dans le futur des solutions plus adaptées aux besoin d'apprentissage.",
             "moreInfos": "En savoir plus sur le projet."
         },
         "use": "N’utilisez pas l’arène à des fins illégales ou nuisibles."

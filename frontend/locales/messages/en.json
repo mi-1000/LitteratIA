@@ -1984,9 +1984,9 @@
         "errors": "AI can make mistakes: we encourage you to check the information provided",
         "go": "Here we go",
         "privacy": "Do not share personal information such as your name, surname or address.",
-        "title": "Welcome to compar:IA!",
+        "title": "Welcome to the Littérat'IA project!",
         "tos": {
-            "desc": "The conversations and preferences you express on compar:IA are used anonymously to create datasets representative of European languages and usage, in order to reduce cultural bias and propose more inclusive future AI models.",
+            "desc": "The conversations and preferences you express on this website are used anonymously to create datasets that will allow to analyze performance and characteristics of large language models when applied to educational purposes. Research conducted thanks to this data will allow to develop AI-powered approaches for education that are closer to educational needs.",
             "moreInfos": "Learn more about the project."
         },
         "use": "Do not use the comparator for illegal or harmful purposes"
