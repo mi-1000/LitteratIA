@@ -177,7 +177,7 @@
         icon="edit-line"
         text={m['header.chatbot.newDiscussion']()}
         class="md:hidden! w-full! btn-color btn-new-discussion"
-        onclick={() => (window.location.href = '/arene')}
+        onclick={() => (window.location.href = '/')}
       />
 
       <!-- TODO missing share page, hide btn for now -->

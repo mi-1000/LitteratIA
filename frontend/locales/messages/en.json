@@ -1913,8 +1913,8 @@
         }
     },
     "seo": {
-        "desc": "compar:IA is a tool that enables the blind comparison of different conversational AI models, raising awareness of the issues surrounding generative AI (plurality, bias, environmental impact) and helping to build language preference datasets for less-resourced languages.",
-        "title": "compar:IA, the AI chatbot arena",
+        "desc": "Littérat'IA is a research project proposing a tool that enables the blind comparison of different conversational AI models in order to collect user preferences regarding their use of these models to assist them in their learning of the French language. Collected data will allow to analyze these preferences in order to allow for better-suited AI-powered approaches for education more tailored to students' needs in the future.",
+        "title": "Littérat'IA",
         "titles": {
             "accessibilite": "Accessibility statement",
             "arene": "Chat",

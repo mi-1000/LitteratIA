@@ -2035,8 +2035,8 @@
         }
     },
     "seo": {
-        "desc": "compar:IA est un outil permettant de comparer à l’aveugle différents modèles d'IA conversationnelle pour sensibiliser aux enjeux de l'IA générative (biais, impact environmental) et constituer des jeux de données de préférence en français.",
-        "title": "compar:IA, le comparateur d'IA conversationnelles",
+        "desc": "Littérat'IA est un projet de recherche proposant un outil permettant de comparer à l’aveugle différents modèles d'IA conversationnelle afin de collecter des données de préférence d’utilisateurs en français. Ces données sont utilisées pour analyser les caractéristiques et les performances des modèles d'IA dans le cadre de l'apprentissage des langues étrangères assisté par IA, afin de développer dans le futur des solutions plus adaptées aux besoins d'apprentissage.",
+        "title": "Littérat'IA",
         "titles": {
             "accessibilite": "Déclaration d’accessibilité",
             "arene": "Discussion",
@@ -2103,7 +2103,7 @@
         "yours": "Votre vote"
     },
     "welcome": {
-        "errors": "Les IA peuvent faire des erreurs : nous vous encourageons à vérifier les informations communiquées.",
+        "errors": "Les modèles d'IA peuvent faire des erreurs : nous vous encourageons à vérifier les informations communiquées.",
         "go": "C'est parti",
         "privacy": "Ne communiquez pas d’informations personnelles comme votre nom, prénom ou adresse.",
         "title": "Bienvenue sur le projet Littérat'IA !",

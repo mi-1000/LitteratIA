@@ -36,8 +36,8 @@
   <div class="fr-container fr-container--fluid fr-container-md">
     <div class="fr-grid-row fr-grid-row--center">
       <div class="fr-col-12 fr-col-md-8 fr-col-lg-9">
-        <div class="fr-modal__body rounded-xl">
-          <div class="fr-modal__content mb-0! px-0!">
+        <div class="fr-modal__body rounded-xl m-0! p-0!">
+          <div class="fr-modal__content m-0! p-0!" id="welcome-modal-content">
             <div class="md:grid grid-cols-2">
               <div class="px-7 pb-7 pt-10">
                 <h2 id="fr-modal-title-modal-welcome" class="fr-modal__title mb-0! text-primary!">
@@ -48,10 +48,10 @@
             </div>
 
             <div class="md:grid grid-cols-2">
-              <div class="px-7">
+              <div class="px-7 pb-7 flex flex-col justify-evenly">
                 {#each pratices as { label, icon } (label)}
-                  <div class="mb-7 md:last-of-type:mb-0">
-                    <Icon {icon} block size="lg" class="text-primary me-2" />
+                  <div class="md:last-of-type:mb-0">
+                    <!-- <Icon {icon} block size="lg" class="text-primary me-2" /> -->
                     <p class="mb-0! text-[14px]!">{m[label]()}</p>
                   </div>
                 {/each}
@@ -60,7 +60,7 @@
                 <p class="mb-2!"><strong>{m['home.intro.tos.help']()}</strong></p>
                 <p class="mb-0! text-[14px]!">{m['welcome.tos.desc']()}</p>
                 <p class="text-[14px]!">
-                  <a href="/product/problem" target="_blank">{m['welcome.tos.moreInfos']()}</a>
+                  <!-- <a href="/product/problem" target="_blank">{m['welcome.tos.moreInfos']()}</a> -->
                 </p>
 
                 <Checkbox
@@ -82,6 +82,7 @@
                   text={m['welcome.go']()}
                   aria-controls="fr-modal-welcome"
                   onclickcapture={(e) => onClose(e)}
+                  class="btn-color"
                 />
               </div>
             </div>
