@@ -33,6 +33,7 @@
   })
   let revealData = $state<RevealData>()
   let showModelName = $derived(arena.showModelName)
+  let invertModelLabels = $derived(arena.invertModelLabels)
   const chatbotDisabled = $derived(arena.chat.status !== 'complete' || step !== 'chat')
   const revealDisabled = $derived(
     arena.chat.status !== 'complete' || (step === 'vote' && voteData.selected === undefined)
@@ -97,10 +98,10 @@
 <svelte:window onresize={onResize} />
 
 <div style="--footer-size: {footerSize}px;" class="flex grow flex-col">
-  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} />
+  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} invertModelLabels={invertModelLabels} />
 
   {#if step === 'vote' || (step === 'reveal' && canVote)}
-    <VoteArea bind:value={voteData} disabled={step === 'reveal'} showModelName={showModelName} />
+    <VoteArea bind:value={voteData} disabled={step === 'reveal'} showModelName={showModelName} invertModelLabels={invertModelLabels} />
   {/if}
 
   {#if step === 'reveal' && revealData}

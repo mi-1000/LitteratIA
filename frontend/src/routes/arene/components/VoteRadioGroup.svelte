@@ -10,12 +10,12 @@
     showModelName?: boolean | 'showA' | 'showB'
   }
 
-  let { value: selected = $bindable(), disabled = false, showModelName = false }: VoteAreaProps = $props()
+  let { value: selected = $bindable(), disabled = false, showModelName = false, invertModelLabels = false }: VoteAreaProps & { invertModelLabels?: boolean } = $props()
 
-  function shouldShowFor(side: 'a' | 'b' | string) {
+  function shouldShowFor(modelSide: 'a' | 'b' | string) {
     if (showModelName === true) return true
-    if (showModelName === 'showA' && side === 'a') return true
-    if (showModelName === 'showB' && side === 'b') return true
+    if (showModelName === 'showA' && modelSide === 'a') return true
+    if (showModelName === 'showB' && modelSide === 'b') return true
     return false
   }
 
@@ -44,10 +44,11 @@
   }
 
   function getModelPartsFor(side: 'a' | 'b') {
-    if (!shouldShowFor(side)) return { provider: '', model: m[`models.names.${side}`]() }
+    const displaySide = invertModelLabels ? (side === 'a' ? 'b' : 'a') : side
+    if (!shouldShowFor(displaySide)) return { provider: '', model: m[`models.names.${displaySide}`]() }
     try {
       const map = (arena as any).chat?.model_map
-      const sideKey = side.toLowerCase()
+      const sideKey = displaySide.toLowerCase()
       if (map && map[sideKey]) {
         const modelId = map[sideKey]
         try {
@@ -91,9 +92,9 @@
   }
 
   const choices = [
-    { value: 'a', label: shouldShowFor('a') ? getModelHtmlFor('a') : m['models.names.a']() },
+    { value: 'a', label: shouldShowFor(invertModelLabels ? 'b' : 'a') ? getModelHtmlFor('a') : m['models.names.' + (invertModelLabels ? 'b' : 'a')]() },
     { value: 'both_equal', label: m['vote.bothEqual']() },
-    { value: 'b', label: shouldShowFor('b') ? getModelHtmlFor('b') : m['models.names.b']() }
+    { value: 'b', label: shouldShowFor(invertModelLabels ? 'a' : 'b') ? getModelHtmlFor('b') : m['models.names.' + (invertModelLabels ? 'a' : 'b')]() }
   ] as const
 </script>
 
@@ -102,6 +103,7 @@
 
   <div class="gap-5 md:flex md:justify-center grid auto-rows-max grid-cols-3">
     {#each choices as { value, label } (value)}
+      {@const displaySide = invertModelLabels ? (value === 'a' ? 'b' : 'a') : value}
       <div class="h-full">
         <button
           type="button"
@@ -127,9 +129,11 @@
             <div class="c-bot-disk-{value}"></div>
           {/if}
           <span class="mt-3 md:ms-3 md:mt-0">
-            {#if value !== 'both_equal' && (value === 'a' || value === 'b') && shouldShowFor(value)}
-              {@html label}
+            {#if value !== 'both_equal' && (value === 'a' || value === 'b') && shouldShowFor(displaySide)}
+              {@html getModelHtmlFor(displaySide)}
             {:else}
+              <!-- {m['models.names.' + displaySide]()}
+                -->
               {label}
             {/if}
           </span>

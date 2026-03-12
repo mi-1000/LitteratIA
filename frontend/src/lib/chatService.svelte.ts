@@ -169,7 +169,8 @@ export const arena = $state<{
     model_map?: { a?: string; b?: string }
     error: string | null
   }
-  showModelName: boolean | 'showA' | 'showB'
+  showModelName: boolean | 'showA' | 'showB',
+  invertModelLabels: boolean
 }>({
   currentScreen: 'prompt',
   chat: {
@@ -180,7 +181,8 @@ export const arena = $state<{
     model_map: {},
     error: null
   },
-    showModelName: true
+    showModelName: true,
+    invertModelLabels: true
 })
 
 // API CALLS

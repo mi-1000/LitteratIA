@@ -20,15 +20,19 @@
   export type MessageBotExtra = {
     showModelName?: boolean | 'showA' | 'showB'
     side?: 'A' | 'B'
+    invertModelLabels?: boolean
   }
 
-  let { message, index, disabled = false, onReactionChange, showModelName = false, side = 'A' }: MessageBotProps & MessageBotExtra = $props()
+  let { message, index, disabled = false, onReactionChange, showModelName = false, side = 'A', invertModelLabels = false }: MessageBotProps & MessageBotExtra = $props()
 
-  function shouldShowFor(sideLocal: string) {
+  const displaySide = invertModelLabels ? (side.toLowerCase() === 'a' ? 'b' : 'a') : side.toLowerCase()
+
+  function shouldShowFor(modelSide: string) {
     const val = showModelName as any
+    const s = String(modelSide).toLowerCase()
     if (val === true) return true
-    if (val === 'showA' && sideLocal.toLowerCase() === 'a') return true
-    if (val === 'showB' && sideLocal.toLowerCase() === 'b') return true
+    if (val === 'showA' && s === 'a') return true
+    if (val === 'showB' && s === 'b') return true
     return false
   }
 
@@ -51,13 +55,16 @@
   }
 
   function getModelParts(): { provider: string; model: string } {
-    // If anonymized for this side, return empty provider and anonymized label as model
-    if (!shouldShowFor(side)) return { provider: '', model: m['chatbot.modelAnon']({ side }) }
+    // decide which model side we display (swap if invertModelLabels)
+    const displaySide = invertModelLabels ? (side.toLowerCase() === 'a' ? 'b' : 'a') : side.toLowerCase()
+
+    // If anonymized for the target model side, return anonymized label
+    if (!shouldShowFor(displaySide)) return { provider: '', model: m['chatbot.modelAnon']({ side: displaySide.toUpperCase() }) }
 
     // Prefer backend-provided mapping if available
     try {
       const map = (arena as any).chat?.model_map
-      const sideKey = side.toLowerCase()
+      const sideKey = displaySide
       if (map && map[sideKey]) {
         const modelId = map[sideKey]
         try {
@@ -80,11 +87,11 @@
       // ignore
     }
 
-    // Try i18n mapping for specific bots
+    // Try i18n mapping for specific bots (pass displaySide to the i18n function when relevant)
     try {
-      const fn = (m as any)[`models.names.${bot}`](side || 'A')
+      const fn = (m as any)[`models.names.${bot}`]
       if (typeof fn === 'function') {
-        const v = fn()
+        const v = fn(displaySide.toUpperCase())
         if (v && v.toString().trim() !== '') return splitModelId(String(v))
       }
     } catch (e) {
@@ -144,8 +151,8 @@
       <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
         <div class="c-bot-disk-{bot}"></div>
         <h3 class="ms-2! mb-0! text-base!">
-          {#if !shouldShowFor(side)}
-            {m['chatbot.modelAnon']({ side })}
+          {#if !shouldShowFor(displaySide)}
+            {m['chatbot.modelAnon']({ side: displaySide.toUpperCase() })}
           {:else}
             {@html getModelHtml()}
           {/if}

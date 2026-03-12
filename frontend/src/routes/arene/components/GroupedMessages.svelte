@@ -8,11 +8,13 @@
     disabled,
     onReactionChange
     , showModelName = false
+    , invertModelLabels = false
   }: {
     round: ChatRound
     disabled: boolean
     onReactionChange: OnReactionFn
     showModelName?: boolean | 'showA' | 'showB'
+    invertModelLabels?: boolean
   } = $props()
 
   let userMessageSize = $state(0)
@@ -27,8 +29,8 @@
 
   <div class="gap-10 md:grid-cols-2 md:gap-6 grid">
     {#if round.a && round.b && round.showMessages}
-      <MessageBot message={round.a} index={round.index} {disabled} {onReactionChange} showModelName={showModelName} side="A" />
-      <MessageBot message={round.b} index={round.index} {disabled} {onReactionChange} showModelName={showModelName} side="B" />
+      <MessageBot message={round.a} index={round.index} {disabled} {onReactionChange} showModelName={showModelName} invertModelLabels={invertModelLabels} side="A" />
+      <MessageBot message={round.b} index={round.index} {disabled} {onReactionChange} showModelName={showModelName} invertModelLabels={invertModelLabels} side="B" />
     {/if}
   </div>
 </div>

@@ -13,12 +13,14 @@
     onRetry,
     onVote
     , showModelName = false
+    , invertModelLabels = false
   }: {
     disabled: boolean
     onReactionChange: OnReactionFn
     onRetry: () => void
     onVote: () => void
     showModelName?: boolean | 'showA' | 'showB'
+    invertModelLabels?: boolean
   } = $props()
 
   const rounds = $derived.by<ChatRound[]>(() => {
@@ -54,7 +56,7 @@
   class="pb-7 flex grow flex-col"
 >
   {#each rounds as round (round.index)}
-    <GroupedMessages {round} {disabled} {onReactionChange} {showModelName} />
+    <GroupedMessages {round} {disabled} {onReactionChange} {showModelName} {invertModelLabels} />
   {/each}
 
   {#if arena.chat.status === 'pending'}

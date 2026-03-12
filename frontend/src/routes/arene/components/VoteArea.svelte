@@ -12,10 +12,12 @@
     value: form = $bindable(),
     disabled = false,
     showModelName = false,
+    invertModelLabels = false,
   }: {
     value: VoteData
     disabled?: boolean
     showModelName?: boolean | 'showA' | 'showB'
+    invertModelLabels?: boolean
   } = $props()
 
   let showComments = $state(false)
@@ -112,23 +114,24 @@
     </p>
   </div>
 
-  <VoteRadioGroup bind:value={form.selected} {disabled} {showModelName} />
+  <VoteRadioGroup bind:value={form.selected} {disabled} {showModelName} {invertModelLabels} />
 
   {#if form.selected}
     <div class="mt-11 gap-6 md:flex-row flex flex-col">
       {#each ['a', 'b'] as const as model (model)}
+        {@const displaySide = invertModelLabels ? (model === 'a' ? 'b' : 'a') : model}
         <div
           class="cg-border gap-4 rounded-lg! bg-white p-4 md:rounded-lg md:px-6 md:py-8 flex w-full flex-col"
         >
           <div class="flex items-center">
-            <div class="c-bot-disk-{model}"></div>
-            <p class="ms-1! mb-0! font-bold">
-                {#if shouldShowFor(model)}
-                  {@html getModelHtmlFor(model)}
-                {:else}
-                  {m[`models.names.${model}`]()}
-                {/if}
-            </p>
+                <div class="c-bot-disk-{model}"></div>
+                <p class="ms-1! mb-0! font-bold">
+                    {#if shouldShowFor(displaySide)}
+                      {@html getModelHtmlFor(displaySide)}
+                    {:else}
+                      {m[`models.names.${displaySide}`]()}
+                    {/if}
+                </p>
           </div>
 
           <p class="mb-0! font-bold">{m['vote.qualify.question']()}</p>
