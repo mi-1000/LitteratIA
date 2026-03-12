@@ -1986,7 +1986,7 @@
         "privacy": "Do not share personal information such as your name, surname or address.",
         "title": "Welcome to the Littérat'IA project!",
         "tos": {
-            "desc": "The conversations and preferences you express on this website are used anonymously to create datasets that will allow to analyze performance and characteristics of large language models when applied to educational purposes. Research conducted thanks to this data will allow to develop AI-powered approaches for education that are closer to educational needs.",
+            "desc": "The conversations and preferences you express on this website are used anonymously to create datasets that will allow to analyze performance and characteristics of large language models when applied to educational purposes. Research conducted thanks to this data will allow to develop AI-powered approaches for education that better fit students' needs in the future.",
             "moreInfos": "Learn more about the project."
         },
         "use": "Do not use the comparator for illegal or harmful purposes"

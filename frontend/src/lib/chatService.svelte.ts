@@ -181,8 +181,8 @@ export const arena = $state<{
     model_map: {},
     error: null
   },
-    showModelName: "showA",
-    invertModelLabels: true
+    showModelName: false,
+    invertModelLabels: false
 })
 
 // API CALLS
