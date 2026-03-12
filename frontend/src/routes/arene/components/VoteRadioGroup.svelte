@@ -44,11 +44,11 @@
   }
 
   function getModelPartsFor(side: 'a' | 'b') {
-    const displaySide = invertModelLabels ? (side === 'a' ? 'b' : 'a') : side
-    if (!shouldShowFor(displaySide)) return { provider: '', model: m[`models.names.${displaySide}`]() }
+    // `side` is the logical model side to display (already adjusted by caller for inversion)
+    if (!shouldShowFor(side)) return { provider: '', model: m[`models.names.${side}`]() }
     try {
       const map = (arena as any).chat?.model_map
-      const sideKey = displaySide.toLowerCase()
+      const sideKey = side.toLowerCase()
       if (map && map[sideKey]) {
         const modelId = map[sideKey]
         try {
@@ -91,19 +91,15 @@
     return model
   }
 
-  const choices = [
-    { value: 'a', label: shouldShowFor(invertModelLabels ? 'b' : 'a') ? getModelHtmlFor('a') : m['models.names.' + (invertModelLabels ? 'b' : 'a')]() },
-    { value: 'both_equal', label: m['vote.bothEqual']() },
-    { value: 'b', label: shouldShowFor(invertModelLabels ? 'a' : 'b') ? getModelHtmlFor('b') : m['models.names.' + (invertModelLabels ? 'a' : 'b')]() }
-  ] as const
+  const choices = ['a', 'both_equal', 'b'] as const
 </script>
 
 <fieldset id="vote-cards" aria-labelledby="vote-cards-legend">
   <legend class="sr-only" id="vote-cards-legend">{m['vote.title']()}</legend>
 
   <div class="gap-5 md:flex md:justify-center grid auto-rows-max grid-cols-3">
-    {#each choices as { value, label } (value)}
-      {@const displaySide = invertModelLabels ? (value === 'a' ? 'b' : 'a') : value}
+    {#each choices as value (value)}
+      {@const displaySide = value === 'both_equal' ? 'both_equal' : (invertModelLabels ? (value === 'a' ? 'b' : 'a') : value)}
       <div class="h-full">
         <button
           type="button"
@@ -129,12 +125,12 @@
             <div class="c-bot-disk-{value}"></div>
           {/if}
           <span class="mt-3 md:ms-3 md:mt-0">
-            {#if value !== 'both_equal' && (value === 'a' || value === 'b') && shouldShowFor(displaySide)}
+            {#if value !== 'both_equal' && shouldShowFor(displaySide)}
               {@html getModelHtmlFor(displaySide)}
+            {:else if value !== 'both_equal'}
+              {m['models.names.' + displaySide]()}
             {:else}
-              <!-- {m['models.names.' + displaySide]()}
-                -->
-              {label}
+              {m['vote.bothEqual']()}
             {/if}
           </span>
         </button>
