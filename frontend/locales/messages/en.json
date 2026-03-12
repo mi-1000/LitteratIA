@@ -1387,8 +1387,8 @@
             }
         },
         "names": {
-            "a": "Model A",
-            "b": "Model B"
+            "a": "Hidden model",
+            "b": "Hidden model"
         },
         "openWeight": {
             "tooltips": {

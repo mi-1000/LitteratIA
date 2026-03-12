@@ -58,8 +58,8 @@
     // decide which model side we display (swap if invertModelLabels)
     const displaySide = invertModelLabels ? (side.toLowerCase() === 'a' ? 'b' : 'a') : side.toLowerCase()
 
-    // If anonymized for the target model side, return anonymized label
-    if (!shouldShowFor(displaySide)) return { provider: '', model: m['chatbot.modelAnon']({ side: displaySide.toUpperCase() }) }
+    // If anonymized for the target model side, return the neutral i18n model label
+    if (!shouldShowFor(displaySide)) return { provider: '', model: m[`models.names.${displaySide}`]() }
 
     // Prefer backend-provided mapping if available
     try {
@@ -87,19 +87,19 @@
       // ignore
     }
 
-    // Try i18n mapping for specific bots (pass displaySide to the i18n function when relevant)
+    // Try i18n mapping by logical side (a/b) like the vote UI does
     try {
-      const fn = (m as any)[`models.names.${bot}`]
+      const fn = (m as any)[`models.names.${displaySide}`]
       if (typeof fn === 'function') {
-        const v = fn(displaySide.toUpperCase())
+        const v = fn()
         if (v && v.toString().trim() !== '') return splitModelId(String(v))
       }
     } catch (e) {
       // ignore
     }
 
-    // Fallback to prettified bot id
-    return splitModelId(prettifyBotId(bot))
+    // Fallback to prettified side key (keeps behavior consistent with vote UI)
+    return splitModelId(prettifyBotId(displaySide))
   }
 
   // Return HTML string with provider in italic and model in bold.
@@ -152,7 +152,7 @@
         <div class="c-bot-disk-{bot}"></div>
         <h3 class="ms-2! mb-0! text-base!">
           {#if !shouldShowFor(displaySide)}
-            {m['chatbot.modelAnon']({ side: displaySide.toUpperCase() })}
+            {m[`models.names.${displaySide}`]()}
           {:else}
             {@html getModelHtml()}
           {/if}

@@ -106,7 +106,7 @@
           class="cg-border md:rounded-[56px]! px-3 py-4 font-medium md:flex-row md:justify-center flex h-full flex-col items-center justify-center text-center btn-color btn-vote-models"
           aria-pressed={selected === value}
           disabled={disabled}
-          on:click={() => { if (!disabled) selected = value }}
+          onclick={() => { if (!disabled) selected = value }}
         >
           {#if value === 'both_equal'}
             <svg

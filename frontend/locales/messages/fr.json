@@ -1508,8 +1508,8 @@
             }
         },
         "names": {
-            "a": "Modèle A",
-            "b": "Modèle B"
+            "a": "Modèle inconnu",
+            "b": "Modèle inconnu"
         },
         "openWeight": {
             "tooltips": {
