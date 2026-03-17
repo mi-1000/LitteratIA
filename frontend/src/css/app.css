@@ -294,14 +294,6 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   position: relative;
 }
 
-.model-chat-content-side-a {
-  background-color: color-mix(in srgb, var(--blue-france-main-525) 10%, transparent);
-}
-
-.model-chat-content-side-b {
-  background-color: color-mix(in srgb, var(--cg-blue-france-shifted) 10%, transparent);
-}
-
 .model-label {
   position: sticky;
   top: 0;
@@ -311,6 +303,7 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   margin-right: calc(-1 * var(--cg-card-inline-padding));
   padding-inline: var(--cg-card-inline-padding);
   box-sizing: border-box;
+  z-index: 1;
 }
 
 @media (min-width: 48em) {
