@@ -160,6 +160,13 @@
           disabled={revealDisabled}
           class="md:w-fit! w-full! btn-color"
           onclick={onRevealModels}
+          title={
+            showModelName
+              ? step === 'vote'
+                ? m['chatbot.revealButton']()
+                : m['chatbot.voteButton']()
+              : m['chatbot.revealButton']()
+          }
       />
     </div>
   {/if}

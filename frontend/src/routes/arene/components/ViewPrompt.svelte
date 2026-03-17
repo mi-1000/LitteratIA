@@ -147,6 +147,8 @@
         disabled={prompt == '' || !!promptError || disabled}
         class="md:w-auto! md:order-none order-2 w-full! min-w-[130px] md:col-span-full md:justify-self-center btn-color"
         onclick={() => dispatchSubmit()}
+        title={m['words.send']()}
+        aria-label={m['words.send']()}
       />
     </div>
     <div class="pb-10">
