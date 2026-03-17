@@ -147,10 +147,9 @@
   <div
     class="message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden"
   >
-    <div class="overflow-y-auto flex-1 px-5 model-chat-content-side-{side.toLowerCase()}">
-      <div class="top-0 pb-5 pt-7 sticky z-2 flex items-center">
+      <div class="top-0 pb-5 pt-7 sticky z-10 flex items-center model-label bg-white px-5">
         <div class="c-bot-disk-{bot}"></div>
-        <h3 class="ms-2! mb-0! text-base!">
+        <h3 class="ms-2! mb-0! text-base! flex-1 text-left">
           {#if !shouldShowFor(displaySide)}
             {m['chatbot.modelAnon']({ side: side.toUpperCase() })}
           {:else}
@@ -159,7 +158,8 @@
         </h3>
       </div>
 
-      {#if message.reasoning.trim() !== ''}
+      <div class="overflow-y-auto flex-1 px-5 model-chat-content-side-{side.toLowerCase()}">
+        {#if message.reasoning.trim() !== ''}
         <section class="fr-accordion mb-8 py-2">
           <div class="fr-highlight ms-0! ps-0!">
             <h3 class="fr-accordion__title ms-1!">
@@ -254,5 +254,9 @@
     height: 2rem;
     background: linear-gradient(to bottom, transparent, var(--cg-bg-white));
     pointer-events: none;
+  }
+
+  .model-label {
+    background: linear-gradient(to top, transparent, var(--cg-bg-white)) !important;
   }
 </style>

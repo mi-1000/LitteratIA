@@ -123,15 +123,17 @@
         <div
           class="cg-border gap-4 rounded-lg! bg-white p-4 md:rounded-lg md:px-6 md:py-8 flex w-full flex-col"
         >
-          <div class="flex items-center">
-                <div class="c-bot-disk-{model}"></div>
-                <p class="ms-1! mb-0! font-bold">
-                    {#if shouldShowFor(displaySide)}
-                      {@html getModelHtmlFor(displaySide)}
-                    {:else}
-                      {m['chatbot.modelAnon']({ side: model.toUpperCase() })}
-                    {/if}
-                </p>
+          <div class="-mx-4 md:-mx-6">
+            <div class="flex items-center px-4 md:px-6">
+              <div class="c-bot-disk-{model}"></div>
+              <p class="ms-1! mb-0! font-bold flex-1">
+                {#if shouldShowFor(displaySide)}
+                  {@html getModelHtmlFor(displaySide)}
+                {:else}
+                  {m['chatbot.modelAnon']({ side: model.toUpperCase() })}
+                {/if}
+              </p>
+            </div>
           </div>
 
           <p class="mb-0! font-bold">{m['vote.qualify.question']()}</p>
