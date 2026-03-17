@@ -47,7 +47,7 @@
   }
 
   function getModelPartsFor(side: 'a' | 'b') {
-    if (!shouldShowFor(side)) return { provider: '', model: m[`models.names.${side}`]() }
+    if (!shouldShowFor(side)) return { provider: '', model: m['chatbot.modelAnon']({ side: side.toUpperCase() }) }
     try {
       const map = (arena as any).chat?.model_map
       const sideKey = side.toLowerCase()
@@ -129,7 +129,7 @@
                     {#if shouldShowFor(displaySide)}
                       {@html getModelHtmlFor(displaySide)}
                     {:else}
-                      {m[`models.names.${displaySide}`]()}
+                      {m['chatbot.modelAnon']({ side: model.toUpperCase() })}
                     {/if}
                 </p>
           </div>
@@ -175,7 +175,7 @@
           variant="secondary"
           text={m['vote.qualify.addDetails']()}
           {disabled}
-          on:click={() => (showComments = true)}
+          onclick={() => (showComments = true)}
         />
       </div>
     {/if}

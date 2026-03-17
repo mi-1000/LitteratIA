@@ -58,8 +58,8 @@
     // decide which model side we display (swap if invertModelLabels)
     const displaySide = invertModelLabels ? (side.toLowerCase() === 'a' ? 'b' : 'a') : side.toLowerCase()
 
-    // If anonymized for the target model side, return the neutral i18n model label
-    if (!shouldShowFor(displaySide)) return { provider: '', model: m[`models.names.${displaySide}`]() }
+    // If anonymized for the target model side, return explicit physical side label (A/B)
+    if (!shouldShowFor(displaySide)) return { provider: '', model: m['chatbot.modelAnon']({ side: side.toUpperCase() }) }
 
     // Prefer backend-provided mapping if available
     try {
@@ -152,7 +152,7 @@
         <div class="c-bot-disk-{bot}"></div>
         <h3 class="ms-2! mb-0! text-base!">
           {#if !shouldShowFor(displaySide)}
-            {m[`models.names.${displaySide}`]()}
+            {m['chatbot.modelAnon']({ side: side.toUpperCase() })}
           {:else}
             {@html getModelHtml()}
           {/if}

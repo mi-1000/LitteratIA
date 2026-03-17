@@ -45,7 +45,7 @@
 
   function getModelPartsFor(side: 'a' | 'b') {
     // `side` is the logical model side to display (already adjusted by caller for inversion)
-    if (!shouldShowFor(side)) return { provider: '', model: m[`models.names.${side}`]() }
+    if (!shouldShowFor(side)) return { provider: '', model: m['chatbot.modelAnon']({ side: side.toUpperCase() }) }
     try {
       const map = (arena as any).chat?.model_map
       const sideKey = side.toLowerCase()
@@ -128,7 +128,7 @@
             {#if value !== 'both_equal' && shouldShowFor(displaySide)}
               {@html getModelHtmlFor(displaySide)}
             {:else if value !== 'both_equal'}
-              {m['models.names.' + displaySide]()}
+              {m['chatbot.modelAnon']({ side: value.toUpperCase() })}
             {:else}
               {m['vote.bothEqual']()}
             {/if}
