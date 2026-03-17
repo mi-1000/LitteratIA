@@ -83,6 +83,13 @@
     }
   }
 
+  $effect(() => {
+    // Sync local `step` with arena.chat.step so vote area appears when backend marks step=2
+    if ((arena as any).chat?.step === 2 && step === 'chat') {
+      step = 'vote'
+    }
+  })
+
   // Compute second header height for autoscrolling
   let footer = $state<HTMLElement>()
   let footerSize: number = $derived(step && footer ? footer.offsetHeight : 0)
@@ -98,7 +105,7 @@
 <svelte:window onresize={onResize} />
 
 <div style="--footer-size: {footerSize}px;" class="flex grow flex-col">
-  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} invertModelLabels={invertModelLabels} />
+  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} invertModelLabels={invertModelLabels} reactionsByIndex={reactionsByIndex} />
 
   {#if step === 'vote' || (step === 'reveal' && canVote)}
     <VoteArea bind:value={voteData} disabled={step === 'reveal'} showModelName={showModelName} invertModelLabels={invertModelLabels} />

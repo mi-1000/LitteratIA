@@ -1978,6 +1978,7 @@
             "question": "How would you describe its answers?"
         },
         "title": "Which AI model do you prefer?",
+        "wait": "Awaiting both model responses…",
         "yours": "Your vote"
     },
     "welcome": {

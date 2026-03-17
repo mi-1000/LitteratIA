@@ -8,7 +8,7 @@
   import { m } from '$lib/i18n/messages'
   import { getModelsContext } from '$lib/models'
   import { sanitize } from '$lib/utils/commons'
-  import { LikeDislike, LikePanel } from '.'
+  import { LikePanel } from '.'
 
   export type MessageBotProps = {
     message: AssistantMessage
@@ -121,13 +121,15 @@
       .replace(/'/g, '&#39;')
   }
   const reaction = $state<APIReactionData>({
-    index: index * 2 + 1,
+    index: index * 2 + (side.toLowerCase() === 'a' ? 1 : 2),
     bot: message.metadata.bot,
     liked: null,
     prefs: [],
     comment: '',
     value: message.content
   })
+
+  let modelsReady = $derived(arena.chat?.a?.status === 'complete' && arena.chat?.b?.status === 'complete')
 
   function onLikedChanged() {
     reaction.prefs = []
@@ -200,29 +202,11 @@
       <Copy value={message.content} />
 
       <div class="gap-2 ms-auto flex">
-        <LikeDislike
-          bind:liked={reaction.liked}
-          disabled={message.generating || disabled}
-          onChange={onLikedChanged}
-        />
+        <!-- Like/Dislike buttons removed — per-round merged panel used instead -->
       </div>
     </div>
   </div>
-
-  {#if reaction.liked !== null}
-    <div class="cg-border rounded-lg! mt-3 bg-white p-5 border-dashed!">
-      <LikePanel
-        id={message.metadata.generation_id}
-        kind={reaction.liked ? 'like' : 'dislike'}
-        show={true}
-        bind:selection={reaction.prefs}
-        bind:comment={reaction.comment}
-        onSelectionChange={dispatchOnReactionChange}
-        onCommentChange={dispatchOnReactionChange}
-        model={bot.toUpperCase()}
-      />
-    </div>
-  {/if}
+    <!-- per-message panels are now merged in GroupedMessages -->
 </div>
 
 <style>

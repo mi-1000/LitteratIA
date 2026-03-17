@@ -2100,6 +2100,7 @@
             "question": "Comment qualifiez-vous ses réponses ?"
         },
         "title": "Quel modèle d’IA préférez-vous ?",
+        "wait": "En attente des réponses des modèles…",
         "yours": "Votre vote"
     },
     "welcome": {

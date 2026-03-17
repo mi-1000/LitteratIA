@@ -14,6 +14,7 @@
     onVote
     , showModelName = false
     , invertModelLabels = false
+    , reactionsByIndex = {} as Record<number, any>
   }: {
     disabled: boolean
     onReactionChange: OnReactionFn
@@ -21,6 +22,7 @@
     onVote: () => void
     showModelName?: boolean | 'showA' | 'showB'
     invertModelLabels?: boolean
+    reactionsByIndex?: Record<number, any>
   } = $props()
 
   const rounds = $derived.by<ChatRound[]>(() => {
@@ -56,7 +58,7 @@
   class="pb-7 flex grow flex-col"
 >
   {#each rounds as round (round.index)}
-    <GroupedMessages {round} {disabled} {onReactionChange} {showModelName} {invertModelLabels} />
+    <GroupedMessages {round} {disabled} {onReactionChange} {showModelName} {invertModelLabels} reactionsByIndex={reactionsByIndex} />
   {/each}
 
   {#if arena.chat.status === 'pending'}
