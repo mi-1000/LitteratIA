@@ -6,9 +6,9 @@
   let {
     round,
     disabled,
-    onReactionChange
-    , showModelName = false
-    , invertModelLabels = false
+    onReactionChange,
+    showModelName = false,
+    invertModelLabels = false
   }: {
     round: ChatRound
     disabled: boolean

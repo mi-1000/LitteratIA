@@ -27,6 +27,7 @@
   --cg-very-light-grey: #fcfcfd;
   --cg-light-grey: #f3f5f9;
   --cg-bg-grey: #d4d4d4;
+  --cg-bg-white: color-mix(in srgb, var(--grey-1000-50) var(--un-bg-opacity), transparent);
   --cg-grey: #8e8e8e;
   --cg-very-light-blue: #f9fbff;
   --cg-green: #58b77d;
@@ -277,4 +278,12 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   .bg-light-grey {
     background-color: var(--cg-light-grey) !important;
   }
+}
+
+.model-chat-content-side-a {
+  background-color: color-mix(in srgb, var(--blue-france-main-525) 10%, transparent);
+}
+
+.model-chat-content-side-b {
+  background-color: color-mix(in srgb, var(--cg-blue-france-shifted) 10%, transparent);
 }

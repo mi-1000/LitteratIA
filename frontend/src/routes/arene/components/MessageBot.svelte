@@ -147,8 +147,8 @@
   <div
     class="message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden"
   >
-    <div class="overflow-y-auto flex-1 px-5">
-      <div class="top-0 bg-white pb-5 pt-7 sticky z-2 flex items-center">
+    <div class="overflow-y-auto flex-1 px-5 model-chat-content-side-{side.toLowerCase()}">
+      <div class="top-0 pb-5 pt-7 sticky z-2 flex items-center">
         <div class="c-bot-disk-{bot}"></div>
         <h3 class="ms-2! mb-0! text-base!">
           {#if !shouldShowFor(displaySide)}
@@ -252,7 +252,7 @@
     left: 0;
     right: 0;
     height: 2rem;
-    background: linear-gradient(to bottom, transparent, var(--cg-very-light-grey));
+    background: linear-gradient(to bottom, transparent, var(--cg-bg-white));
     pointer-events: none;
   }
 </style>
