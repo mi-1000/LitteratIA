@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ChatRound, OnReactionFn } from '$lib/chatService.svelte'
   import { scrollTo } from '$lib/helpers/attachments'
-  import { MessageBot, MessageUser, LikePanel } from '.'
+  import { MessageBot, MessageUser, ReactPanel } from '.'
   import { m } from '$lib/i18n/messages'
    import { arena } from '$lib/chatService.svelte'
 
@@ -50,11 +50,11 @@
         title={anyGenerating ? m['vote.wait']() : ''}
         aria-disabled={anyGenerating}
       >
-        <div class="mb-3 font-bold">{m['vote.title']()}</div>
+        <div class="mb-3 font-bold text-center">{m['vote.title']()}</div>
         <div class="grid gap-4 md:grid-cols-2">
-          <div>
+          <div class="col-span-2">
           <!-- TODO Update like panel : stars, then labels, then text zone -->
-            <LikePanel 
+            <!-- <LikePanel 
               id={`pair-${round.index}-a`}
               kind={reactA?.liked ? 'like' : 'dislike'}
               show={true}
@@ -64,7 +64,8 @@
               onCommentChange={(c) => onReactionChange({ ...(reactA || { index: idxA, bot: 'a' }), comment: c })}
                 disabled={anyGenerating}
               model="A"
-            />
+            /> -->
+            <ReactPanel />
           </div>
         </div>
         </div>

@@ -1939,7 +1939,7 @@
         }
     },
     "vote": {
-        "bothEqual": "Both are equally good",
+        "bothEqual": "No preference",
         "choices": {
             "altText": "{choice} for model {model}",
             "negative": {
@@ -1976,6 +1976,14 @@
             "addDetails": "Add details",
             "placeholder": "The responses from the {model} model are...",
             "question": "How would you describe its answers?"
+        },
+        "stars": {
+            "title": "Rate from 1 to 5",
+            "1": "Not at all satisfied",
+            "2": "Little satisfied",
+            "3": "Somewhat satisfied",
+            "4": "Very satisfied",
+            "5": "Completely satisfied"
         },
         "title": "Which AI model do you prefer?",
         "wait": "Awaiting both model responses…",

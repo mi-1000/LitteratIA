@@ -41,5 +41,8 @@
       "fileMatch": ["/utils/models/models.json"],
       "url": "/utils/models/schemas/schema-organisations.json"
     }
-  ]
+  ],
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  }
 }

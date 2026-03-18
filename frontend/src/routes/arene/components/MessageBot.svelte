@@ -236,11 +236,7 @@
     left: 0;
     right: 0;
     height: 2rem;
-    background: linear-gradient(to bottom, transparent, var(--cg-bg-white));
+    background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--cg-bg-white) 50%, transparent));
     pointer-events: none;
-  }
-
-  .model-label {
-    background: linear-gradient(to top, transparent, var(--cg-bg-white)) !important;
   }
 </style>

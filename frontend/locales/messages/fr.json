@@ -2061,7 +2061,7 @@
         }
     },
     "vote": {
-        "bothEqual": "Les deux se valent",
+        "bothEqual": "Pas de préférence",
         "choices": {
             "altText": "{choice} pour le modèle {model}",
             "negative": {
@@ -2098,6 +2098,14 @@
             "addDetails": "Ajouter des détails",
             "placeholder": "Les réponses du modèle {model} sont...",
             "question": "Comment qualifiez-vous ses réponses ?"
+        },
+        "stars": {
+            "title": "Donnez une note de 1 à 5",
+            "1": "Pas du tout satisfait",
+            "2": "Peu satisfait",
+            "3": "Assez satisfait",
+            "4": "Très satisfait",
+            "5": "Entièrement satisfait"
         },
         "title": "Quel modèle d’IA préférez-vous ?",
         "wait": "En attente des réponses des modèles…",
