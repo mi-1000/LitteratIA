@@ -2087,7 +2087,8 @@
         },
         "comment": {
             "add": "Ajouter des commentaires",
-            "placeholder": "Vous pouvez ajouter des précisions sur cette réponse du modèle {model}"
+            "placeholder": "Vous pouvez ajouter des précisions sur cette réponse du modèle {model}",
+            "placeholder_both_equal": "Vous pouvez ajouter des précisions sur les réponses des modèles"
         },
         "dislike": {
             "label": "Je n'apprécie pas",

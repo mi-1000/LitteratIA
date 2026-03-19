@@ -1965,7 +1965,8 @@
         },
         "comment": {
             "add": "Add comments",
-            "placeholder": "You can add details about model {model}'s response"
+            "placeholder": "You can add details about model {model}'s response",
+            "placeholder_both_equal": "You can add details about the responses of the models"
         },
         "dislike": {
             "label": "I dislike",

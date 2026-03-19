@@ -204,7 +204,7 @@
               <p id="{id}-modal-label" class="modal-title">{m['vote.comment.add']()}</p>
               <div>
                 <textarea
-                  placeholder={m['vote.comment.placeholder']({ model: model.toUpperCase() })}
+                  placeholder={model === 'both_equal' ? m['vote.comment.placeholder_both_equal']() : m['vote.comment.placeholder']({ model: model.toUpperCase() })}
                   class="fr-input"
                   rows="4"
                   bind:value={comment}
