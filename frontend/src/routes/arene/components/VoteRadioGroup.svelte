@@ -97,7 +97,7 @@
 <fieldset id="vote-cards" aria-labelledby="vote-cards-legend">
   <legend class="sr-only" id="vote-cards-legend">{m['vote.title']()}</legend>
 
-  <div class="gap-5 md:flex md:justify-center grid auto-rows-max grid-cols-3">
+  <div class="flex flex-row gap-3 md:justify-center md:gap-5">
     {#each choices as value (value)}
       {@const displaySide = value === 'both_equal' ? 'both_equal' : (invertModelLabels ? (value === 'a' ? 'b' : 'a') : value)}
       <div class="h-full">
