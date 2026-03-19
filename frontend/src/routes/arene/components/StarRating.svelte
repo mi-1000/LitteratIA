@@ -11,16 +11,6 @@
 
   let hovered = $state(0);
   const stars = [1, 2, 3, 4, 5];
-
-  const getStarState = (star: number) => {
-    const activeThreshold = hovered > 0 ? hovered : value;
-    const isFilled = star <= activeThreshold;
-    
-    // Is the user about to downgrade his rating?
-    const isReducing = hovered > 0 && hovered < value && star > hovered && star <= value;
-    
-    return { isFilled, isReducing };
-  };
 </script>
 
 <fieldset 
@@ -36,7 +26,7 @@
             {@const isReducing = hovered > 0 && star > hovered && star <= value}
             <button
                 type="button"
-                class="star-btn"
+                class="star-btn mx-1"
                 onclick={() => value = star}
                 onmouseenter={() => (hovered = star)}
                 title={m['vote.stars.' + star]()}
@@ -69,7 +59,7 @@
     background: none;
     border: none;
     padding: 0;
-    margin: 0.1rem;
+    /* margin: 0.2rem; */
     cursor: pointer;
     font-size: 1.5rem;
     color: color-mix(in srgb, transparent 50%, var(--cg-yellow));
