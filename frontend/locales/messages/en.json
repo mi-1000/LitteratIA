@@ -1978,7 +1978,10 @@
             "question": "How would you describe its answers?"
         },
         "stars": {
-            "title": "Rate from 1 to 5",
+            "title": {
+                "both_equal": "Rate from 1 to 5 both models",
+                "model_preferred": "Rate from 1 to 5 the model {model}"
+            },
             "1": "Not at all satisfied",
             "2": "Little satisfied",
             "3": "Somewhat satisfied",

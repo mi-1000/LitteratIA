@@ -2100,7 +2100,10 @@
             "question": "Comment qualifiez-vous ses réponses ?"
         },
         "stars": {
-            "title": "Donnez une note de 1 à 5",
+            "title": {
+                "both_equal": "Donnez une note de 1 à 5 aux deux modèles",
+                "model_preferred": "Donnez une note de 1 à 5 au modèle {model}"
+            },
             "1": "Pas du tout satisfait",
             "2": "Peu satisfait",
             "3": "Assez satisfait",

@@ -1,11 +1,14 @@
 <script lang="ts">
+    import type { BotChoice } from "$lib/chatService.svelte"
     import { m } from "$lib/i18n/messages"
 
   let { 
     value = $bindable(0),
-    disabled = false 
+    selected_model,
+    disabled = false,
   }: {
     value?: number
+    selected_model: BotChoice
     disabled?: boolean
   } = $props();
 
@@ -19,7 +22,10 @@
   disabled={disabled}
   role="radiogroup"
 >
-    <legend class="rating-label self-center">{m['vote.stars.title']()}</legend>
+    <legend class="rating-label self-center">{#if selected_model === 'both_equal'}
+      {m['vote.stars.title.both_equal']()}{:else}
+      {m['vote.stars.title.model_preferred']( { model: selected_model.toUpperCase() } )}
+    {/if}</legend>
     <div class="flex flex-row">
         {#each stars as star (star)}
             {@const isFilled = hovered > 0 ? star <= hovered : star <= value}

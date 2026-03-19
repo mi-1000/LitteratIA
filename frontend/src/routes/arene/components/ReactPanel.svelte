@@ -15,7 +15,8 @@
     <div><VoteRadioGroup bind:value={selected_model} /></div>
     {#if selected_model !== undefined}
         <div class="mt-4">
-            <StarRating bind:value={rating} />
+            <StarRating bind:value={rating} selected_model={selected_model} />
         </div>
+        <!-- Ensuite, étiquettes, puis finalement, zone de texte -->
     {/if}
 </div>
