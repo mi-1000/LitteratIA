@@ -1948,6 +1948,12 @@
                 "question": "What did you dislike about the answer?",
                 "superficial": "Superficial"
             },
+            "neutral": {
+                "complete": "Completeness",
+                "correct": "Correctness",
+                "useful": "Usefulness",
+                "question": "Why did you give this rating?"
+            },
             "other": "Other…",
             "positive": {
                 "clear_formatting": "Clear formatting",

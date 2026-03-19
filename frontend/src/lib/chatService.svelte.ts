@@ -71,9 +71,11 @@ export const APINegativeReactions = [
   'superficial',
   'instructions_not_followed'
 ] as const
+export const APIGeneralReactions = ['useful', 'complete', 'correct'] as const
 export type APIReactionPref =
-  | (typeof APIPositiveReactions)[number]
-  | (typeof APINegativeReactions)[number]
+  // | (typeof APIPositiveReactions)[number]
+  // | (typeof APINegativeReactions)[number] |
+  (typeof APIGeneralReactions)[number]
 
 export type ReactionKind = 'like' | 'comment'
 export type APIReactionData = {

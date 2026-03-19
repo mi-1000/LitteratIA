@@ -2070,6 +2070,12 @@
                 "question": "Pourquoi la réponse ne convient-elle pas ?",
                 "superficial": "Superficielle"
             },
+            "neutral": {
+                "complete": "Complétude",
+                "correct": "Exactitude",
+                "useful": "Utilité",
+                "question": "Pourquoi avoir donné cette note ?"
+            },
             "other": "Autre…",
             "positive": {
                 "clear_formatting": "Mise en forme claire",

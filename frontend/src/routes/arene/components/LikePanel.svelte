@@ -4,6 +4,7 @@
   import {
       APINegativeReactions,
       APIPositiveReactions,
+      APIGeneralReactions,
       type APIReactionPref
   } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
@@ -11,8 +12,8 @@
 
   export interface LikePanelProps {
     id: string
-    show: boolean
-    kind: 'like' | 'dislike'
+    show?: boolean
+    kind?: 'like' | 'dislike' | 'neutral'
     model: string
     selection: APIReactionPref[]
     comment?: string
@@ -24,8 +25,8 @@
 
   let {
     id,
-    show,
-    kind,
+    show = true,
+    kind = 'neutral',
     model,
     selection = $bindable([]),
     comment = $bindable(''),
@@ -53,6 +54,14 @@
       choices: APINegativeReactions.map((value) => ({
         value,
         label: m[`vote.choices.negative.${value}`]()
+      })) as { value: APIReactionPref; label: string }[]
+    },
+     neutral: {
+      label: m['vote.choices.neutral.question'](),
+      icon: 'i-bi-emoji-neutral-fill',
+      choices: APIGeneralReactions.map((value) => ({
+        value,
+        label: m[`vote.choices.neutral.${value}`]()
       })) as { value: APIReactionPref; label: string }[]
     }
   }
@@ -195,7 +204,7 @@
               <p id="{id}-modal-label" class="modal-title">{m['vote.comment.add']()}</p>
               <div>
                 <textarea
-                  placeholder={m['vote.comment.placeholder']({ model })}
+                  placeholder={m['vote.comment.placeholder']({ model: model.toUpperCase() })}
                   class="fr-input"
                   rows="4"
                   bind:value={comment}

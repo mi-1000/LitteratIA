@@ -53,7 +53,6 @@
         <div class="mb-3 font-bold text-center">{m['vote.title']()}</div>
         <div class="grid gap-4 md:grid-cols-2">
           <div class="col-span-2">
-          <!-- TODO Update like panel : stars, then labels, then text zone -->
             <!-- <LikePanel 
               id={`pair-${round.index}-a`}
               kind={reactA?.liked ? 'like' : 'dislike'}
