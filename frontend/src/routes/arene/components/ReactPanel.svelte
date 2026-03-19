@@ -2,12 +2,20 @@
     import { LikePanel, StarRating, VoteRadioGroup } from '.'
     import { m } from '$lib/i18n/messages'
     import type { BotChoice } from '$lib/chatService.svelte'
+    import { APIGeneralReactions } from '$lib/chatService.svelte'
 
     let selected_model: BotChoice | undefined = $state(undefined)
     let rating: number = $state(0)
+    let selection: (typeof APIGeneralReactions)[number][] = $state([])
+
     $effect(() => {
         const _ = selected_model
         rating = 0
+    })
+
+    $effect(() => {
+        const _ = rating
+        selection = []
     })
 </script>
 
@@ -23,11 +31,11 @@
                     id="like-panel"
                     show={true}
                     model={selected_model}
-                    selection={[]}
+                    selection={selection}
                     onSelectionChange={(sel) => console.log('Selected like reactions:', sel)}
                 />
             </div>
         {/if}
-        <!-- Ensuite, étiquettes, puis finalement, zone de texte -->
+        <!-- Ensuite, étiquettes, puis finalement, zone de texte (réinitialiser si on change au-dessus) -->
     {/if}
 </div>
