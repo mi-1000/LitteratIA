@@ -2,10 +2,10 @@
   import { Button } from '$components/dsfr'
   import Selector from '$components/Selector.svelte'
   import {
-      APINegativeReactions,
-      APIPositiveReactions,
-      APIGeneralReactions,
-      type APIReactionPref
+    APIGeneralReactions,
+    APINegativeReactions,
+    APIPositiveReactions,
+    type APIReactionPref
   } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
   import { noop } from '$lib/utils/commons'
@@ -56,9 +56,9 @@
         label: m[`vote.choices.negative.${value}`]()
       })) as { value: APIReactionPref; label: string }[]
     },
-     neutral: {
+    neutral: {
       label: m['vote.choices.neutral.question'](),
-      icon: 'i-bi-emoji-neutral-fill',
+      icon: 'i-bi-question-circle-fill',
       choices: APIGeneralReactions.map((value) => ({
         value,
         label: m[`vote.choices.neutral.${value}`]()
@@ -114,10 +114,17 @@
   class:hidden={show === false}
   class:flex={mode === 'vote'}
 >
-  <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'} flex items-center">
-    <i class="{reaction.icon} block text-lg" style="color: {kind === 'like' ? 'var(--cg-green)' : '#e1000f'}"></i>
+  <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'} flex items-center justify-center">
+    <i
+      class="{reaction.icon} text-lg block"
+      style="color: {kind === 'like'
+        ? 'var(--cg-green)'
+        : kind === 'neutral'
+          ? 'var(--cg-grey)'
+          : '#e1000f'}"
+    ></i>
     <span
-      class="ms-2 font-bold text-dark-grey md:text-base text-[14px]"
+      class="ms-2 font-bold text-dark-grey md:text-base text-[14px] -translate-y-[0.5px]"
       class:sr-only={mode === 'vote'}
     >
       {reaction.label}
@@ -130,7 +137,7 @@
     choices={reaction.choices}
     multiple
     {disabled}
-    containerClass="flex flex-wrap gap-3"
+    containerClass="flex flex-wrap gap-3 justify-center"
     choiceClass="like-choice"
     onChange={onSelectionChange}
   >
@@ -204,7 +211,9 @@
               <p id="{id}-modal-label" class="modal-title">{m['vote.comment.add']()}</p>
               <div>
                 <textarea
-                  placeholder={model === 'both_equal' ? m['vote.comment.placeholder_both_equal']() : m['vote.comment.placeholder']({ model: model.toUpperCase() })}
+                  placeholder={model === 'both_equal'
+                    ? m['vote.comment.placeholder_both_equal']()
+                    : m['vote.comment.placeholder']({ model: model.toUpperCase() })}
                   class="fr-input"
                   rows="4"
                   bind:value={comment}
@@ -226,7 +235,7 @@
                 ></textarea>
                 <Button
                   aria-controls="{id}-modal"
-                  class="mt-4! mb-2! mx-auto! block! btn-color"
+                  class="mt-4! mb-2! btn-color mx-auto! block!"
                   onclick={() => onCommentChange(comment)}
                 >
                   {m['words.save']()}
@@ -257,7 +266,10 @@
     background: var(--background-default-grey);
     color: var(--text-mention-grey);
     cursor: pointer;
-    transition: border-color 0.3s, color 0.3s, background 0.3s;
+    transition:
+      border-color 0.3s,
+      color 0.3s,
+      background 0.3s;
     margin: 0;
     user-select: none;
   }

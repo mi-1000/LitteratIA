@@ -29,13 +29,17 @@
             <div class="mt-4">
                 <LikePanel
                     id="like-panel"
+                    className="justify-center"
                     show={true}
                     model={selected_model}
                     selection={selection}
-                    onSelectionChange={(sel) => console.log('Selected like reactions:', sel)}
+                    // onSelectionChange={}
+                    // il manque la gestion de "other"
                 />
             </div>
         {/if}
         <!-- Ensuite, étiquettes, puis finalement, zone de texte (réinitialiser si on change au-dessus) -->
+        <!-- Basculer le bouton révéler à la fin de chaque formulaire -->
+        <!-- Griser les formulaires précédents lorsqu'un nouveau message est envoyé -->
     {/if}
 </div>
