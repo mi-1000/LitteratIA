@@ -18,7 +18,7 @@
     selection: APIReactionPref[]
     comment?: string
     disabled?: boolean
-    mode?: 'react' | 'vote'
+    mode?: 'react' | 'vote' | 'detail'
     onSelectionChange?: (selection: APIReactionPref[]) => void
     onCommentChange?: (comment: string) => void
   }
@@ -124,7 +124,7 @@
           : '#e1000f'}"
     ></i>
     <span
-      class="ms-2 font-bold text-dark-grey md:text-base text-[14px] -translate-y-[0.5px]"
+      class="ms-2 font-bold text-dark-grey md:text-base text-[14px] -translate-y-[0.75px]"
       class:sr-only={mode === 'vote'}
     >
       {reaction.label}

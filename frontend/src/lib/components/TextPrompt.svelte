@@ -50,7 +50,7 @@
   })
 
   const updateAuto: Attachment<HTMLTextAreaElement> = (el) => {
-    if (autofocus) el.focus()
+    if (autofocus) el.focus({ preventScroll: true })
     if (autoscroll) el.scrollTo(0, el.scrollHeight)
   }
 
@@ -63,7 +63,7 @@
 </script>
 
 <div class={['fr-input-group', classNames, { 'fr-input-group--error': !!error }]}>
-  <label for={id} class={['fr-label', { 'hidden!': hideLabel }]}>{label}</label>
+  <label for={id} class={['fr-label', 'text-center', { 'hidden!': hideLabel }]}>{label}</label>
   <textarea
     {id}
     data-testid="textbox"

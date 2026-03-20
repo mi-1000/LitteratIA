@@ -33,12 +33,13 @@
                     show={true}
                     model={selected_model}
                     bind:selection={selection}
+                    mode="detail"
                     // onSelectionChange={}
                     // il manque la gestion de "other"
                 />
             </div>
             {#if selection.length > 0}
-                <TextPrompt id="text-prompt" label="-- Détaillez ici --" class="mt-4" />
+                <TextPrompt id="text-prompt" label={m['vote.elaborate']()} placeholder={selected_model === 'both_equal' ? m['vote.comment.placeholder_both_equal']() : m['vote.comment.placeholder']({ model: selected_model.toUpperCase() })} minRows={4} maxRows={4} class="mt-4" />
             {/if}
         {/if}
         <!-- Ensuite, étiquettes, puis finalement, zone de texte (réinitialiser si on change au-dessus) -->
