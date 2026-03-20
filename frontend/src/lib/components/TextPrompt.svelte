@@ -5,7 +5,7 @@
   export type TextAreaProps = {
     id: string
     label: string
-    value: string
+    value?: string
     hideLabel?: boolean
     minRows?: number
     maxRows?: number
@@ -20,7 +20,7 @@
   let {
     id,
     label,
-    value = $bindable(),
+    value = $bindable(''),
     hideLabel = false,
     rows = 1,
     minRows,
