@@ -30,7 +30,6 @@
             <div class="mt-4">
                 <LikePanel
                     id="like-panel"
-                    className="justify-center"
                     show={true}
                     model={selected_model}
                     bind:selection={selection}
@@ -39,7 +38,7 @@
                 />
             </div>
             {#if selection.length > 0}
-                <TextPrompt id="text-prompt" label="-- Détaillez ici --" />
+                <TextPrompt id="text-prompt" label="-- Détaillez ici --" class="mt-4" />
             {/if}
         {/if}
         <!-- Ensuite, étiquettes, puis finalement, zone de texte (réinitialiser si on change au-dessus) -->
