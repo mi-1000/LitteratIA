@@ -63,7 +63,7 @@
 </script>
 
 <div class={['fr-input-group', classNames, { 'fr-input-group--error': !!error }]}>
-  <label for={id} class={['fr-label', 'text-center', { 'hidden!': hideLabel }]}>{label}</label>
+  <label for={id} class={['fr-label', 'text-center', 'text-dark-grey!', 'font-bold', { 'hidden!': hideLabel }]}>{label}</label>
   <textarea
     {id}
     data-testid="textbox"

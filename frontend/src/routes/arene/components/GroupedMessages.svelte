@@ -1,17 +1,17 @@
 <script lang="ts">
   import type { ChatRound, OnReactionFn } from '$lib/chatService.svelte'
+  import { arena } from '$lib/chatService.svelte'
   import { scrollTo } from '$lib/helpers/attachments'
-  import { MessageBot, MessageUser, ReactPanel } from '.'
   import { m } from '$lib/i18n/messages'
-   import { arena } from '$lib/chatService.svelte'
+  import { MessageBot, MessageUser, ReactPanel } from '.'
 
   let {
     round,
     disabled,
     onReactionChange,
     showModelName = false,
-    invertModelLabels = false
-    , reactionsByIndex = {} as Record<number, any>
+    invertModelLabels = false,
+    reactionsByIndex = {} as Record<number, any>
   }: {
     round: ChatRound
     disabled: boolean
@@ -22,7 +22,20 @@
   } = $props()
 
   let userMessageSize = $state(0)
-   let anyGenerating = $derived(arena.chat.a.status === 'generating' || arena.chat.b.status === 'generating')
+  let anyBlocking = $derived(
+    arena.chat.a.status === 'generating' ||
+      arena.chat.b.status === 'generating' ||
+      arena.chat.status !== 'complete'
+  )
+
+  // compute whether this round is older than the latest user round
+  const prevLocked = $derived.by(() => {
+    const { a, b } = arena.chat
+    const base = a.messages.length ? 'a' : 'b'
+    const userMessages = arena.chat[base].messages.filter((m) => m.role === 'user')
+    const lastIndex = userMessages.length ? userMessages.length - 1 : 0
+    return round.index < lastIndex
+  })
 </script>
 
 <div
@@ -34,8 +47,24 @@
 
   <div class="gap-10 md:grid-cols-2 md:gap-6 grid">
     {#if round.a && round.b && round.showMessages}
-      <MessageBot message={round.a} index={round.index} {disabled} {onReactionChange} showModelName={showModelName} invertModelLabels={invertModelLabels} side="A" />
-      <MessageBot message={round.b} index={round.index} {disabled} {onReactionChange} showModelName={showModelName} invertModelLabels={invertModelLabels} side="B" />
+      <MessageBot
+        message={round.a}
+        index={round.index}
+        {disabled}
+        {onReactionChange}
+        {showModelName}
+        {invertModelLabels}
+        side="A"
+      />
+      <MessageBot
+        message={round.b}
+        index={round.index}
+        {disabled}
+        {onReactionChange}
+        {showModelName}
+        {invertModelLabels}
+        side="B"
+      />
     {/if}
   </div>
 
@@ -44,14 +73,17 @@
     {@const idxB = round.index * 2 + 2}
     {@const reactA = reactionsByIndex[idxA]}
     {@const reactB = reactionsByIndex[idxB]}
-      {#if round.a && round.b}
+    {#if round.a && round.b}
       <div
-        class={['cg-border rounded-lg mt-4 bg-white p-4 md:p-6', anyGenerating ? 'opacity-50 cursor-not-allowed' : '']}
-        title={anyGenerating ? m['vote.wait']() : ''}
-        aria-disabled={anyGenerating}
+        class={[
+          'cg-border rounded-lg mt-4 bg-white p-4 md:p-6',
+          anyBlocking || prevLocked ? 'cursor-not-allowed opacity-50' : ''
+        ]}
+        title={anyBlocking || prevLocked ? m['vote.wait']() : ''}
+        aria-disabled={anyBlocking || prevLocked}
       >
         <div class="mb-3 font-bold text-center">{m['vote.title']()}</div>
-        <div class="grid gap-4 md:grid-cols-2">
+        <div class="gap-4 md:grid-cols-2 grid">
           <div class="col-span-2">
             <!-- <LikePanel 
               id={`pair-${round.index}-a`}
@@ -64,10 +96,10 @@
                 disabled={anyGenerating}
               model="A"
             /> -->
-            <ReactPanel />
+            <ReactPanel disabled={anyBlocking || prevLocked || disabled} />
           </div>
         </div>
-        </div>
+      </div>
     {/if}
   {/if}
 </div>
