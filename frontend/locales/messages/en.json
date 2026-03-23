@@ -1980,6 +1980,7 @@
             "label": "I like",
             "selectedLabel": "I like (selected)"
         },
+        "locked": "Cannot vote anymore!",
         "qualify": {
             "addDetails": "Add details",
             "placeholder": "The responses from the {model} model are...",

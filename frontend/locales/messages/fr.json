@@ -2102,6 +2102,7 @@
             "label": "J'apprécie",
             "selectedLabel": "J'apprécie (sélectionné)"
         },
+        "locked": "Plus possible de voter pour ce message-ci !",
         "qualify": {
             "addDetails": "Ajouter des détails",
             "placeholder": "Les réponses du modèle {model} sont...",

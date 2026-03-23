@@ -3,7 +3,7 @@
   import { scrollTo } from '$lib/helpers/attachments'
   import { MessageBot, MessageUser, ReactPanel } from '.'
   import { m } from '$lib/i18n/messages'
-   import { arena } from '$lib/chatService.svelte'
+  import { arena } from '$lib/chatService.svelte'
 
   let {
     round,
@@ -22,7 +22,7 @@
   } = $props()
 
   let userMessageSize = $state(0)
-   let anyGenerating = $derived(arena.chat.a.status === 'generating' || arena.chat.b.status === 'generating')
+  let anyGenerating = $derived(arena.chat.a.status === 'generating' || arena.chat.b.status === 'generating')
 </script>
 
 <div
