@@ -2094,7 +2094,7 @@
             "label": "Je n'apprécie pas",
             "selectedLabel": "Je n'apprécie pas (sélectionné)"
         },
-        "elaborate": "Un commentaire à rajouter ? (optionnel)",
+        "elaborate": "Un commentaire à rajouter ?",
         "introA": "Avant de découvrir l’identité des modèles, nous avons besoin de votre préférence.",
         "introB": "Elle permet de constituer un jeu de données afin d'analyser les caractéristiques de chaque modèle dans le cadre de l'apprentissage des langues étrangères assisté par IA.",
         "introC": "Votre vote permet de constituer un jeu de données afin d'analyser les caractéristiques de chaque modèle dans le cadre de l'apprentissage des langues étrangères assisté par IA.",

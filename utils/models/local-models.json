@@ -32,38 +32,6 @@
       "simple_name": "Gemma3 4B",
       "specific_portals": null,
       "status": "enabled"
-    },
-    "ministral-3-3b": {
-      "new": false,
-      "active_params": null,
-      "distribution": "open-weights",
-      "reuse": false,
-      "commercial_use": null,
-      "organisation": "local",
-      "data": null,
-      "prefs": null,
-      "url": null,
-      "endpoint": {
-        "api_type": "ollama",
-        "api_base": null,
-        "api_model_id": "ministral-3:3b"
-      },
-      "friendly_size": "XS",
-      "fully_open_source": true,
-      "icon_path": "",
-      "id": "ministral-3:3b",
-      "license": "unknown",
-      "arch": "generic",
-      "params": 3,
-      "required_ram": 12,
-      "wh_per_million_token": 0,
-      "pricey": false,
-      "quantization": null,
-      "reasoning": false,
-      "release_date": "12/2025",
-      "simple_name": "Ministral-3 3B",
-      "specific_portals": null,
-      "status": "enabled"
     }
   }
 }
