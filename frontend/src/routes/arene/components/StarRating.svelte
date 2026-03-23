@@ -1,51 +1,51 @@
 <script lang="ts">
-    import type { BotChoice } from "$lib/chatService.svelte"
-    import { m } from "$lib/i18n/messages"
+  import type { BotChoice } from '$lib/chatService.svelte'
+  import { m } from '$lib/i18n/messages'
 
-  let { 
+  let {
     value = $bindable(0),
     selected_model,
-    disabled = false,
+    disabled = false
   }: {
     value?: number
     selected_model: BotChoice
     disabled?: boolean
-  } = $props();
+  } = $props()
 
-  let hovered = $state(0);
-  const stars = [1, 2, 3, 4, 5];
+  let hovered = $state(0)
+  const stars = [1, 2, 3, 4, 5]
 </script>
 
-<fieldset 
-  class="star-rating" 
-  onmouseleave={() => (hovered = 0)}
-  disabled={disabled}
-  role="radiogroup"
->
-    <legend class="rating-label self-center">{#if selected_model === 'both_equal'}
+<fieldset class="star-rating" onmouseleave={() => (hovered = 0)} {disabled} role="radiogroup">
+  <legend class="rating-label self-center"
+    >{#if selected_model === 'both_equal'}
       {m['vote.stars.title.both_equal']()}{:else}
-      {m['vote.stars.title.model_preferred']( { model: selected_model.toUpperCase() } )}
-    {/if}</legend>
-    <div class="flex flex-row">
-        {#each stars as star (star)}
-            {@const isFilled = hovered > 0 ? star <= hovered : star <= value}
-            {@const isReducing = hovered > 0 && star > hovered && star <= value}
-            <button
-                type="button"
-                class="star-btn mx-1"
-                onclick={() => value = star}
-                onmouseenter={() => (hovered = star)}
-                title={m['vote.stars.' + star]()}
-                aria-label={m['vote.stars.' + star]()}
-            >
-            <i class="star-icon 
+      {m['vote.stars.title.model_preferred']({ model: selected_model.toUpperCase() })}
+    {/if}</legend
+  >
+  <div class="flex flex-row">
+    {#each stars as star (star)}
+      {@const isFilled = hovered > 0 ? star <= hovered : star <= value}
+      {@const isReducing = hovered > 0 && star > hovered && star <= value}
+      <button
+        type="button"
+        class="star-btn mx-1"
+        onclick={() => (value = star)}
+        onmouseenter={() => (hovered = star)}
+        title={m['vote.stars.' + star]()}
+        aria-label={m['vote.stars.' + star]()}
+        {disabled}
+      >
+        <i
+          class="star-icon
             {isFilled || isReducing ? 'i-bi-star-fill' : 'i-bi-star'} 
             {isFilled ? 'is-filled' : ''} 
-            {isReducing ? 'is-reducing' : ''}">
-            </i>
-            </button>
-        {/each}
-    </div>
+            {isReducing ? 'is-reducing' : ''}"
+        >
+        </i>
+      </button>
+    {/each}
+  </div>
 </fieldset>
 
 <style>
@@ -81,7 +81,10 @@
     width: 1em;
     height: 1em;
     color: color-mix(in srgb, transparent 70%, var(--cg-yellow));
-    transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
   .star-icon.is-filled {
@@ -92,12 +95,12 @@
     opacity: 0.3;
     filter: grayscale(0.5);
   }
-  
+
   .star-btn:hover {
     background: none;
 
     &:not(:disabled) {
-        transform: translateY(-3px);
+      transform: translateY(-3px);
     }
   }
 
@@ -112,8 +115,9 @@
 
   .star-btn:disabled {
     cursor: not-allowed;
+    pointer-events: none;
   }
-  
+
   .star-btn:disabled .star-icon {
     filter: grayscale(1);
     opacity: 0.4;
