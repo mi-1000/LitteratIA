@@ -1952,7 +1952,7 @@
                 "complete": "Completeness",
                 "correct": "Correctness",
                 "useful": "Usefulness",
-                "question": "Why did you give this rating?"
+                "question": "Why did you give this rating (several answers possible)?"
             },
             "other": "Other…",
             "positive": {

@@ -2074,7 +2074,7 @@
                 "complete": "Complétude",
                 "correct": "Exactitude",
                 "useful": "Utilité",
-                "question": "Pourquoi avoir donné cette note ?"
+                "question": "Pourquoi avoir donné cette note (plusieurs réponses possibles) ?"
             },
             "other": "Autre…",
             "positive": {
