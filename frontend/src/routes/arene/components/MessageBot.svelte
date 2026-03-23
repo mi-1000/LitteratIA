@@ -147,7 +147,7 @@
 
 <div class="flex flex-col">
   <div
-    class="message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden"
+    class={`message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden message-bot-${side.toLowerCase()}`}
   >
       <div class="top-0 pb-5 pt-7 sticky z-10 flex items-center model-label bg-white px-5">
         <div class="c-bot-disk-{bot}"></div>

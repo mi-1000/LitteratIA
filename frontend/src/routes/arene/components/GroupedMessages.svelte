@@ -4,8 +4,6 @@
   import { scrollTo } from '$lib/helpers/attachments'
   import { m } from '$lib/i18n/messages'
   import { MessageBot, MessageUser, ReactPanel } from '.'
-  import { m } from '$lib/i18n/messages'
-  import { arena } from '$lib/chatService.svelte'
 
   let {
     round,

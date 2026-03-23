@@ -315,3 +315,10 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
     padding-inline: var(--cg-card-inline-padding);
   }
 }
+
+.message-bot.message-bot-a {
+  border: 1px solid var(--blue-france-main-525) !important;
+}
+.message-bot.message-bot-b {
+  border: 1px solid var(--cg-blue-france-shifted) !important;
+}
