@@ -11,15 +11,15 @@
     disabled,
     onReactionChange,
     onRetry,
-    onVote
-    , showModelName = false
-    , invertModelLabels = false
-    , reactionsByIndex = {} as Record<number, any>
+    onVote,
+    showModelName = false,
+    invertModelLabels = false,
+    reactionsByIndex = {} as Record<number, any>
   }: {
     disabled: boolean
     onReactionChange: OnReactionFn
     onRetry: () => void
-    onVote: () => void
+    onVote?: () => void
     showModelName?: boolean | 'showA' | 'showB'
     invertModelLabels?: boolean
     reactionsByIndex?: Record<number, any>

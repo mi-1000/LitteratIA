@@ -11,14 +11,12 @@
     onReactionChange,
     showModelName = false,
     invertModelLabels = false,
-    reactionsByIndex = {} as Record<number, any>
   }: {
     round: ChatRound
     disabled: boolean
     onReactionChange: OnReactionFn
     showModelName?: boolean | 'showA' | 'showB'
     invertModelLabels?: boolean
-    reactionsByIndex?: Record<number, any>
   } = $props()
 
   let userMessageSize = $state(0)
@@ -69,33 +67,18 @@
   </div>
 
   {#if round.a && round.b}
-    {@const idxA = round.index * 2 + 1}
-    {@const idxB = round.index * 2 + 2}
-    {@const reactA = reactionsByIndex[idxA]}
-    {@const reactB = reactionsByIndex[idxB]}
     {#if round.a && round.b}
       <div
         class={[
           'cg-border rounded-lg mt-4 bg-white p-4 md:p-6',
           anyBlocking || prevLocked ? 'cursor-not-allowed opacity-50' : ''
         ]}
-        title={anyBlocking || prevLocked ? m['vote.wait']() : ''}
+        title={anyBlocking ? m['vote.wait']() : prevLocked ? m['vote.locked']() : ''}
         aria-disabled={anyBlocking || prevLocked}
       >
         <div class="mb-3 font-bold text-center">{m['vote.title']()}</div>
         <div class="gap-4 md:grid-cols-2 grid">
           <div class="col-span-2">
-            <!-- <LikePanel 
-              id={`pair-${round.index}-a`}
-              kind={reactA?.liked ? 'like' : 'dislike'}
-              show={true}
-              selection={reactA?.prefs ?? []}
-              comment={reactA?.comment ?? ''}
-              onSelectionChange={(s) => onReactionChange({ ...(reactA || { index: idxA, bot: 'a' }), prefs: s })}
-              onCommentChange={(c) => onReactionChange({ ...(reactA || { index: idxA, bot: 'a' }), comment: c })}
-                disabled={anyGenerating}
-              model="A"
-            /> -->
             <ReactPanel disabled={anyBlocking || prevLocked || disabled} />
           </div>
         </div>

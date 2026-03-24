@@ -62,60 +62,6 @@
   {/if}
 {/snippet}
 
-{#if arena.currentScreen === 'chat' && arena.chat.step && mode}
-  <div
-    bind:this={secondHeader}
-    id="second-header"
-    class="fr-container--fluid bg-light-grey top-0 py-3 md:py-4 sticky z-3 drop-shadow-[--raised-shadow]"
-  >
-    <div class="fr-container gap-3 md:flex-row flex flex-col items-center">
-      <div class="gap-3 md:flex-row flex basis-2/3 flex-col items-center">
-          <div class="bg-primary px-4 py-2 font-bold text-white rounded-[3.75rem] text-nowrap" id="step-indicator-pill">
-            {m['header.chatbot.step']()}
-            {arena.chat.step}/2
-          </div>
-        <div class="md:text-left flex flex-col text-center">
-          <strong class="text-dark-grey">
-            {#if arena.chat.step == 1}
-              {m['header.chatbot.stepOne.title']()}
-            {:else}
-              {m['header.chatbot.stepTwo.title']()}
-            {/if}
-          </strong>
-          {#if arena.chat.step == 1}
-            <div class="fr-accordion md:hidden before:shadow-none!">
-              <div id="accordion-header" class="fr-collapse p-0!">
-                {@render desc()}
-                {@render extra()}
-              </div>
-              <button
-                type="button"
-                class=""
-                aria-expanded="false"
-                aria-controls="accordion-header"
-                onclick={() => (toggled = !toggled)}
-              >
-                <Icon
-                  icon={toggled ? 'i-ri-arrow-up-s-line' : 'i-ri-arrow-down-s-line'}
-                  size="sm"
-                  block
-                />
-                <span class="sr-only">{m['actions.seeMore']()}</span>
-              </button>
-            </div>
-          {:else}
-            <div class="md:hidden">{@render desc()}</div>
-          {/if}
-          <div class="md:block hidden">{@render desc()}</div>
-        </div>
-      </div>
-      <div class="md:block hidden w-full basis-1/3 items-center">
-        {@render extra()}
-      </div>
-    </div>
-  </div>
-{/if}
-
 <main class="bg-very-light-grey relative" style="--second-header-size: {secondHeaderSize}px;">
   {#if arena.currentScreen === 'prompt'}
     <ViewPrompt />

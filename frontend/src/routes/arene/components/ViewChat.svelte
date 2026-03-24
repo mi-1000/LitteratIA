@@ -1,22 +1,18 @@
 <script lang="ts">
-  import { Button } from '$components/dsfr'
   import TextPrompt from '$components/TextPrompt.svelte'
-  import type { APIReactionData, OnReactionFn, RevealData, VoteData } from '$lib/chatService.svelte'
+  import type { APIReactionData, OnReactionFn, VoteData } from '$lib/chatService.svelte'
   import {
       arena,
       askChatBots,
-      getReveal,
-      postVoteGetReveal,
       retryAskChatBots,
       updateReaction
   } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
-  import { ChatBot, RevealArea, VoteArea } from '.'
+  import { ChatBot, VoteArea } from '.'
 
-  let step = $state<'chat' | 'vote' | 'reveal'>('chat')
+  let step = $state<'chat' | 'vote' >('chat')
   let prompt = $state('')
   let promptError = $state<string>()
-  let canVote = $state<boolean | null>(true)
   let reactionsByIndex = $state<Record<number, APIReactionData>>({})
   let voteData = $state<VoteData>({
     selected: undefined,
@@ -31,29 +27,18 @@
       comment: ''
     }
   })
-  let revealData = $state<RevealData>()
   let showModelName = $derived(arena.showModelName)
   let invertModelLabels = $derived(arena.invertModelLabels)
   const chatbotDisabled = $derived(arena.chat.status !== 'complete' || step !== 'chat')
-  const revealDisabled = $derived(
-    arena.chat.status !== 'complete' || (step === 'vote' && voteData.selected === undefined)
-  )
 
   const onReactionChange: OnReactionFn = async (reaction) => {
     // keep a map of reactions by message index and compute canVote from all reactions
     reactionsByIndex = { ...reactionsByIndex, [reaction.index]: reaction }
-    const reactions = Object.values(reactionsByIndex)
-    canVote = reactions.length === 0 ? true : !reactions.some((r) => r.liked !== null) // TODO update backend to enforce voting even if there are already reactions (and leave canVote always true)
     await updateReaction(reaction)
   }
 
   function onRetry() {
     retryAskChatBots()
-  }
-
-  function onVote() {
-    // FIXME if user already react? go to reveal for now
-    onRevealModels()
   }
 
   async function onPromptSubmit() {
@@ -63,23 +48,6 @@
       promptError = validationError
     } else {
       prompt = ''
-    }
-  }
-
-  async function onRevealModels() {
-    // if chat as reactions, no need to show vote
-    if (canVote === false) {
-      revealData = await getReveal()
-      step = 'reveal'
-      arena.chat.step = 2
-    } else if (step === 'vote') {
-      if (!voteData.selected) return
-      revealData = await postVoteGetReveal(voteData as Required<VoteData>)
-      step = 'reveal'
-      arena.chat.step = 2
-    } else {
-      step = 'vote'
-      arena.chat.step = 2
     }
   }
 
@@ -105,16 +73,13 @@
 <svelte:window onresize={onResize} />
 
 <div style="--footer-size: {footerSize}px;" class="flex grow flex-col">
-  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} {onVote} showModelName={showModelName} invertModelLabels={invertModelLabels} reactionsByIndex={reactionsByIndex} />
+  <ChatBot disabled={chatbotDisabled} {onReactionChange} {onRetry} showModelName={showModelName} invertModelLabels={invertModelLabels} reactionsByIndex={reactionsByIndex} />
 
-  {#if step === 'vote' || (step === 'reveal' && canVote)}
-    <VoteArea bind:value={voteData} disabled={step === 'reveal'} showModelName={showModelName} invertModelLabels={invertModelLabels} />
+  {#if step === 'vote'}
+    <VoteArea bind:value={voteData} disabled={false} showModelName={showModelName} invertModelLabels={invertModelLabels} />
   {/if}
 
-  {#if step === 'reveal' && revealData}
-    <RevealArea data={revealData} />
-  {:else}
-    <div
+  <div
       bind:this={footer}
       id="send-area"
       class="bg-very-light-grey bottom-0 gap-3 px-4 py-3 md:px-[20%] sticky z-2 mt-auto flex flex-col items-center"
@@ -156,27 +121,7 @@
           </button>
         </div>
       {/if}
-      <Button
-          text={
-            showModelName
-              ? step === 'vote'
-                ? m['chatbot.revealButton']()
-                : m['chatbot.voteButton']()
-              : m['chatbot.revealButton']()
-          }
-          disabled={revealDisabled}
-          class="md:w-fit! w-full! btn-color"
-          onclick={onRevealModels}
-          title={
-            showModelName
-              ? step === 'vote'
-                ? m['chatbot.revealButton']()
-                : m['chatbot.voteButton']()
-              : m['chatbot.revealButton']()
-          }
-      />
     </div>
-  {/if}
 </div>
 
 <style>
