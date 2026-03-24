@@ -16,6 +16,7 @@ from datetime import datetime
 from typing import Annotated, Any, Iterator
 
 import psycopg2
+from psycopg2 import sql
 from fastapi import Request
 from pydantic import BaseModel, Field, PlainSerializer, WrapSerializer
 
@@ -99,11 +100,14 @@ def save_vote_to_db(data: dict) -> dict:
 
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
-        insert_statement = psycopg2.sql.SQL(
-            f"""
+        insert_statement = sql.SQL(
+        """
             INSERT INTO votes ({fields})
             VALUES ({values})
         """
+        ).format(
+            fields=sql.SQL(', ').join(map(sql.Identifier, data.keys())),
+            values=sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
         )
 
         cursor.execute(insert_statement, data)
@@ -141,10 +145,9 @@ def upsert_reaction_to_db(data: dict) -> dict:
         - Updates all fields except timestamps on conflict
     """
     with db(data, "upsert 'reaction'") as (cursor, fields, values):
-        data_keys = list(data.keys())
         # SQL UPSERT for reactions table
-        query = psycopg2.sql.SQL(
-            f"""
+        query = sql.SQL(
+            """
             INSERT INTO reactions ({fields})
             VALUES ({values})
             ON CONFLICT (refers_to_conv_id, msg_index) 
@@ -180,7 +183,10 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 msg_rank = EXCLUDED.msg_rank,
                 chatbot_index = EXCLUDED.chatbot_index,
                 question_id = EXCLUDED.question_id;
-        """
+        """.format(
+            fields=sql.SQL(', ').join(map(sql.Identifier, data.keys())),
+            values=sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
+            )
         )
         # TODO: fixes some edge case
         #     RETURNING
@@ -271,25 +277,25 @@ def upsert_conv_to_db(data: dict) -> dict:
         - Preserves initial timestamps on updates
     """
     with db(data, "upsert 'conversations'") as (cursor, fields, values):
-        # FIXME add tstamp?
-        data_keys = list(data.keys())
         # SQL UPSERT for conversations table
-        upsert_query = psycopg2.sql.SQL(
-            f"""
-            INSERT INTO conversations ({fields})
-            VALUES ({values})
+        upsert_query = sql.SQL("""
+            INSERT INTO conversations ({fields}, timestamp, last_message_timestamp)
+            VALUES ({values}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             ON CONFLICT (conversation_pair_id)
             DO UPDATE SET
-                country_portal =  coalesce(EXCLUDED.country_portal, conversations.country_portal),
+                country_portal = coalesce(EXCLUDED.country_portal, conversations.country_portal),
                 conversation_a = EXCLUDED.conversation_a,
                 conversation_b = EXCLUDED.conversation_b,
                 conv_turns = EXCLUDED.conv_turns,
                 total_conv_a_output_tokens = EXCLUDED.total_conv_a_output_tokens,
                 total_conv_b_output_tokens = EXCLUDED.total_conv_b_output_tokens,
-                cohorts = EXCLUDED.cohorts
-        """
+                cohorts = EXCLUDED.cohorts,
+                last_message_timestamp = CURRENT_TIMESTAMP
+        """).format(
+            fields = sql.SQL(', ').join(map(sql.Identifier, data.keys())),
+            values = sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
         )
-
+        
         cursor.execute(upsert_query, data)
 
     logger.info(f"[DB] Upserted conversation {data['conversation_pair_id']}")

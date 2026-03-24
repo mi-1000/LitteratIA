@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 from logging.handlers import WatchedFileHandler
+from time import timezone
 from typing import Any
 
 import psycopg2
@@ -105,16 +106,17 @@ class PostgresHandler(logging.Handler):
                 with self.connection.cursor() as cursor:
                     # del(record.__dict__["request"])
 
-                    insert_statement = sql.SQL(
-                        """
-                        INSERT INTO logs (time, level, message, query_params, path_params, session_hash, extra)
-                        VALUES (%(time)s, %(level)s, %(message)s, %(query_params)s, %(path_params)s, %(session_hash)s, %(extra)s)
-                    """
+                    columns = ["level", "message", "query_params", "path_params", "session_hash", "extra"]
+                    insert_statement = sql.SQL("""
+                        INSERT INTO logs ({fields})
+                        VALUES ({values})
+                    """).format(
+                        fields = sql.SQL(', ').join(map(sql.Identifier, columns)),
+                        values = sql.SQL(', ').join([sql.Placeholder(name) for name in columns])
                     )
                     values = {
-                        "time": record.asctime,
                         "level": record.levelname,
-                        "message": record.message,
+                        "message": record.getMessage(),
                     }
                     if hasattr(record, "extra"):
                         values["extra"] = json.dumps(record.__dict__.get("extra"))
