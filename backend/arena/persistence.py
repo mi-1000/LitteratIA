@@ -183,11 +183,11 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 msg_rank = EXCLUDED.msg_rank,
                 chatbot_index = EXCLUDED.chatbot_index,
                 question_id = EXCLUDED.question_id;
-        """.format(
+        """).format(
             fields=sql.SQL(', ').join(map(sql.Identifier, data.keys())),
             values=sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
-            )
         )
+        
         # TODO: fixes some edge case
         #     RETURNING
         # (CASE
