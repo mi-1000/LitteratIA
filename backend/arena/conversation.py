@@ -23,7 +23,7 @@ from backend.arena.models import (
 )
 from backend.errors import EmptyResponseError
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 
 async def bot_response_async(

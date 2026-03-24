@@ -30,7 +30,7 @@ from backend.llms.data import get_llms_data
 from backend.utils.countries import CountryPortalAnno
 from backend.utils.user import get_ip, get_matomo_tracker_from_cookies
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 router = APIRouter(
     prefix="/arena",

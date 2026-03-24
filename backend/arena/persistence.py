@@ -1,6 +1,6 @@
 """
 Database persistence for votes, reactions, and conversations.
-Migrated from ComparIAGradio/languia/logs.py to FastAPI.
+Migrated from ComparIAGradio/litteratia/logs.py to FastAPI.
 
 This module handles:
 - Saving votes to PostgreSQL + JSON backup files
@@ -30,7 +30,7 @@ from backend.arena.models import (
 )
 from backend.config import CountryPortal, SelectionMode, settings
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 JSONSerializer = PlainSerializer(lambda v: json.dumps(v))
 JSONModelSerializer = WrapSerializer(lambda v, handler: json.dumps(handler(v)))
@@ -99,16 +99,18 @@ def save_vote_to_db(data: dict) -> dict:
 
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
-        insert_statement = psycopg2.sql.SQL(f"""
+        insert_statement = psycopg2.sql.SQL(
+            f"""
             INSERT INTO votes ({fields})
             VALUES ({values})
-        """)
+        """
+        )
 
         cursor.execute(insert_statement, data)
 
         # TODO: also increment redis counter
         # if data.get("country_portal") == "da":
-        #     from languia.session import r
+        #     from litteratia.session import r
 
         #     if r:
         #         try:
@@ -141,7 +143,8 @@ def upsert_reaction_to_db(data: dict) -> dict:
     with db(data, "upsert 'reaction'") as (cursor, fields, values):
         data_keys = list(data.keys())
         # SQL UPSERT for reactions table
-        query = psycopg2.sql.SQL(f"""
+        query = psycopg2.sql.SQL(
+            f"""
             INSERT INTO reactions ({fields})
             VALUES ({values})
             ON CONFLICT (refers_to_conv_id, msg_index) 
@@ -177,7 +180,8 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 msg_rank = EXCLUDED.msg_rank,
                 chatbot_index = EXCLUDED.chatbot_index,
                 question_id = EXCLUDED.question_id;
-        """)
+        """
+        )
         # TODO: fixes some edge case
         #     RETURNING
         # (CASE
@@ -192,7 +196,7 @@ def upsert_reaction_to_db(data: dict) -> dict:
         #     "country_portal"
         # ) or request.query_params.get("locale")
         # if country_portal == "da":
-        #     from languia.session import r
+        #     from litteratia.session import r
 
         #     if r:
         #         try:
@@ -222,10 +226,12 @@ def delete_reaction_in_db(msg_index: int, refers_to_conv_id: str) -> dict:
         psycopg2.Error: If database operation fails
     """
     with db({}, "delete 'reaction'") as (cursor, _, __):
-        delete_query = psycopg2.sql.SQL("""
+        delete_query = psycopg2.sql.SQL(
+            """
             DELETE FROM reactions
             WHERE refers_to_conv_id = %s AND msg_index = %s
-    """)
+    """
+        )
 
         cursor.execute(delete_query, (refers_to_conv_id, msg_index))
         deleted_count = cursor.rowcount
@@ -268,7 +274,8 @@ def upsert_conv_to_db(data: dict) -> dict:
         # FIXME add tstamp?
         data_keys = list(data.keys())
         # SQL UPSERT for conversations table
-        upsert_query = psycopg2.sql.SQL(f"""
+        upsert_query = psycopg2.sql.SQL(
+            f"""
             INSERT INTO conversations ({fields})
             VALUES ({values})
             ON CONFLICT (conversation_pair_id)
@@ -280,7 +287,8 @@ def upsert_conv_to_db(data: dict) -> dict:
                 total_conv_a_output_tokens = EXCLUDED.total_conv_a_output_tokens,
                 total_conv_b_output_tokens = EXCLUDED.total_conv_b_output_tokens,
                 cohorts = EXCLUDED.cohorts
-        """)
+        """
+        )
 
         cursor.execute(upsert_query, data)
 

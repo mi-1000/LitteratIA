@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: languia
+      POSTGRES_DB: litteratia
     volumes:
       - prd-db-data:/var/lib/postgresql/data
       - ./prd-backup.dump:/backup/backup.dump:ro

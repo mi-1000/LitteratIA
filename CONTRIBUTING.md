@@ -127,7 +127,7 @@ make i18n-build-news           # Generate news files
 
 ## Database
 
-**Prerequisites:** `COMPARIA_DB_URI` environment variable configured (defaults to `postgresql://postgres:postgres@localhost:5432/languia` for local dev)
+**Prerequisites:** `COMPARIA_DB_URI` environment variable configured (defaults to `postgresql://postgres:postgres@localhost:5432/litteratia` for local dev)
 
 ```bash
 # Generate init-db.sql and start Postgres via Docker
@@ -184,7 +184,7 @@ Translation files live in `frontend/locales/messages/`. To add a new language, c
 
 - `frontend/`: SvelteKit frontend (Vite, TailwindCSS, French Design System). Runs on port 5173.
 - `backend/main.py`: FastAPI entry point. Runs on port 8001.
-- `languia/`: Backend logic (streaming, voting, reveal, rate limiting, persistence).
+- `litteratia/`: Backend logic (streaming, voting, reveal, rate limiting, persistence).
 - `docker/`: Docker Compose configs (infra + app overlay).
 - `utils/`: Model generation, ranking methods, database schemas, dataset export.
 - `controller.py`: Simple error monitoring dashboard (`uv run uvicorn controller:app --reload --port 21001`).

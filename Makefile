@@ -9,7 +9,7 @@ FRONTEND_PORT := 5173
 CONTROLLER_PORT := 21001
 
 # si non défini (utiliser les valeurs de dev local avec docker compose)
-COMPARIA_DB_URI ?= postgresql://postgres:postgres@localhost:5432/languia
+COMPARIA_DB_URI ?= postgresql://postgres:postgres@localhost:5432/litteratia
 COMPARIA_REDIS_HOST ?= localhost
 # Exporter pour les sous-commandes
 export COMPARIA_DB_URI

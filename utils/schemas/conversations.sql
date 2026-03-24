@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS conversations (
 
 -- GRANT USAGE,
 -- SELECT
---     ON SEQUENCE conversations_id_seq TO "languia";
+--     ON SEQUENCE conversations_id_seq TO "litteratia";
 
--- GRANT ALL PRIVILEGES ON TABLE conversations TO "languia";
+-- GRANT ALL PRIVILEGES ON TABLE conversations TO "litteratia";
 
 
 -- 02/04/2025

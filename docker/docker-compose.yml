@@ -3,10 +3,11 @@
 services:
   postgres:
     image: postgres:16
+    container_name: docker-postgres-litteratia
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: languia
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-litteratia}
     # command:
     #   - postgres
     #   - -c
@@ -27,6 +28,19 @@ services:
       - pglogs:/var/log/postgresql # Nouveau volume pour les logs
     ports:
       - "127.0.0.1:5432:5432"
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: litteratia_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      # Empêche pgAdmin de demander de changer le mdp au premier lancement
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'True'
+    ports:
+      - "127.0.0.1:5050:80"
+    depends_on:
+      - postgres
 
   redis:
     image: redis
@@ -36,3 +50,7 @@ services:
 volumes:
   db-data:
   pglogs:
+
+networks:
+  litteratia-network:
+    driver: bridge

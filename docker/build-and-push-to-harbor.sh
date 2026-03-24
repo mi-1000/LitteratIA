@@ -25,6 +25,6 @@ echo "Build des images avec docker bake..."
 docker buildx bake -f docker/docker-bake.yml
 
 echo "Images buildées et poussées avec succès !"
-echo "Backend: $HARBOR_REGISTRY/$HARBOR_PROJECT/languia:$GIT_COMMIT"
-echo "Frontend: $HARBOR_REGISTRY/$HARBOR_PROJECT/languia-front:$GIT_COMMIT"
+echo "Backend: $HARBOR_REGISTRY/$HARBOR_PROJECT/litteratia:$GIT_COMMIT"
+echo "Frontend: $HARBOR_REGISTRY/$HARBOR_PROJECT/litteratia-front:$GIT_COMMIT"
 [[ "$BRANCH_NAME" != "main" ]] && echo "Tags branch: $BRANCH_NAME"

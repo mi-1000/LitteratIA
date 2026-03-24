@@ -12,9 +12,9 @@
       { href: '/mentions-legales', labelKey: 'legal' },
       { href: '/modalites', labelKey: 'tos' },
       { href: '/donnees-personnelles', labelKey: 'privacy' },
-      { href: '/accessibilite', labelKey: 'accessibility' },
+      { href: '/accessibilite', labelKey: 'accessibility' }
       // { href: '/ecoconception', labelKey: 'rgesn' },
-      // { href: 'https://github.com/betagouv/languia', labelKey: 'sources' }
+      // { href: 'https://github.com/betagouv/litteratia', labelKey: 'sources' }
     ] as const
   ).map(({ href, labelKey }) => {
     return {
@@ -83,7 +83,7 @@
       </div>
     </div> -->
     <div class="fr-footer__bottom justify-center">
-      <ul class="fr-footer__bottom-list footer-links flex justify-center items-baseline">
+      <ul class="fr-footer__bottom-list footer-links flex items-baseline justify-center">
         {#each links as { label, ...props } (props.href)}
           <li class="fr-footer__bottom-item text-center">
             <a class="fr-footer__bottom-link flex-row justify-center" {...props}>{label}</a>

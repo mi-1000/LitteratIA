@@ -12,7 +12,7 @@ from uuid import uuid4
 from backend.config import RATELIMIT_PRICEY_MODELS_INPUT
 from backend.session import get_redis_client
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 
 def create_session() -> str:

@@ -57,7 +57,7 @@ model-info-file.json
 register-api-endpoint-file*.json
 docker/.env
 .env
-languia-*.json
+litteratia-*.json
 utils/results/
 utils/results-output/
 /datasets/

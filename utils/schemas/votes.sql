@@ -39,10 +39,10 @@ CREATE TABLE votes (
     archived BOOLEAN DEFAULT FALSE--,
 );
 
---GRANT ALL PRIVILEGES ON TABLE votes TO "languia";
---GRANT ALL PRIVILEGES ON TABLE reactions TO "languia-prd";
---GRANT ALL PRIVILEGES ON TABLE logs TO "languia";
---GRANT ALL PRIVILEGES ON TABLE conversations TO "languia";
+--GRANT ALL PRIVILEGES ON TABLE votes TO "litteratia";
+--GRANT ALL PRIVILEGES ON TABLE reactions TO "litteratia-prd";
+--GRANT ALL PRIVILEGES ON TABLE logs TO "litteratia";
+--GRANT ALL PRIVILEGES ON TABLE conversations TO "litteratia";
 
 
--- GRANT USAGE, SELECT ON SEQUENCE votes_id_seq TO "languia";
+-- GRANT USAGE, SELECT ON SEQUENCE votes_id_seq TO "litteratia";

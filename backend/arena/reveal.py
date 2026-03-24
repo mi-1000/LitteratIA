@@ -16,7 +16,7 @@ import logging
 from backend.arena.models import BotChoice, BotPos, Conversations, RevealData
 from backend.llms.utils import get_llm_consumption
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 
 def get_chosen_llm(conversations: Conversations) -> BotChoice | None:

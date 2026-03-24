@@ -105,10 +105,12 @@ class PostgresHandler(logging.Handler):
                 with self.connection.cursor() as cursor:
                     # del(record.__dict__["request"])
 
-                    insert_statement = sql.SQL("""
+                    insert_statement = sql.SQL(
+                        """
                         INSERT INTO logs (time, level, message, query_params, path_params, session_hash, extra)
                         VALUES (%(time)s, %(level)s, %(message)s, %(query_params)s, %(path_params)s, %(session_hash)s, %(extra)s)
-                    """)
+                    """
+                    )
                     values = {
                         "time": record.asctime,
                         "level": record.levelname,
@@ -159,22 +161,22 @@ def configure_logger() -> logging.Logger:
         logger: Logger to configure
 
     Returns:
-        Logger: Configured logger instance for "languia"
+        Logger: Configured logger instance for "litteratia"
 
     Environment Variables:
-        - LANGUIA_DEBUG: Set to "true" for DEBUG level, "false" for INFO
+        - litteratia_DEBUG: Set to "true" for DEBUG level, "false" for INFO
         - LOGDIR: Directory for log files (default "./data")
         - COMPARIA_DB_URI: PostgreSQL connection string for database logging
     """
     # TODO: log "funcName"
-    logger = logging.getLogger("languia")
+    logger = logging.getLogger("litteratia")
 
     # Log file naming with hostname and timestamp
     t = datetime.datetime.now()
     hostname = os.uname().nodename
     logger_filename = f"logs-{hostname}-{t.year}-{t.month:02d}-{t.day:02d}.jsonl"
 
-    if settings.LANGUIA_DEBUG:
+    if settings.litteratia_DEBUG:
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(logging.INFO)
@@ -219,7 +221,7 @@ def configure_logger() -> logging.Logger:
 
 def configure_uvicorn_logging() -> None:
     """
-    Configure uvicorn/FastAPI loggers to use the same handlers as languia logger.
+    Configure uvicorn/FastAPI loggers to use the same handlers as litteratia logger.
 
     Redirects uvicorn.access and uvicorn.error logs to the same backends:
     - File (JSON or RAW format based on LOG_FORMAT env var)
@@ -236,7 +238,7 @@ def configure_uvicorn_logging() -> None:
         uvicorn_logger.handlers.clear()
         uvicorn_logger.propagate = False
 
-        if settings.LANGUIA_DEBUG:
+        if settings.litteratia_DEBUG:
             uvicorn_logger.setLevel(logging.DEBUG)
         else:
             uvicorn_logger.setLevel(logging.INFO)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script pour lister les tags existants sur Harbor pour les images languia et languia-front
+# Script pour lister les tags existants sur Harbor pour les images litteratia et litteratia-front
 
 set -e
 
@@ -9,8 +9,8 @@ HARBOR_REGISTRY="55h10w99.gra7.container-registry.ovh.net"
 HARBOR_PROJECT="atnum"
 
 # Images à lister
-BACKEND_IMAGE="$HARBOR_PROJECT/languia"
-FRONTEND_IMAGE="$HARBOR_PROJECT/languia-front"
+BACKEND_IMAGE="$HARBOR_PROJECT/litteratia"
+FRONTEND_IMAGE="$HARBOR_PROJECT/litteratia-front"
 
 # Vérifier les credentials
 if [ -n "$HARBOR_USERNAME" ] && [ -n "$HARBOR_PASSWORD" ]; then

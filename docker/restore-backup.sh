@@ -21,11 +21,11 @@ echo "PostgreSQL is ready, restoring backup..."
 
 # Restore the custom format backup
 # -U postgres: user
-# -d languia: database
+# -d litteratia: database
 # -v: verbose
 # --no-owner: skip ownership restoration
 # --no-acl: skip access privileges restoration
-pg_restore -U postgres -d languia -v --no-owner --no-acl /backup/backup.dump || {
+pg_restore -U postgres -d litteratia -v --no-owner --no-acl /backup/backup.dump || {
     echo "WARNING: pg_restore exited with errors. This may be normal if some objects already exist."
     echo "Database restore completed with warnings."
 }

@@ -29,7 +29,7 @@ from backend.config import CustomModelsSelection, SelectionMode, settings
 from backend.errors import ChatError
 from backend.llms.data import get_llms_data
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 
 def format_sse_event(data: Any) -> str:
@@ -115,7 +115,7 @@ async def stream_conversation_messages(
             import requests
 
             requests.post(
-                f"{settings.LANGUIA_CONTROLLER_URL}/models/{conv.model_name}/error",
+                f"{settings.litteratia_CONTROLLER_URL}/models/{conv.model_name}/error",
                 json={"error": error_reason},
                 timeout=1,
             )

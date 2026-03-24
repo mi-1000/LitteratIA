@@ -62,4 +62,4 @@ CREATE TABLE reactions (
 
 GRANT USAGE,
 SELECT
-    ON SEQUENCE reactions_id_seq TO "languia-dev";
+    ON SEQUENCE reactions_id_seq TO "litteratia-dev";

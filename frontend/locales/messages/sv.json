@@ -370,7 +370,7 @@
             "featuresTitle": "4. Funktioner",
             "featuresVote": "Efter valprocessen kan användaren se listan över modeller som ingår i jämförelseverktyget och få tillgång till en lista med information om dessa modeller. Informationen som dokumenterar modellerna är hämtad från källor.",
             "featuresVoteMore": "Dela och tillgängliggöra datamängder som är resultatet av insamling av användarpreferenser.",
-            "licenceCode": "Plattformens källkod är öppen och fritt tillgänglig här: <a {linkProps}>https://github.com/betagouv/languia</a>",
+            "licenceCode": "Plattformens källkod är öppen och fritt tillgänglig här: <a {linkProps}>https://github.com/betagouv/litteratia</a>",
             "licenceLLM": "De språkmodeller som används för att driva tjänsterna regleras av följande licenser:",
             "licenceLLMEvolution": "Listan över språkmodeller som ingår i plattformen kan förändras över tid och uppdateras med varje modifiering.",
             "licenceLLMLicence": "Licens",

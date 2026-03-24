@@ -465,7 +465,7 @@
             "featuresTitle": "4. Fonctionnalités",
             "featuresVote": "L’utilisateur peut consulter la liste des modèles intégrés au comparateur et accéder à une liste d’informations sur ces modèles.",
             "featuresVoteMore": "Partage, mise à disposition et valorisation des jeux de données issus de la collecte des préférences des utilisateurs.",
-            "licenceCode": "Le code source de la plateforme est libre et disponible ici : <a {linkProps}>https://github.com/betagouv/languia</a>",
+            "licenceCode": "Le code source de la plateforme est libre et disponible ici : <a {linkProps}>https://github.com/betagouv/litteratia</a>",
             "licenceLLM": "Les LLM utilisés pour alimenter les services sont régis par les licences suivantes :",
             "licenceLLMEvolution": "La liste des modèles de langage intégrés à la plateforme est susceptible d’évoluer au cours du temps et est mise à jour à chaque modification.",
             "licenceLLMLicence": "Licence",

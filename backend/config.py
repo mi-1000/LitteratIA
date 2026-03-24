@@ -13,8 +13,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=ROOT_DIR / ".env", env_file_encoding="utf-8", extra="ignore"
     )
-    LANGUIA_DEBUG: bool = False
-    LANGUIA_CONTROLLER_URL: str | None = "http://localhost:21001"
+    litteratia_DEBUG: bool = False
+    litteratia_CONTROLLER_URL: str | None = "http://localhost:21001"
     COMPARIA_REDIS_HOST: str = "localhost"
     MOCK_RESPONSE: bool = False
     LOGDIR: Path = ROOT_DIR / "data"

@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from backend.arena.models import AnyMessage
     from backend.llms.models import Endpoint
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 # Load Google Cloud credentials for Vertex AI if available
 vertex_credentials_json: str | None = None

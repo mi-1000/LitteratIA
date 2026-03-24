@@ -14,7 +14,7 @@ from vertexai.generative_models import GenerativeModel
 
 
 class Config:
-    PROJECT_ID = "languia-430909"
+    PROJECT_ID = "litteratia-430909"
     LOCATION = "europe-west1"
     # MODEL_NAME = "gemini-2.0-flash-lite"
     MODEL_NAME = "gemini-2.0-flash-001"

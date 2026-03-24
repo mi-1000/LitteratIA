@@ -25,8 +25,8 @@ services:
     env_file: ../.env
     environment:
       LOGDIR: /data
-      # LANGUIA_CONTROLLER_URL: "http://languia-controller:21001"
-      COMPARIA_DB_URI: "postgresql://postgres:postgres@postgres:5432/languia"
+      # litteratia_CONTROLLER_URL: "http://litteratia-controller:21001"
+      COMPARIA_DB_URI: "postgresql://postgres:postgres@postgres:5432/litteratia"
       COMPARIA_REDIS_HOST: redis
     build:
       context: ..
@@ -36,7 +36,7 @@ services:
       #   PUBLIC_API_URL: ${PUBLIC_API_URL:-}
       #   MATOMO_ID: ${MATOMO_ID:-}
       #   MATOMO_URL: ${MATOMO_URL:-}
-    image: languia:latest
+    image: litteratia:latest
     ports:
       - "8001:80"
     # volumes:

@@ -5,7 +5,7 @@ import sentry_sdk
 
 from backend.config import settings
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 
 def init_sentry() -> None:

@@ -16,7 +16,7 @@ from backend.config import (
 from backend.llms.models import LLMDataArchived, LLMDataEnabled
 from utils.utils import LLMS_GENERATED_DATA_FILE
 
-logger = logging.getLogger("languia")
+logger = logging.getLogger("litteratia")
 
 
 class LLMsData(BaseModel):

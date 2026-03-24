@@ -2,7 +2,7 @@ from logging import getLogger
 
 from fastapi import Request
 
-logger = getLogger("languia")
+logger = getLogger("litteratia")
 
 
 def get_ip(request: Request) -> str:

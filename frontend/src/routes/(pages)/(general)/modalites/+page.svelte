@@ -69,7 +69,7 @@
     <p>
       {@html sanitize(
         m['general.tos.licenceCode']({
-          linkProps: externalLinkProps('https://github.com/betagouv/languia')
+          linkProps: externalLinkProps('https://github.com/betagouv/litteratia')
         })
       )}
     </p>
