@@ -430,7 +430,7 @@ async def react(
     )
     message = conv.messages[msg_index] if len(conv.messages) > msg_index else None
     
-    logger.error("message", message)
+    logger.error("message: %s", message.model_dump_json() if message else "None")
 
     if not message or not isinstance(message, AssistantMessage):
         raise HTTPException(

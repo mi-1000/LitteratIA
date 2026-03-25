@@ -521,7 +521,7 @@ class ReactionRecord(BaseModel):
     # Reaction
     liked: bool
     disliked: bool
-    comment: str
+    comment: str | None = None
     useful: bool
     complete: bool
     creative: bool
