@@ -100,7 +100,7 @@ def save_vote_to_db(data: dict) -> dict:
 
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
-        insert_statement = sql.SQL(
+        insert_statement = sql.SQL( 
         """
             INSERT INTO votes ({fields})
             VALUES ({values})

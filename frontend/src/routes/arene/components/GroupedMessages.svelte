@@ -11,12 +11,14 @@
     onReactionChange,
     showModelName = false,
     invertModelLabels = false,
+    reactionsByIndex = {} as Record<number, any>
   }: {
     round: ChatRound
     disabled: boolean
     onReactionChange: OnReactionFn
     showModelName?: boolean | 'showA' | 'showB'
     invertModelLabels?: boolean
+    reactionsByIndex?: Record<number, any>
   } = $props()
 
   let userMessageSize = $state(0)

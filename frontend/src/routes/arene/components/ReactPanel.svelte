@@ -1,13 +1,15 @@
 <script lang="ts">
   import TextPrompt from '$components/TextPrompt.svelte'
-  import type { BotChoice } from '$lib/chatService.svelte'
-  import { APIGeneralReactions } from '$lib/chatService.svelte'
+  import type { APIReactionData, BotChoice } from '$lib/chatService.svelte'
+  import { APIGeneralReactions, postVoteGetReveal, updateReaction } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
   import { LikePanel, StarRating, VoteRadioGroup } from '.'
+  import { debounce } from 'lodash-es'
 
   let selected_model: BotChoice | undefined = $state(undefined)
   let rating: number = $state(0)
   let selection: (typeof APIGeneralReactions)[number][] = $state([])
+  let comment: string = $state("")
 
   let { disabled = false }: { disabled?: boolean } = $props()
 
@@ -20,6 +22,37 @@
     const _ = rating
     selection = []
   })
+
+  const saveVote = debounce(async () => {
+    if (!selected_model) return
+
+  const voteData: APIReactionData = {
+    bot: selected_model,
+    index: 0,
+    value: comment,
+    liked: true,
+    prefs: selection
+  }
+
+  try {
+    console.log("Saving vote...", voteData)
+    await updateReaction(voteData)
+  } catch (err) {
+    console.error("Failed to auto-save vote:", err)
+    }
+  }, 500) // Send updates to database at most once every 500ms
+
+  $effect(() => {
+    void selected_model
+    void rating
+    void selection
+    void comment
+    
+    if (selected_model !== undefined) {
+      saveVote()
+    }
+  })
+
 </script>
 
 <div class="flex flex-col items-center justify-center">
@@ -50,6 +83,7 @@
           maxRows={4}
           class="mt-4"
           {disabled}
+          bind:value={comment}
         />
       {/if}
     {/if}

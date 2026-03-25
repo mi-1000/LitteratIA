@@ -308,13 +308,12 @@ REACTIONS = POSITIVE_REACTIONS + NEGATIVE_REACTIONS
 
 class ReactionBody(BaseModel):
     """Request body for updating message reactions."""
-
-    bot: BotPos
+    bot: BotChoice
     index: int
     value: str
     liked: bool | None
     prefs: list[PositiveReaction] | list[NegativeReaction]
-    comment: str | None
+    comment: str | None = None
 
 
 class ReactionData(ReactionBody):

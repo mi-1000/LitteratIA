@@ -79,7 +79,7 @@ export type APIReactionPref =
 
 export type ReactionKind = 'like' | 'comment'
 export type APIReactionData = {
-  bot: Bot
+  bot: BotChoice
   index: number
   value: string
   liked: boolean | null

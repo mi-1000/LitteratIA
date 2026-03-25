@@ -412,11 +412,11 @@ async def react(
         extra={"request": request},
     )
 
-    if conversations.vote:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Can't react: Conversations has vote",
-        )
+    # if conversations.vote:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Can't react: Conversations has vote",
+    #     )
 
     conv = (
         conversations.conversation_a
@@ -429,6 +429,8 @@ async def react(
         reaction_body.index if not conv.has_system_msg else reaction_body.index + 1
     )
     message = conv.messages[msg_index] if len(conv.messages) > msg_index else None
+    
+    logger.error("message", message)
 
     if not message or not isinstance(message, AssistantMessage):
         raise HTTPException(
@@ -490,16 +492,16 @@ async def vote(
         extra={"request": request},
     )
 
-    if conversations.vote:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Can't vote: Conversations has vote",
-        )
-    if conversations.conversation_a.reactions or conversations.conversation_a.reactions:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Can't vote: Conversation has reactions",
-        )
+    # if conversations.vote:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Can't vote: Conversations has vote",
+    #     )
+    # if conversations.conversation_a.reactions or conversations.conversation_b.reactions:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Can't vote: Conversation has reactions",
+    #     )
 
     conversations.vote = vote_body
     # Store conversations with updated vote to redis
