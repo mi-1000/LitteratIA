@@ -322,3 +322,30 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
 .message-bot.message-bot-b {
   border: 1px solid var(--cg-blue-france-shifted) !important;
 }
+
+.fr-header__brand {
+  --idle: none;
+  --hover: none;
+  --active: none;
+  background-color: none;
+  filter: none;
+  flex-wrap: none;
+  padding-left: none;
+  padding-right: none;
+  width: none;
+  z-index: none;
+}
+
+.fr-header__body-row {
+  --idle: transparent;
+  --hover: var(--background-raised-grey-hover);
+  --active: var(--background-raised-grey-active);
+  background-color: var(--background-raised-grey);
+  filter: drop-shadow(var(--raised-shadow));
+  /* flex-wrap: wrap; */
+  padding-left: .25rem;
+  padding-right: .25rem;
+  width: 100%;
+  z-index: calc(var(--ground) + 750);
+
+}

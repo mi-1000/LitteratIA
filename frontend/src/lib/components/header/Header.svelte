@@ -51,25 +51,25 @@
               </p>
             </div>
           </div>
+        </div>
 
-          <div class="fr-header__navbar mt-0! self-auto! relative z-2">
-            <button
-              class="fr-btn fr-btn--menu -ms-1! me-3! shadow-none!"
-              data-fr-opened="false"
-              aria-controls="fr-modal-menu"
-              aria-haspopup="menu"
-              title={m['header.menu']()}
-            >
-              {m['header.menu']()}
-            </button>
-          </div>
+        <div class="fr-header__navbar mt-0! self-auto! relative z-2">
+          <button
+            class="fr-btn fr-btn--menu -ms-1! me-3! shadow-none!"
+            data-fr-opened="false"
+            aria-controls="fr-modal-menu"
+            aria-haspopup="menu"
+            title={m['header.menu']()}
+          >
+            {m['header.menu']()}
+          </button>
         </div>
 
         <div class="flex flex-row">
           <div class="text-black">
             <svg version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            class="h-12 md:h-15 w-auto"
+            class="h-8 md:h-12 w-auto"
             viewBox="0 0 300.000000 220.000000"
             preserveAspectRatio="xMidYMid meet">
 
@@ -92,7 +92,7 @@
           <div class="text-black">
             <svg version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            class="h-12 md:h-15 w-auto"
+            class="h-8 md:h-12 w-auto"
             viewBox="0 0 400.000000 231.000000"
             preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,231.000000) scale(0.100000,-0.100000)"
@@ -173,6 +173,7 @@
             />
           {/if}
         </div>
+
       </div>
     </div>
   </div>
