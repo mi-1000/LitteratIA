@@ -1,46 +1,25 @@
 <script lang="ts">
   import { Button, Link } from '$components/dsfr'
   import { m } from '$lib/i18n/messages'
-// import { getLocale } from '$lib/i18n/runtime'
   import { LanguageSelector, Menubar } from '.'
 
   let {
     hideNavigation = true,
     hideLanguageSelector = false,
-    hideVoteGauge = true,
     hideDiscussBtn = false,
-    showHelpLink = false,
     small
   }: {
     hideNavigation?: boolean
     hideLanguageSelector?: boolean
-    hideVoteGauge?: boolean
     hideDiscussBtn?: boolean
-    showHelpLink?: boolean
     small?: boolean
   } = $props()
-
-  // const locale = getLocale() in ["fr", "en"] ? getLocale() : "en"
 </script>
-
-<!-- {#snippet helpLink()}
-  <Link
-    href="https://adtk8x51mbw.eu.typeform.com/to/duuGRyEX"
-    text={m['header.help.link.content']()}
-    title={m['header.help.link.title']()}
-    icon="pencil-line"
-    button
-    variant="tertiary-no-outline"
-    size="sm"
-    native
-    hideExternalIcon
-  />
-{/snippet} -->
 
 <header id="main-header" class="fr-header lg:overflow-visible overflow-hidden">
   <div class="fr-header__body">
     <div class="fr-container">
-      <div class={['fr-header__body-row', { 'lg:py-1!': small }]}>
+      <div class={['fr-header__body-row', 'justify-between!', { 'lg:py-1!': small }]}>
         <div
           class={['fr-header__brand fr-enlarge-link lg:rounded-full', { 'lg:-translate-x-1/8 lg:scale-75': small }]}
         >
@@ -90,7 +69,7 @@
           <div class="text-black">
             <svg version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            class="h-15 w-auto"
+            class="h-12 md:h-15 w-auto"
             viewBox="0 0 300.000000 220.000000"
             preserveAspectRatio="xMidYMid meet">
 
@@ -113,7 +92,7 @@
           <div class="text-black">
             <svg version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            class="h-15 w-auto"
+            class="h-12 md:h-15 w-auto"
             viewBox="0 0 400.000000 231.000000"
             preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,231.000000) scale(0.100000,-0.100000)"
@@ -172,7 +151,7 @@
           </div>
         </div>
 
-        <div class="gap-3 p-4 lg:flex ms-auto hidden items-center relative z-2">
+        <div class="gap-3 p-4 lg:flex hidden items-center relative z-2">
           {#if !hideLanguageSelector}
             <LanguageSelector id="translate" />
           {/if}
@@ -213,10 +192,6 @@
       />
 
       <div class="fr-header__menu-links after:mt-4! lg:hidden">
-        <!-- {#if showHelpLink}
-          {@render helpLink()}
-        {/if} -->
-
         {#if !hideLanguageSelector}
           <LanguageSelector id="mobile-translate" />
         {/if}
