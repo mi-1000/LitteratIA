@@ -26,7 +26,7 @@
   const saveVote = debounce(async () => {
     if (!selected_model) return
 
-    const voteData: APIReactionData = {
+    let voteData: APIReactionData = {
       bot: selected_model,
       index: 1, // TODO Fix that
       value: comment,
@@ -39,7 +39,7 @@
     } catch (err) {
       console.error("Failed to auto-save vote:", err)
     }
-  }, 500) // Send updates to database at most once every 500ms
+  }, 800) // Send updates to database at most once every 800ms
 
   $effect(() => {
     void selected_model
