@@ -40,7 +40,7 @@
 
 <div class="lang-selector" bind:this={containerEl} {id}>
   <button
-    class="lang-trigger"
+    class="lang-trigger header-btn"
     onclick={() => (open = !open)}
     aria-expanded={open}
     title={m['actions.selectLanguage']()}

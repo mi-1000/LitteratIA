@@ -128,7 +128,7 @@ body, h1, h2, h3, h4, h5, h6 {
 .btn-color {
   background-color: var(--blue-france-main-525) !important;
   border-color: var(--blue-france-main-525) !important;
-  color: var(--cg-light-grey) !important;
+  color: var(--cg-bg-grey) !important;
 
   &::after {
     content: "" !important;
@@ -152,6 +152,25 @@ body, h1, h2, h3, h4, h5, h6 {
   color: color-mix(in srgb, gray 50%, var(--cg-very-light-grey)) !important;
   opacity: 0.7 !important;
   pointer-events: none !important;
+}
+
+.header-btn {
+  background: none !important;
+  border-color: transparent !important;
+  text-shadow: none !important;
+  transition: background 0.2 ease-out !important;
+  
+  &::after {
+    content: "" !important;
+    display: none !important;
+  }
+
+  &:hover {
+    background: var(--cg-bg-grey) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    filter: none !important;
+  }
 }
 
 button:disabled,
@@ -327,7 +346,7 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   --idle: none;
   --hover: none;
   --active: none;
-  background-color: none;
+  background: none !important;
   filter: none;
   flex-wrap: none;
   padding-left: none;
@@ -340,8 +359,10 @@ textarea::placeholder, textarea::-moz-placeholder, textarea::-webkit-input-place
   --idle: transparent;
   --hover: var(--background-raised-grey-hover);
   --active: var(--background-raised-grey-active);
-  background-color: var(--background-raised-grey);
-  filter: drop-shadow(var(--raised-shadow));
+  /* background-color: var(--background-raised-grey); */
+  background-color: none;
+  /* filter: drop-shadow(var(--raised-shadow)); */
+  filter: none;
   /* flex-wrap: wrap; */
   padding-left: .25rem;
   padding-right: .25rem;
