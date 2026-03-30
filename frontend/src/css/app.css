@@ -34,6 +34,7 @@
   --cg-purple: #a96afe;
   --cg-orange: #ff9575;
   --cg-yellow: #d3a006;
+  --ul-yellow: #ffef65;
 
   /* GRADIENTS */
   --cg-blue-france-shifted: hsl(from var(--blue-france-main-525) calc(h - 30) s l);
@@ -66,6 +67,7 @@
   /* FIXME need equivalent in dark */
   --cg-very-light-blue: #0a0a0b;
   --cg-yellow: #ffc107;
+  --ul-yellow: #a59a39;
 }
 
 @media (min-width: 36em) {

@@ -40,7 +40,7 @@
   let hasBeenShown = $state(false)
 
   const reactions = {
-    like: {
+    like: { // TODO fix: only neutral labels still exist, others should be removed, but this introduces breaking changes
       label: m['vote.choices.positive.question'](),
       icon: 'i-bi-hand-thumbs-up-fill',
       choices: APIPositiveReactions.map((value) => ({
