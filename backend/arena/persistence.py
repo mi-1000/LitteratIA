@@ -9,6 +9,7 @@ This module handles:
 - Deletion of reactions
 """
 
+import hashlib
 import json
 import logging
 from contextlib import contextmanager
@@ -97,6 +98,9 @@ def save_vote_to_db(data: dict) -> dict:
     Raises:
         psycopg2.Error: If database operation fails
     """
+    # Hash IP
+    if data.get("ip"):
+        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
 
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
@@ -144,8 +148,13 @@ def upsert_reaction_to_db(data: dict) -> dict:
         - Key conflict: (refers_to_conv_id, msg_index)
         - Updates all fields except timestamps on conflict
     """
+    # Hash IP
+    if data.get("ip"):
+        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
+
     with db(data, "upsert 'reaction'") as (cursor, fields, values):
         # SQL UPSERT for reactions table
+        
         query = sql.SQL(
             """
             INSERT INTO reactions ({fields})
@@ -205,7 +214,9 @@ def upsert_reaction_to_db(data: dict) -> dict:
         #     from litteratia.session import r
 
         #     if r:
-        #         try:
+        #         try:    # Hash IP
+    if data.get("ip"):
+        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
         #             r.incr("danish_count")
         #         except Exception as e:
         #             logger.error(f"Error incrementing danish count in Redis: {e}")
@@ -276,6 +287,10 @@ def upsert_conv_to_db(data: dict) -> dict:
         - On conflict: Updates country_portal only if EXCLUDED value exists
         - Preserves initial timestamps on updates
     """
+    # Hash IP
+    if data.get("ip"):
+        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
+    
     with db(data, "upsert 'conversations'") as (cursor, fields, values):
         # SQL UPSERT for conversations table
         upsert_query = sql.SQL("""
