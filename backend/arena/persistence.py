@@ -14,7 +14,7 @@ import json
 import logging
 from contextlib import contextmanager
 from datetime import datetime
-from typing import Annotated, Any, Iterator
+from typing import Annotated, Any, Iterator, Literal
 
 import psycopg2
 from psycopg2 import sql
@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field, PlainSerializer, WrapSerializer
 
 from backend.arena.models import (
     REACTIONS,
+    BotChoice,
     BotPos,
     Conversation,
     Conversations,
@@ -520,7 +521,7 @@ class ReactionRecord(BaseModel):
     conversation_b: Annotated[list["ConversationMessageRecord"], JSONModelSerializer]
 
     # Conversation
-    model_pos: BotPos
+    model_pos: BotChoice
     refers_to_model: str
     refers_to_conv_id: str
     system_prompt: str | None
@@ -534,12 +535,14 @@ class ReactionRecord(BaseModel):
     question_id: str
 
     # Reaction
+    
     # liked: bool
     # disliked: bool
     comment: str | None = None
     useful: bool
     correct: bool
     complete: bool
+    rating: Literal[0, 1, 2, 3, 4, 5]
     # creative: bool
     # clear_formatting: bool
     # incorrect: bool
@@ -624,6 +627,7 @@ def record_reaction(
             # Reaction
             "liked": reaction.liked is True,
             "disliked": reaction.liked is False,
+            "rating": reaction.rating,
             "comment": reaction.comment,
         }
         | {

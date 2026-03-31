@@ -313,7 +313,8 @@ class ReactionBody(BaseModel):
     bot: BotChoice
     index: int
     value: str
-    liked: bool | None
+    liked: bool
+    rating: Literal[0, 1, 2, 3, 4, 5]
     prefs: list[Reaction]
     comment: str | None = None
 

@@ -3,24 +3,31 @@
   import type { APIReactionData, BotChoice } from '$lib/chatService.svelte'
   import { APIGeneralReactions, updateReaction } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
-  import { LikePanel, StarRating, VoteRadioGroup } from '.'
   import { debounce } from 'lodash-es'
+  import { LikePanel, StarRating, VoteRadioGroup } from '.'
+
+  export type Ratings = 0 | 1 | 2 | 3 | 4 | 5
 
   let selected_model: BotChoice | undefined = $state(undefined)
-  let rating: number = $state(0)
+  let rating: Ratings = $state(0 as Ratings)
   let selection: (typeof APIGeneralReactions)[number][] = $state([])
-  let comment: string = $state("")
+  let comment: string = $state('')
 
   let { disabled = false, index }: { disabled?: boolean; index: number } = $props()
 
   $effect(() => {
     const _ = selected_model
-    rating = 0
+    rating = 0 as Ratings
   })
 
   $effect(() => {
     const _ = rating
     selection = []
+  })
+
+  $effect(() => {
+    const _ = selection
+    comment = ''
   })
 
   const saveVote = debounce(async () => {
@@ -30,14 +37,16 @@
       bot: selected_model,
       index: index,
       value: comment,
-      liked: true,
+      liked: rating !== undefined && (rating) > (3 as Ratings), // Consider ratings of 4 and 5 as "liked" -- this is legacy behaviour anyway
+      comment: comment,
+      rating: rating,
       prefs: selection
     }
 
     try {
       await updateReaction(voteData)
     } catch (err) {
-      console.error("Failed to auto-save vote:", err)
+      console.error('Failed to auto-save vote:', err)
     }
   }, 800) // Send updates to database at most once every 800ms
 
@@ -46,12 +55,11 @@
     void rating
     void selection
     void comment
-    
+
     if (selected_model !== undefined) {
       saveVote()
     }
   })
-
 </script>
 
 <div class="flex flex-col items-center justify-center">

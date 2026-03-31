@@ -8,7 +8,6 @@
   import { m } from '$lib/i18n/messages'
   import { getModelsContext } from '$lib/models'
   import { sanitize } from '$lib/utils/commons'
-  import { LikePanel } from '.'
 
   export type MessageBotProps = {
     message: AssistantMessage
@@ -23,9 +22,21 @@
     invertModelLabels?: boolean
   }
 
-  let { message, index, disabled = false, onReactionChange, showModelName = false, side = 'A', invertModelLabels = false }: MessageBotProps & MessageBotExtra = $props()
+  let {
+    message,
+    index,
+    disabled = false,
+    onReactionChange,
+    showModelName = false,
+    side = 'A',
+    invertModelLabels = false
+  }: MessageBotProps & MessageBotExtra = $props()
 
-  const displaySide = invertModelLabels ? (side.toLowerCase() === 'a' ? 'b' : 'a') : side.toLowerCase()
+  const displaySide = invertModelLabels
+    ? side.toLowerCase() === 'a'
+      ? 'b'
+      : 'a'
+    : side.toLowerCase()
 
   function shouldShowFor(modelSide: string) {
     const val = showModelName as any
@@ -56,10 +67,15 @@
 
   function getModelParts(): { provider: string; model: string } {
     // decide which model side we display (swap if invertModelLabels)
-    const displaySide = invertModelLabels ? (side.toLowerCase() === 'a' ? 'b' : 'a') : side.toLowerCase()
+    const displaySide = invertModelLabels
+      ? side.toLowerCase() === 'a'
+        ? 'b'
+        : 'a'
+      : side.toLowerCase()
 
     // If anonymized for the target model side, return explicit physical side label (A/B)
-    if (!shouldShowFor(displaySide)) return { provider: '', model: m['chatbot.modelAnon']({ side: side.toUpperCase() }) }
+    if (!shouldShowFor(displaySide))
+      return { provider: '', model: m['chatbot.modelAnon']({ side: side.toUpperCase() }) }
 
     // Prefer backend-provided mapping if available
     try {
@@ -70,7 +86,9 @@
         try {
           const ctx = getModelsContext()
           if (ctx && ctx.models) {
-            const found = ctx.models.find((mm: any) => mm.id === modelId || mm.simple_name === modelId)
+            const found = ctx.models.find(
+              (mm: any) => mm.id === modelId || mm.simple_name === modelId
+            )
             if (found) {
               // Prefer organisation/simple_name if present in models context
               const provider = found.organisation ? String(found.organisation) : ''
@@ -106,7 +124,9 @@
   function getModelHtml(): string {
     const parts = getModelParts()
     // sanitize parts separately to avoid accidental tags in provider/model
-    const prov = parts.provider ? `<span class="provider-name">${escapeHtml(parts.provider)}/</span>` : ''
+    const prov = parts.provider
+      ? `<span class="provider-name">${escapeHtml(parts.provider)}/</span>`
+      : ''
     const model = escapeHtml(parts.model)
     if (prov) return `${prov}${model}`
     return model
@@ -123,13 +143,15 @@
   const reaction = $state<APIReactionData>({
     index: index * 2 + (side.toLowerCase() === 'a' ? 1 : 2),
     bot: message.metadata.bot,
-    liked: null,
+    rating: null,
     prefs: [],
     comment: '',
     value: message.content
   })
 
-  let modelsReady = $derived(arena.chat?.a?.status === 'complete' && arena.chat?.b?.status === 'complete')
+  let modelsReady = $derived(
+    arena.chat?.a?.status === 'complete' && arena.chat?.b?.status === 'complete'
+  )
 
   function onLikedChanged() {
     reaction.prefs = []
@@ -149,19 +171,19 @@
   <div
     class={`message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden message-bot-${side.toLowerCase()}`}
   >
-      <div class="top-0 pb-5 pt-7 sticky z-10 flex items-center model-label bg-white px-5">
-        <div class="c-bot-disk-{bot}"></div>
-        <h3 class="ms-2! mb-0! text-base! flex-1 text-left">
-          {#if !shouldShowFor(displaySide)}
-            {m['chatbot.modelAnon']({ side: side.toUpperCase() })}
-          {:else}
-            {@html getModelHtml()}
-          {/if}
-        </h3>
-      </div>
+    <div class="top-0 pb-5 pt-7 model-label bg-white px-5 sticky z-10 flex items-center">
+      <div class="c-bot-disk-{bot}"></div>
+      <h3 class="ms-2! mb-0! text-base! flex-1 text-left">
+        {#if !shouldShowFor(displaySide)}
+          {m['chatbot.modelAnon']({ side: side.toUpperCase() })}
+        {:else}
+          {@html getModelHtml()}
+        {/if}
+      </h3>
+    </div>
 
-      <div class="overflow-y-auto flex-1 px-5 model-chat-content-side-{side.toLowerCase()}">
-        {#if message.reasoning.trim() !== ''}
+    <div class="px-5 flex-1 overflow-y-auto model-chat-content-side-{side.toLowerCase()}">
+      {#if message.reasoning.trim() !== ''}
         <section class="fr-accordion mb-8 py-2">
           <div class="fr-highlight ms-0! ps-0!">
             <h3 class="fr-accordion__title ms-1!">
@@ -198,7 +220,7 @@
       {/if}
     </div>
 
-    <div class="icon-bar bg-white px-5 py-3 flex shrink-0 sticky bottom-0 z-2">
+    <div class="icon-bar bg-white px-5 py-3 bottom-0 sticky z-2 flex shrink-0">
       <Copy value={message.content} />
 
       <div class="gap-2 ms-auto flex">
@@ -206,7 +228,7 @@
       </div>
     </div>
   </div>
-    <!-- per-message panels are now merged in GroupedMessages -->
+  <!-- per-message panels are now merged in GroupedMessages -->
 </div>
 
 <style>
@@ -236,7 +258,11 @@
     left: 0;
     right: 0;
     height: 2rem;
-    background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--cg-bg-white) 50%, transparent));
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--cg-bg-white) 50%, transparent)
+    );
     pointer-events: none;
   }
 </style>

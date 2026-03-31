@@ -3,6 +3,7 @@ import { m } from '$lib/i18n/messages'
 import type { APIBotModel, BotModel } from '$lib/models'
 import { parseModel } from '$lib/models'
 import { COHORT_STORAGE_KEY } from '$lib/stores/cohortStore.svelte'
+import type { Ratings } from '../routes/arene/components/ReactPanel.svelte'
 
 // PROMPT
 export type Mode = 'random' | 'custom' | 'big-vs-small' | 'small-models'
@@ -82,7 +83,8 @@ export type APIReactionData = {
   bot: BotChoice
   index: number
   value: string
-  liked: boolean | null
+  rating: Ratings
+  liked: boolean // unused, legacy
   prefs: APIReactionPref[]
   comment?: string
 }

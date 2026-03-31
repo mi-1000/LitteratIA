@@ -438,15 +438,15 @@ async def react(
             status_code=status.HTTP_404_NOT_FOUND, detail="Assistant message not found"
         )
 
-    if reaction_body.liked is None:
-        # A reaction has been undone, remove it from its message and db
-        message.reaction = None
-        # Store conversations with removed reaction
-        conversations.store_to_session()
-        # Delete db reaction
-        delete_reaction(conv, msg_index)
+    # if reaction_body.liked is None:
+    #     # A reaction has been undone, remove it from its message and db
+    #     message.reaction = None
+    #     # Store conversations with removed reaction
+    #     conversations.store_to_session()
+    #     # Delete db reaction
+    #     delete_reaction(conv, msg_index)
 
-        return {"reaction": None}
+    #     return {"reaction": None}
 
     # Build final reaction data
     # FIXME replace reaction.index with msg_index?
