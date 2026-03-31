@@ -1,7 +1,7 @@
 <script lang="ts">
   import TextPrompt from '$components/TextPrompt.svelte'
   import type { APIReactionData, BotChoice } from '$lib/chatService.svelte'
-  import { APIGeneralReactions, postVoteGetReveal, updateReaction } from '$lib/chatService.svelte'
+  import { APIGeneralReactions, updateReaction } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
   import { LikePanel, StarRating, VoteRadioGroup } from '.'
   import { debounce } from 'lodash-es'
@@ -11,7 +11,7 @@
   let selection: (typeof APIGeneralReactions)[number][] = $state([])
   let comment: string = $state("")
 
-  let { disabled = false }: { disabled?: boolean } = $props()
+  let { disabled = false, index }: { disabled?: boolean; index: number } = $props()
 
   $effect(() => {
     const _ = selected_model
@@ -26,9 +26,9 @@
   const saveVote = debounce(async () => {
     if (!selected_model) return
 
-    let voteData: APIReactionData = {
+    const voteData: APIReactionData = {
       bot: selected_model,
-      index: 1, // TODO Fix that
+      index: index,
       value: comment,
       liked: true,
       prefs: selection
@@ -86,9 +86,5 @@
         />
       {/if}
     {/if}
-    <!-- Ensuite, étiquettes, puis finalement, zone de texte (réinitialiser si on change au-dessus) -->
-    <!-- Basculer le bouton révéler à la fin de chaque formulaire -->
-    <!-- Griser les formulaires précédents lorsqu'un nouveau message est envoyé -->
-    <!-- Si un vote est fait pour la première fois depuis x messages, agréger et enregistrer tous les messages précédents dans la base de données pour l'entrée du vote -->
   {/if}
 </div>

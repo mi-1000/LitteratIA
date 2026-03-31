@@ -30,7 +30,7 @@
 
   // compute whether this round is older than the latest user round
   const prevLocked = $derived.by(() => {
-    const { a, b } = arena.chat
+    const { a } = arena.chat
     const base = a.messages.length ? 'a' : 'b'
     const userMessages = arena.chat[base].messages.filter((m) => m.role === 'user')
     const lastIndex = userMessages.length ? userMessages.length - 1 : 0
@@ -81,7 +81,7 @@
         <div class="mb-3 font-bold text-center">{m['vote.title']()}</div>
         <div class="gap-4 md:grid-cols-2 grid">
           <div class="col-span-2">
-            <ReactPanel disabled={anyBlocking || prevLocked || disabled} />
+            <ReactPanel disabled={anyBlocking || prevLocked || disabled} index={round.index * 2 + 1} />
           </div>
         </div>
       </div>

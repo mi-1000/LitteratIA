@@ -180,11 +180,13 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 question_content = EXCLUDED.question_content,
                 liked = EXCLUDED.liked,
                 disliked = EXCLUDED.disliked,
+                rating = EXCLUDED.rating,
                 comment = EXCLUDED.comment,
                 useful = EXCLUDED.useful,
                 complete = EXCLUDED.complete,
                 creative = EXCLUDED.creative,
                 clear_formatting = EXCLUDED.clear_formatting,
+                correct = EXCLUDED.correct,
                 incorrect = EXCLUDED.incorrect,
                 superficial = EXCLUDED.superficial,
                 instructions_not_followed = EXCLUDED.instructions_not_followed,
@@ -215,8 +217,6 @@ def upsert_reaction_to_db(data: dict) -> dict:
 
         #     if r:
         #         try:    # Hash IP
-    if data.get("ip"):
-        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
         #             r.incr("danish_count")
         #         except Exception as e:
         #             logger.error(f"Error incrementing danish count in Redis: {e}")
