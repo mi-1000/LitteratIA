@@ -534,16 +534,17 @@ class ReactionRecord(BaseModel):
     question_id: str
 
     # Reaction
-    liked: bool
-    disliked: bool
+    # liked: bool
+    # disliked: bool
     comment: str | None = None
     useful: bool
+    correct: bool
     complete: bool
-    creative: bool
-    clear_formatting: bool
-    incorrect: bool
-    superficial: bool
-    instructions_not_followed: bool
+    # creative: bool
+    # clear_formatting: bool
+    # incorrect: bool
+    # superficial: bool
+    # instructions_not_followed: bool
 
     # Additional? (not found in record_reaction but present in reactions.sql)
     # archived: bool = False

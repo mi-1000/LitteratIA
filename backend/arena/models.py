@@ -299,11 +299,13 @@ class AddTextBody(BaseModel):
     message: str = PromptField
 
 
-PositiveReaction = Literal["useful", "complete", "creative", "clear_formatting"]
-POSITIVE_REACTIONS: tuple[PositiveReaction, ...] = get_args(PositiveReaction)
-NegativeReaction = Literal["incorrect", "superficial", "instructions_not_followed"]
-NEGATIVE_REACTIONS: tuple[NegativeReaction, ...] = get_args(NegativeReaction)
-REACTIONS = POSITIVE_REACTIONS + NEGATIVE_REACTIONS
+# PositiveReaction = Literal["useful", "complete", "creative", "clear_formatting"]
+# POSITIVE_REACTIONS: tuple[PositiveReaction, ...] = get_args(PositiveReaction)
+# NegativeReaction = Literal["incorrect", "superficial", "instructions_not_followed"]
+# NEGATIVE_REACTIONS: tuple[NegativeReaction, ...] = get_args(NegativeReaction)
+# REACTIONS = POSITIVE_REACTIONS + NEGATIVE_REACTIONS
+Reaction = Literal["useful", "complete", "correct"]
+REACTIONS: tuple[Reaction, ...] = get_args(Reaction)
 
 
 class ReactionBody(BaseModel):
@@ -312,7 +314,7 @@ class ReactionBody(BaseModel):
     index: int
     value: str
     liked: bool | None
-    prefs: list[PositiveReaction] | list[NegativeReaction]
+    prefs: list[Reaction]
     comment: str | None = None
 
 
@@ -324,8 +326,8 @@ class VoteBody(BaseModel):
     """Request body for submitting a vote after conversation."""
 
     chosen_llm: BotChoice
-    prefs_a: list[PositiveReaction | NegativeReaction] = []
-    prefs_b: list[PositiveReaction | NegativeReaction] = []
+    prefs_a: list[Reaction] = []
+    prefs_b: list[Reaction] = []
     comment_a: str
     comment_b: str
 
