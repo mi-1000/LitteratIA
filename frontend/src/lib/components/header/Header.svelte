@@ -32,7 +32,7 @@
               />
               <div class="min-w-0">
                 <p class="fr-header__service-title mb-0! leading-normal! truncate">
-                  <a href="/" title={m['header.homeTitle']()}>
+                  <a href="/" title={m['header.homeTitle']()} data-sveltekit-reload>
                     {m['header.title']()}
                   </a>
                 </p>
