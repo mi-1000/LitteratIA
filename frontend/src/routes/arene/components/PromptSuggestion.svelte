@@ -49,6 +49,11 @@
   function selectPrompt(prompt: string) {
     selectedPrompt = prompt
   }
+
+  function outDelay(idx: number) {
+    // Reverse cascade order on exit (last item exits first), 2x faster than intro.
+    return (suggestions.length - 1 - idx) * 45
+  }
 </script>
 
 {#if display && suggestions.length > 0}
@@ -59,10 +64,15 @@
           class="separator m-0 p-0"
           aria-hidden="true"
           in:fade|global={{ duration: 180, delay: idx * 90 + 35 }}
+          out:fade|global={{ duration: 90, delay: outDelay(idx) }}
         />
       {/if}
 
-      <div role="listitem" in:fade|global={{ duration: 220, delay: idx * 90 }}>
+      <div
+        role="listitem"
+        in:fade|global={{ duration: 220, delay: idx * 90 }}
+        out:fade|global={{ duration: 110, delay: outDelay(idx) }}
+      >
         <button
           type="button"
           class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center"
