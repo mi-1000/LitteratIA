@@ -130,7 +130,7 @@ body, h1, h2, h3, h4, h5, h6 {
 .btn-color {
   background-color: var(--blue-france-main-525) !important;
   border-color: var(--blue-france-main-525) !important;
-  color: var(--cg-bg-grey) !important;
+  color: var(--cg-very-light-grey) !important;
 
   &::after {
     content: "" !important;

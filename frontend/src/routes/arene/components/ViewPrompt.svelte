@@ -6,25 +6,17 @@
   import { useLocalStorage } from '$lib/helpers/useLocalStorage.svelte'
   import { m } from '$lib/i18n/messages.js'
   import { getModelsContext } from '$lib/models'
-  import { tick } from 'svelte'
-  import { GuidedPromptSuggestions, ModelSelector } from '.'
+  import { PromptSuggestion } from '.'
 
   let promptEl = $state<HTMLTextAreaElement>()
+  let promptAreaEl = $state<HTMLDivElement>()
   let disabled = $state(false)
+  let isPromptFocused = $state(false)
 
   const models = getModelsContext().models.filter((model) => model.status === 'enabled')
   let prompt = $state('')
   let promptError = $state<string>()
-  // const prompt = useLocalStorage('prompt', '', (parsed) => {
-  //   if (parsed !== '') {
-  //     tick().then(() => {
-  //       if (promptEl && typeof promptEl.select === 'function') {
-  //         promptEl.select()
-  //       }
-  //     })
-  //   }
-  //   return parsed
-  // })
+
   const mode = useLocalStorage<APIModeAndPromptData['mode']>('mode', 'random')
   const modelsSelection = useLocalStorage<string[]>('customModelsSelection', [], (parsed) => {
     if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
@@ -34,22 +26,7 @@
     return []
   })
 
-  function selectPartialText(start?: number, end?: number): void {
-    if (promptEl) {
-      promptEl.focus()
-      if (start !== undefined && end !== undefined) {
-        promptEl.setSelectionRange(start, end)
-        console.log(`[Textbox] Text selected from ${start} to ${end}`)
-      } else {
-        promptEl.select()
-        console.log('[Textbox] All text selected')
-      }
-    } else {
-      console.error("[Textbox] Element 'el' not found for selection.")
-    }
-  }
-
-  async function dispatchSubmit(): void {
+  async function dispatchSubmit(): Promise<void> {
     disabled = true
     const validationError = await runChatBots({
       mode: mode.value,
@@ -62,54 +39,14 @@
     }
   }
 
-  function handlePromptSelected(
-    text: string,
-    selectionStart?: number,
-    selectionEnd?: number
-  ): void {
-    prompt = text
-    console.log(
-      `[Index] handlePromptSelected: Received promptselected. Text: "${prompt}", Start: ${selectionStart}, End: ${selectionEnd}`
-    )
-    if (promptEl && selectionStart !== undefined && selectionEnd !== undefined) {
-      const performSelection = () => {
-        if (selectPartialText && typeof selectPartialText === 'function') {
-          console.log(
-            `[Index] Performing selection. Start: ${selectionStart}, End: ${selectionEnd}`
-          )
-          selectPartialText(selectionStart, selectionEnd)
-        } else {
-          console.warn(
-            `[Index] Textbox element or selectPartialText method not available when trying to perform selection.`
-          )
-        }
-      }
+  function onPromptAreaFocusIn() {
+    isPromptFocused = true
+  }
 
-      // Initial attempt: After Svelte tick and browser paint
-      tick().then(() => {
-        requestAnimationFrame(() => {
-          performSelection()
-        })
-      })
-
-      // // Second attempt: With a short delay
-      // setTimeout(() => {
-      // 	performSelection();
-      // }, 100); // 100ms delay
-
-      // // Third attempt: With a slightly longer delay
-      // setTimeout(() => {
-      // 	performSelection();
-      // }, 250); // 250ms delay
-    } else {
-      // No valid selection range provided
-      console.log(
-        '[Index] handlePromptSelected: No specific selection range provided, or promptEl not ready. No text will be selected.',
-        { text, selectionStart, selectionEnd }
-      )
-    }
-    // Optionnellement, si on veut soumettre directement après sélection d'un prompt suggéré:
-    // dispatchSubmit();
+  function onPromptAreaFocusOut(event: FocusEvent) {
+    const next = event.relatedTarget as Node | null
+    if (promptAreaEl && next && promptAreaEl.contains(next)) return
+    isPromptFocused = false
   }
 </script>
 
@@ -118,7 +55,12 @@
     <h3 class="mb-0! text-center">
       {m['arenaHome.title']()}
     </h3>
-    <div class="gap-3 py-10 md:grid-flow-row-dense md:grid-cols-6 md:pb-20 md:pt-12 grid">
+    <div
+      bind:this={promptAreaEl}
+      class="gap-3 py-5 md:grid-flow-row-dense md:grid-cols-6 grid"
+      onfocusin={onPromptAreaFocusIn}
+      onfocusout={onPromptAreaFocusOut}
+    >
       <div class="md:order-none md:col-span-full order-1">
         <TextPrompt
           id="initial-prompt"
@@ -134,25 +76,19 @@
         />
       </div>
 
-      <ModelSelector
-        bind:mode={mode.value}
-        bind:modelsSelection={modelsSelection.value}
-        {models}
-        {disabled}
-      />
-
       <Button
         type="submit"
         text={m['words.send']()}
         disabled={prompt == '' || !!promptError || disabled}
-        class="md:w-auto! md:order-none order-2 w-full! min-w-[130px] md:col-span-full md:justify-self-center btn-color"
+        class="md:w-auto! md:order-none md:col-span-full md:justify-self-center btn-color order-2 w-full! min-w-[130px]"
         onclick={() => dispatchSubmit()}
         title={m['words.send']()}
         aria-label={m['words.send']()}
       />
-    </div>
-    <div class="pb-10">
-      <GuidedPromptSuggestions onPromptSelected={handlePromptSelected} />
+
+      <div class="pb-10 md:order-none md:col-span-full order-3">
+        <PromptSuggestion bind:selectedPrompt={prompt} display={isPromptFocused} />
+      </div>
     </div>
   </div>
 </div>

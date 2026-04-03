@@ -41,6 +41,13 @@
         },
         "suggestions": {
             "generateAnother": "Générer un autre message",
+            "prompts": {
+                "1": "Explique-moi la motion de censure à l'œuvre actuellement en France à l'Assemblée nationale et cite-moi tes sources.",
+                "2": "Quels sont les avantages et les inconvénients de l'énergie nucléaire ?",
+                "3": "Peux-tu me faire un résumé du livre « L’Étranger » d’Albert Camus ?",
+                "4": "Quels sont les meilleurs restaurants végétariens à Paris ?",
+                "5": "Comment fonctionne la blockchain et quelles sont ses applications possibles ?"
+            },
             "title": "Suggestions de prompts"
         },
         "title": "Comment puis-je vous aider aujourd'hui ?"
