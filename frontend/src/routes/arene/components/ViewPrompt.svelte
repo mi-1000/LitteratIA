@@ -12,11 +12,11 @@
   let promptAreaEl = $state<HTMLDivElement>()
   let disabled = $state(false)
   let isPromptFocused = $state(false)
-
-  const models = getModelsContext().models.filter((model) => model.status === 'enabled')
+  let focusTick = $state(0)
   let prompt = $state('')
   let promptError = $state<string>()
 
+  const models = getModelsContext().models.filter((model) => model.status === 'enabled')
   const mode = useLocalStorage<APIModeAndPromptData['mode']>('mode', 'random')
   const modelsSelection = useLocalStorage<string[]>('customModelsSelection', [], (parsed) => {
     if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
@@ -41,6 +41,7 @@
 
   function onPromptAreaFocusIn() {
     isPromptFocused = true
+    focusTick += 1
   }
 
   function onPromptAreaFocusOut(event: FocusEvent) {
@@ -87,7 +88,7 @@
       />
 
       <div class="pb-10 md:order-none md:col-span-full order-3">
-        <PromptSuggestion bind:selectedPrompt={prompt} display={isPromptFocused} />
+        <PromptSuggestion bind:selectedPrompt={prompt} display={isPromptFocused} focusTick={focusTick} />
       </div>
     </div>
   </div>

@@ -2,12 +2,15 @@
   import { m } from '$lib/i18n/messages'
   import { fade } from 'svelte/transition'
 
+  const maxPrompts = 3
+
   let {
     selectedPrompt = $bindable(''),
-    display = $bindable(false)
-  }: { selectedPrompt?: string; display?: boolean } = $props()
+    display = $bindable(false),
+    focusTick = 0
+  }: { selectedPrompt?: string; display?: boolean; focusTick?: number } = $props()
 
-  const maxPrompts = 3
+  let suggestions: string[] = $state<string[]>([])
 
   function shuffle<T>(items: T[]): T[] {
     /**
@@ -41,9 +44,10 @@
       .map((entry) => entry.text)
   }
 
-  const suggestions = $derived.by(() => {
+  $effect(() => {
+    void focusTick
     const allPrompts = getAllPromptMessages().filter((p) => p.trim() !== '')
-    return shuffle(allPrompts).slice(0, Math.min(maxPrompts, allPrompts.length))
+    suggestions = shuffle(allPrompts).slice(0, Math.min(maxPrompts, allPrompts.length))
   })
 
   function selectPrompt(prompt: string) {
@@ -57,31 +61,32 @@
 </script>
 
 {#if display && suggestions.length > 0}
-  <div class="prompt-suggestions" aria-label={m['arenaHome.suggestions.title']()}>
-    {#each suggestions as prompt, idx (prompt)}
-      {#if idx > 0}
-        <hr
-          class="separator m-0 p-0"
-          aria-hidden="true"
-          in:fade|global={{ duration: 180, delay: idx * 90 + 35 }}
-          out:fade|global={{ duration: 90, delay: outDelay(idx) }}
-        />
-      {/if}
-
-      <div
-        role="listitem"
-        in:fade|global={{ duration: 220, delay: idx * 90 }}
-        out:fade|global={{ duration: 110, delay: outDelay(idx) }}
-      >
-        <button
-          type="button"
-          class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center"
-          onclick={() => selectPrompt(prompt)}
+  <div class="prompt-suggestions">
+    {#key focusTick}
+      {#each suggestions as prompt, idx (idx)}
+        {#if idx > 0}
+          <hr
+            class="separator m-0 p-0"
+            aria-hidden="true"
+            in:fade|global={{ duration: 180, delay: idx * 90 + 35 }}
+            out:fade|global={{ duration: 90, delay: outDelay(idx) }}
+          />
+        {/if}
+        <div
+          role="listitem"
+          in:fade|global={{ duration: 220, delay: idx * 90 }}
+          out:fade|global={{ duration: 110, delay: outDelay(idx) }}
         >
-          <span class="text-balance italic">{prompt}</span>
-        </button>
-      </div>
-    {/each}
+          <button
+            type="button"
+            class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center"
+            onclick={() => selectPrompt(prompt)}
+          >
+            <span class="text-balance italic">{prompt}</span>
+          </button>
+        </div>
+      {/each}
+    {/key}
   </div>
 {/if}
 
