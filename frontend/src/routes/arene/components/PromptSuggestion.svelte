@@ -1,5 +1,6 @@
 <script lang="ts">
   import { m } from '$lib/i18n/messages'
+  import { fade } from 'svelte/transition'
 
   let {
     selectedPrompt = $bindable(''),
@@ -54,10 +55,14 @@
   <div class="prompt-suggestions" aria-label={m['arenaHome.suggestions.title']()}>
     {#each suggestions as prompt, idx (prompt)}
       {#if idx > 0}
-        <hr class="separator m-0 p-0" aria-hidden="true" />
+        <hr
+          class="separator m-0 p-0"
+          aria-hidden="true"
+          in:fade|global={{ duration: 180, delay: idx * 90 + 35 }}
+        />
       {/if}
 
-      <div role="listitem">
+      <div role="listitem" in:fade|global={{ duration: 220, delay: idx * 90 }}>
         <button
           type="button"
           class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center"
