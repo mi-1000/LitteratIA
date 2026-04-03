@@ -45,26 +45,30 @@
 >
   <MessageUser bind:size={userMessageSize} message={round.user} />
 
-  <div class="gap-10 md:grid-cols-2 md:gap-6 grid">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-6 w-full max-w-full overflow-hidden">
     {#if round.a && round.b && round.showMessages}
-      <MessageBot
-        message={round.a}
-        index={round.index}
-        {disabled}
-        {onReactionChange}
-        {showModelName}
-        {invertModelLabels}
-        side="A"
-      />
-      <MessageBot
-        message={round.b}
-        index={round.index}
-        {disabled}
-        {onReactionChange}
-        {showModelName}
-        {invertModelLabels}
-        side="B"
-      />
+        <div class="min-w-0">
+          <MessageBot
+            message={round.a}
+            index={round.index}
+            {disabled}
+            {onReactionChange}
+            {showModelName}
+            {invertModelLabels}
+            side="A"
+          />
+        </div>
+        <div class="min-w-0">
+          <MessageBot
+            message={round.b}
+            index={round.index}
+            {disabled}
+            {onReactionChange}
+            {showModelName}
+            {invertModelLabels}
+            side="B"
+          />
+        </div>
     {/if}
   </div>
 

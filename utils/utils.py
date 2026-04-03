@@ -14,7 +14,7 @@ Obj = dict[str, Any]
 UTILS_DIR = Path(__file__).parent
 ROOT_DIR = UTILS_DIR.parent
 # LLMs data
-LLMS_GENERATED_DATA_FILE = UTILS_DIR / "models" / "generated-models.json" # UTILS_DIR / "models" / "local-models.json"
+LLMS_GENERATED_DATA_FILE = UTILS_DIR / "models" / "local-models.json" # UTILS_DIR / "models" / "generated-models.json"
 # Frontend
 FRONTEND_DIR = ROOT_DIR / "frontend"
 FRONTEND_MAIN_I18N_FILE = FRONTEND_DIR / "locales" / "messages" / "fr.json"
