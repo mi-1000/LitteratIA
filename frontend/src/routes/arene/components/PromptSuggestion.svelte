@@ -50,8 +50,10 @@
     suggestions = shuffle(allPrompts).slice(0, Math.min(maxPrompts, allPrompts.length))
   })
 
-  function selectPrompt(prompt: string) {
+  function selectPrompt(prompt: string, e:MouseEvent) {
+    e.stopPropagation()
     selectedPrompt = prompt
+    display = false
   }
 
   function outDelay(idx: number) {
@@ -80,7 +82,7 @@
           <button
             type="button"
             class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center"
-            onclick={() => selectPrompt(prompt)}
+            onclick={(e) => selectPrompt(prompt, e)}
           >
             <span class="text-balance italic">{prompt}</span>
           </button>

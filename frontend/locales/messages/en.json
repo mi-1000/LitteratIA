@@ -41,6 +41,18 @@
         },
         "suggestions": {
             "generateAnother": "Generate another prompt",
+            "prompts": {
+                "1": "What is the agreement rule for the past participle used with the auxiliary 'avoir' when the direct object (COD) precedes the verb?",
+                "2": "What is the correct plural of the word 'chacal': 'chacaux' or 'chacals'?",
+                "3": "What is the difference in meaning between the homophones 'prémices' and 'prémisses'?",
+                "4": "In which tense and person is the verb 'naître' conjugated in the form 'il naquit'?",
+                "5": "What does the idiomatic expression 'battre froid à quelqu'un' mean?",
+                "6": "What is the name of the figure of speech that consists of using one word for another with which it has a logical connection (e.g., 'to drink a glass')?",
+                "7": "What is the surprising etymological origin of the word 'travail', linked to an instrument of torture?",
+                "8": "In the sentence 'Elle s'est lavé les mains', why does the past participle 'lavé' not agree with the subject?",
+                "9": "Which 19th-century writer created the iconic character Jean Valjean in 'Les Misérables'?",
+                "10": "Does the adjective 'pécuniaire' take an 'h' or is it written this way, and what is its connection to livestock in antiquity?"
+                },
             "title": "Suggested prompts"
         },
         "title": "How can I help you today?"

@@ -42,12 +42,17 @@
         "suggestions": {
             "generateAnother": "Générer un autre message",
             "prompts": {
-                "1": "Explique-moi la motion de censure à l'œuvre actuellement en France à l'Assemblée nationale et cite-moi tes sources.",
-                "2": "Quels sont les avantages et les inconvénients de l'énergie nucléaire ?",
-                "3": "Peux-tu me faire un résumé du livre « L’Étranger » d’Albert Camus ?",
-                "4": "Quels sont les meilleurs restaurants végétariens à Paris ?",
-                "5": "Comment fonctionne la blockchain et quelles sont ses applications possibles ?"
-            },
+                "1": "Quelle est la règle d'accord du participe passé employé avec l'auxiliaire 'avoir' lorsque le complément d'objet direct (COD) précède le verbe ?",
+                "2": "Quel est le pluriel correct du mot 'chacal' : des chacaux ou des chacals ?",
+                "3": "Quelle est la différence de sens entre les homophones 'prémices' et 'prémisses' ?",
+                "4": "À quel temps et à quelle personne le verbe 'naître' est-il conjugué sous la forme 'il naquit' ?",
+                "5": "Que signifie l'expression idiomatique 'battre froid à quelqu'un' ?",
+                "6": "Comment s'appelle la figure de style qui consiste à utiliser un mot pour un autre avec lequel il existe un lien logique (ex: 'boire un verre') ?",
+                "7": "Quelle est l'origine étymologique surprenante du mot 'travail', liée à un instrument de torture ?",
+                "8": "Dans la phrase 'Elle s'est lavé les mains', pourquoi le participe passé 'lavé' ne s'accorde-t-il pas avec le sujet ?",
+                "9": "Quel écrivain du XIXe siècle a créé le personnage emblématique de Jean Valjean dans 'Les Misérables' ?",
+                "10": "L'adjectif 'pécuniaire' prend-il un 'h' ou s'écrit-il ainsi, et quel est son lien avec le bétail dans l'Antiquité ?"
+                },
             "title": "Suggestions de prompts"
         },
         "title": "Comment puis-je vous aider aujourd'hui ?"

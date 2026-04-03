@@ -39,9 +39,16 @@
     }
   }
 
-  function onPromptAreaFocusIn() {
-    isPromptFocused = true
-    focusTick += 1
+  function onPromptAreaFocusIn(event: FocusEvent) {
+    // On récupère l'élément qui avait le focus juste avant
+    const previous = event.relatedTarget as Node | null;
+
+    // Si l'élément précédent était DÉJÀ dans la zone de prompt, 
+    // on ne fait rien (on ne veut pas re-mélanger)
+    if (promptAreaEl && previous && promptAreaEl.contains(previous)) return;
+
+    isPromptFocused = true;
+    focusTick += 1; // Le shuffle ne se lancera qu'en entrant réellement dans la zone
   }
 
   function onPromptAreaFocusOut(event: FocusEvent) {
