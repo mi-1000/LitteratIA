@@ -10,10 +10,13 @@ This module handles:
 """
 
 import hashlib
+import hmac
 import json
 import logging
+import os
 from contextlib import contextmanager
 from datetime import datetime
+from dotenv import load_dotenv
 from typing import Annotated, Any, Iterator, Literal
 
 import psycopg2
@@ -34,11 +37,14 @@ from backend.arena.models import (
 )
 from backend.config import CountryPortal, SelectionMode, settings
 
+load_dotenv()
+
+PEPPER = os.getenv("SECRET_PEPPER").encode(errors="ignore")
+
 logger = logging.getLogger("litteratia")
 
 JSONSerializer = PlainSerializer(lambda v: json.dumps(v))
 JSONModelSerializer = WrapSerializer(lambda v, handler: json.dumps(handler(v)))
-
 
 def is_not(v: Any) -> bool:
     return not v
@@ -62,6 +68,12 @@ def get_metadata(request: Request) -> tuple[Literal['mobile', 'tablet', 'desktop
     lang = accept_lang.split(",")[0].split("-")[0] 
 
     return device, lang
+
+def hash_ip(ip: str) -> str:
+    """Hash IP address using SHA-256 + pepper to avoid linking IPs with hashes."""
+    if not PEPPER: # Should not happen, but at least default to plain hashing
+        return hashlib.sha256(ip.encode()).hexdigest()
+    return hmac.new(PEPPER, ip.encode(), hashlib.sha256).hexdigest()
 
 @contextmanager
 def db(
@@ -121,7 +133,7 @@ def save_vote_to_db(data: dict) -> dict:
     """
     # Hash IP
     if data.get("ip"):
-        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
+        data["ip"] = hash_ip(data["ip"])
     
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
@@ -171,7 +183,7 @@ def upsert_reaction_to_db(data: dict) -> dict:
     """
     # Hash IP
     if data.get("ip"):
-        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
+        data["ip"] = hash_ip(data["ip"])
 
     with db(data, "upsert 'reaction'") as (cursor, fields, values):
         # SQL UPSERT for reactions table
@@ -312,7 +324,7 @@ def upsert_conv_to_db(data: dict) -> dict:
     """
     # Hash IP
     if data.get("ip"):
-        data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
+        data["ip"] = hash_ip(data["ip"])
     
     with db(data, "upsert 'conversations'") as (cursor, fields, values):
         # SQL UPSERT for conversations table
