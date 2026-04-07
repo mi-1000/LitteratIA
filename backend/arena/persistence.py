@@ -20,6 +20,7 @@ import psycopg2
 from psycopg2 import sql
 from fastapi import Request
 from pydantic import BaseModel, Field, PlainSerializer, WrapSerializer
+from user_agents import parse
 
 from backend.arena.models import (
     REACTIONS,
@@ -42,6 +43,25 @@ JSONModelSerializer = WrapSerializer(lambda v, handler: json.dumps(handler(v)))
 def is_not(v: Any) -> bool:
     return not v
 
+def get_metadata(request: Request) -> tuple[Literal['mobile', 'tablet', 'desktop', 'unknown'], str]:
+    ua_string = request.headers.get("user-agent", "")
+    user_agent = parse(ua_string)
+    
+    # Determining device type
+    if user_agent.is_mobile:
+        device = "mobile"
+    elif user_agent.is_tablet:
+        device = "tablet"
+    elif user_agent.is_pc:
+        device = "desktop"
+    else:
+        device = "unknown"
+
+    # Determining language (e.g., "fr-FR,fr;q=0.9" -> "fr")
+    accept_lang = request.headers.get("accept-language", "unknown")
+    lang = accept_lang.split(",")[0].split("-")[0] 
+
+    return device, lang
 
 @contextmanager
 def db(
@@ -102,7 +122,7 @@ def save_vote_to_db(data: dict) -> dict:
     # Hash IP
     if data.get("ip"):
         data["ip"] = hashlib.sha256(data["ip"].encode()).hexdigest()
-
+    
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
         insert_statement = sql.SQL( 
@@ -194,6 +214,8 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 model_pair_name = EXCLUDED.model_pair_name,
                 msg_rank = EXCLUDED.msg_rank,
                 chatbot_index = EXCLUDED.chatbot_index,
+                device_type = EXCLUDED.device_type,
+                interface_lang = EXCLUDED.interface_lang,
                 question_id = EXCLUDED.question_id;
         """).format(
             fields=sql.SQL(', ').join(map(sql.Identifier, data.keys())),
@@ -343,7 +365,7 @@ def upsert_conv_to_db(data: dict) -> dict:
 # - selected_category
 # - is_unedited_prompt
 class VoteRecord(BaseModel):
-    # Set with database defaults, not present in logs?
+    # Set with database defaults, not present in logs?sha256
     # id: int | None = None
     timestamp: str
 
@@ -503,6 +525,8 @@ class ReactionRecord(BaseModel):
     session_hash: str
     visitor_id: str | None
     ip: str
+    device_type: str | None = None
+    interface_lang: str | None = None
 
     # Conversations
     conv_turns: int  # TODO rename to current_conv_turn_when_reacting?
@@ -556,7 +580,6 @@ class ReactionRecord(BaseModel):
     # country_portal: CountryPortal
     # cohorts: str
 
-
 def delete_reaction(conv: Conversation, msg_index: int) -> dict:
     """
     Delete a single message's reaction when the user removes feedback (like == None).
@@ -606,6 +629,12 @@ def record_reaction(
     conv = conv_a if reaction.bot == "a" else conv_b
 
     t = datetime.now()  # FIXME
+    
+    # Save metadata
+    device, lang = get_metadata(request)
+    if reaction.interface_lang: # Override browser language with actual interface language if provided
+        lang = reaction.interface_lang
+    
     reaction_data = (
         # Conversations
         conversations.model_dump()
@@ -629,6 +658,9 @@ def record_reaction(
             "disliked": reaction.liked is False,
             "rating": reaction.rating,
             "comment": reaction.comment,
+            # Metadata
+            "device_type": device,
+            "interface_lang": lang,
         }
         | {
             # Reaction

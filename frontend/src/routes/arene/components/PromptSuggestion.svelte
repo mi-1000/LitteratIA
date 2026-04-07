@@ -81,10 +81,10 @@
         >
           <button
             type="button"
-            class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center"
+            class="suggestion py-2 px-3 md:text-left w-full border-none bg-transparent text-center text-balance md:text-wrap"
             onclick={(e) => selectPrompt(prompt, e)}
           >
-            <span class="text-balance italic">{prompt}</span>
+            <span class="italic">{prompt}</span>
           </button>
         </div>
       {/each}

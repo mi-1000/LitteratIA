@@ -4,6 +4,7 @@ import type { APIBotModel, BotModel } from '$lib/models'
 import { parseModel } from '$lib/models'
 import { COHORT_STORAGE_KEY } from '$lib/stores/cohortStore.svelte'
 import type { Ratings } from '../routes/arene/components/ReactPanel.svelte'
+import type { Locale } from './i18n/runtime'
 
 // PROMPT
 export type Mode = 'random' | 'custom' | 'big-vs-small' | 'small-models'
@@ -84,6 +85,7 @@ export type APIReactionData = {
   index: number
   value: string
   rating: Ratings
+  interface_lang: Locale
   liked: boolean // unused, legacy
   prefs: APIReactionPref[]
   comment?: string

@@ -314,6 +314,7 @@ class ReactionBody(BaseModel):
     index: int
     value: str
     liked: bool
+    interface_lang: str
     rating: Literal[0, 1, 2, 3, 4, 5]
     prefs: list[Reaction]
     comment: str | None = None

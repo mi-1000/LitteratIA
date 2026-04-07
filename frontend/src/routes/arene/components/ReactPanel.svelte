@@ -5,6 +5,8 @@
   import { m } from '$lib/i18n/messages'
   import { debounce } from 'lodash-es'
   import { LikePanel, StarRating, VoteRadioGroup } from '.'
+  import { getLocale } from '$lib/i18n/runtime'
+  import { page } from '$app/state'
 
   export type Ratings = 0 | 1 | 2 | 3 | 4 | 5
 
@@ -37,6 +39,7 @@
       bot: selected_model,
       index: index,
       value: comment,
+      interface_lang: page.data?.locale || getLocale(),
       liked: rating !== undefined && (rating) > (3 as Ratings), // Consider ratings of 4 and 5 as "liked" -- this is legacy behaviour anyway
       comment: comment,
       rating: rating,
