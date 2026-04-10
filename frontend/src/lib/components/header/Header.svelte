@@ -1,17 +1,15 @@
 <script lang="ts">
-  import { Button, Link } from '$components/dsfr'
+  import { Button } from '$components/dsfr'
   import { m } from '$lib/i18n/messages'
   import { LanguageSelector, Menubar } from '.'
 
   let {
     hideNavigation = true,
     hideLanguageSelector = false,
-    hideDiscussBtn = false,
     small
   }: {
     hideNavigation?: boolean
     hideLanguageSelector?: boolean
-    hideDiscussBtn?: boolean
     small?: boolean
   } = $props()
 </script>
@@ -19,9 +17,9 @@
 <header id="main-header" class="fr-header lg:overflow-visible overflow-hidden">
   <div class="fr-header__body">
     <div class="fr-container max-w-none! flex justify-center">
-      <div class={['fr-header__body-row flex w-full items-center px-2!', { 'lg:py-1!': small }]}>
+      <div class={['fr-header__body-row grid! grid-cols-3! w-full items-center px-2!', { 'lg:py-1!': small }]}>
 
-        <div class="flex-2 flex justify-start min-w-0">
+        <div class="flex justify-start min-w-0">
           <div class={['fr-header__brand fr-enlarge-link lg:rounded-full w-full!', { 'lg:-translate-x-1/8 lg:scale-75': small }]}>
             <div class="fr-header__service flex items-center w-full! before:content-none! mx-1! sm:mx-3!">
               <img 
@@ -44,7 +42,7 @@
           </div>
         </div>
 
-        <div class="flex flex-row flex-[3] items-center justify-center gap-2 md:gap-6 px-2 z-10">
+        <div class="justify-self-center flex flex-row items-center gap-2 md:gap-6 px-2 z-10">
           <div class="flex flex-row">
             <div class="text-black">
               <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +500,7 @@
           </div>
         </div>
 
-        <div class="flex-0 sm:flex-1 flex justify-end items-center z-20">
+        <div class="justify-self-end flex items-center z-20">
           
           <div class="fr-header__navbar lg:hidden">
             <button
@@ -514,7 +512,7 @@
               </button>
           </div>
 
-          <div class="gap-3 p-4 lg:flex lg:flex-1 hidden items-center relative z-2">
+          <div class="gap-3 p-4 lg:flex hidden items-center relative z-2">
             {#if !hideLanguageSelector}
               <LanguageSelector id="translate" />
             {/if}
@@ -522,17 +520,8 @@
               aria-controls="footer-display"
               data-fr-opened="false"
               title={m['components.theme.title']()}
-              class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg! header-btn whitespace-nowrap"
-            >{m['components.theme.title']()}</button>
-
-            {#if !hideDiscussBtn}
-              <Link
-                button
-                href="/"
-                text={m['header.startDiscussion']()}
-                class="whitespace-nowrap"
-              />
-            {/if}
+              class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg! header-btn whitespace-nowrap inline-flex! items-center!"
+            ><span class="hidden xl:inline-block!">{m['components.theme.title']()}</span></button>
           </div>
         </div>
 
@@ -548,11 +537,6 @@
         <button aria-controls="footer-display" data-fr-opened="false" title={m['components.theme.title']()} class="fr-icon-theme-fill fr-btn--icon-left fr-btn fr-btn--tertiary-no-outline rounded-lg!">{m['components.theme.title']()}</button>
       </div>
       {#if !hideNavigation} <Menubar /> {/if}
-      {#if !hideDiscussBtn}
-        <div class="mt-6! md:mt-0 lg:hidden">
-          <Link button href="/" text={m['header.startDiscussion']()} class="w-full! whitespace-nowrap" />
-        </div>
-      {/if}
     </div>
   </dialog>
 </header>

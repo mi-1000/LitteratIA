@@ -42,17 +42,22 @@
         "suggestions": {
             "generateAnother": "Generate another prompt",
             "prompts": {
-                "1": "What is the agreement rule for the past participle used with the auxiliary 'avoir' when the direct object (COD) precedes the verb?",
-                "2": "What is the correct plural of the word 'chacal': 'chacaux' or 'chacals'?",
-                "3": "What is the difference in meaning between the homophones 'prémices' and 'prémisses'?",
-                "4": "In which tense and person is the verb 'naître' conjugated in the form 'il naquit'?",
-                "5": "What does the idiomatic expression 'battre froid à quelqu'un' mean?",
-                "6": "What is the name of the figure of speech that consists of using one word for another with which it has a logical connection (e.g., 'to drink a glass')?",
-                "7": "What is the surprising etymological origin of the word 'travail', linked to an instrument of torture?",
-                "8": "In the sentence 'Elle s'est lavé les mains', why does the past participle 'lavé' not agree with the subject?",
-                "9": "Which 19th-century writer created the iconic character Jean Valjean in 'Les Misérables'?",
-                "10": "Does the adjective 'pécuniaire' take an 'h' or is it written this way, and what is its connection to livestock in antiquity?"
-                },
+                "1": "Why is \"les fleurs que j'ai achetées\" written with -es at the end?",
+                "2": "What is the difference between the verbs \"savoir\" and \"connaître\"?",
+                "3": "Why do we say \"au Japon\" but \"en France\" and \"aux États-Unis\"?",
+                "4": "When should I use the imparfait instead of the passé composé?",
+                "5": "How do I choose between the expressions \"c'est\" and \"il est\"?",
+                "6": "How do I correctly use the pronouns \"y\" and \"en\"?",
+                "7": "Can I use \"on\" instead of \"nous\" in a formal email?",
+                "8": "Which verbs always require the subjunctive mood?",
+                "9": "What is the difference between \"visiter\" and \"rendre visite à\"?",
+                "10": "What does the idiom \"avoir un coup de foudre\" mean?",
+                "11": "Where do you place the COD when there are two verbs?",
+                "12": "How do you place the negation \"ne... pas\" with a compound tense?",
+                "13": "Any tips for guessing the gender of words (masculine/feminine)?",
+                "14": "What is the nuance between \"parce que\", \"car\", and \"puisque\"?",
+                "15": "Can you simply explain the use of the imparfait subjonctif?"
+            },
             "title": "Suggested prompts"
         },
         "title": "How can I help you today?"

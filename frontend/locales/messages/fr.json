@@ -28,7 +28,7 @@
         "compareModels": {
             "count": "{count}/2 modèles",
             "help": "Si vous n’en choisissez qu’un, le second sera sélectionné de manière aléatoire",
-            "question": "Quels modèles voulez-vous comparer ?"
+            "question": "Quels modèles voulez-vous comparer ?"
         },
         "modelSelection": "Sélection des modèles",
         "prompt": {
@@ -37,25 +37,30 @@
         },
         "selectModels": {
             "help": "Sélectionnez le mode de comparaison qui vous convient",
-            "question": "Quels modèles voulez-vous comparer ?"
+            "question": "Quels modèles voulez-vous comparer ?"
         },
         "suggestions": {
             "generateAnother": "Générer un autre message",
             "prompts": {
-                "1": "Quelle est la règle d'accord du participe passé employé avec l'auxiliaire 'avoir' lorsque le complément d'objet direct (COD) précède le verbe ?",
-                "2": "Quel est le pluriel correct du mot 'chacal' : des chacaux ou des chacals ?",
-                "3": "Quelle est la différence de sens entre les homophones 'prémices' et 'prémisses' ?",
-                "4": "À quel temps et à quelle personne le verbe 'naître' est-il conjugué sous la forme 'il naquit' ?",
-                "5": "Que signifie l'expression idiomatique 'battre froid à quelqu'un' ?",
-                "6": "Comment s'appelle la figure de style qui consiste à utiliser un mot pour un autre avec lequel il existe un lien logique (ex: 'boire un verre') ?",
-                "7": "Quelle est l'origine étymologique surprenante du mot 'travail', liée à un instrument de torture ?",
-                "8": "Dans la phrase 'Elle s'est lavé les mains', pourquoi le participe passé 'lavé' ne s'accorde-t-il pas avec le sujet ?",
-                "9": "Quel écrivain du XIXe siècle a créé le personnage emblématique de Jean Valjean dans 'Les Misérables' ?",
-                "10": "L'adjectif 'pécuniaire' prend-il un 'h' ou s'écrit-il ainsi, et quel est son lien avec le bétail dans l'Antiquité ?"
-                },
+                "1": "Explique-moi la règle de l'accord du participe passé dans « les fleurs que j'ai achetées ».",
+                "2": "Quelle est la différence entre les verbes « savoir » et « connaître » ?",
+                "3": "Pourquoi dit-on « au Japon » mais « en France » et « aux États-Unis » ?",
+                "4": "Quand faut-il utiliser l'imparfait plutôt que le passé composé ?",
+                "5": "C'est quoi la différence entre « c'est » et « il est » ?",
+                "6": "Comment utiliser correctement les pronoms « y » et « en » ?",
+                "7": "Peut-on utiliser « on » à la place de « nous » dans un courriel formel ?",
+                "8": "Quels sont les verbes qui demandent toujours le subjonctif ?",
+                "9": "Quelle est la différence entre « visiter » et « rendre visite à » ?",
+                "10": "Que signifie l'expression « avoir un coup de foudre » ?",
+                "11": "Où place-t-on le pronom COD quand il y a deux verbes ?",
+                "12": "Comment placer la négation « ne... pas » avec un temps composé ?",
+                "13": "Est-ce qu'il y a des astuces pour deviner le genre des mots (masculin/féminin) ?",
+                "14": "Quelle est la nuance entre « parce que », « car » et « puisque » ?",
+                "15": "Peux-tu m'expliquer simplement l'usage du subjonctif imparfait ?"
+            },
             "title": "Suggestions de prompts"
         },
-        "title": "Comment puis-je vous aider aujourd'hui ?"
+        "title": "Comment puis-je vous aider aujourd'hui ?"
     },
     "chatbot": {
         "continuePrompt": "Continuer à discuter avec les modèles",
@@ -144,7 +149,7 @@
                 "method": "En savoir plus sur la méthodologie"
             },
             "desc": "Exemples de réutilisation des jeux de données compar:IA",
-            "title": "Comment ces données sont-elles utilisées ?"
+            "title": "Comment ces données sont-elles utilisées ?"
         }
     },
     "errors": {
@@ -1435,7 +1440,7 @@
     },
     "models": {
         "arch": {
-            "title": "Le saviez-vous ?"
+            "title": "Le saviez-vous ?"
         },
         "conditions": {
             "commercialUse": {
@@ -1563,7 +1568,7 @@
         },
         "custom": {
             "altLabel": "Sélection manuelle",
-            "description": "Reconnaîtrez-vous les deux modèles que vous avez choisis ?",
+            "description": "Reconnaîtrez-vous les deux modèles que vous avez choisis ?",
             "label": "Sélection manuelle",
             "title": "Mode Sélection"
         },
@@ -2079,21 +2084,21 @@
             "negative": {
                 "incorrect": "Incorrecte",
                 "instructions_not_followed": "Instructions non suivies",
-                "question": "Pourquoi la réponse ne convient-elle pas ?",
+                "question": "Pourquoi la réponse ne convient-elle pas ?",
                 "superficial": "Superficielle"
             },
             "neutral": {
                 "complete": "Exhaustivité",
                 "correct": "Exactitude",
                 "useful": "Utilité",
-                "question": "Pourquoi avoir donné cette note (plusieurs réponses possibles) ?"
+                "question": "Pourquoi avoir donné cette note (plusieurs réponses possibles) ?"
             },
             "other": "Autre…",
             "positive": {
                 "clear_formatting": "Mise en forme claire",
                 "complete": "Complète",
                 "creative": "Créative",
-                "question": "Qu'avez-vous apprécié dans la réponse ?",
+                "question": "Qu'avez-vous apprécié dans la réponse ?",
                 "useful": "Utile"
             }
         },
@@ -2106,7 +2111,7 @@
             "label": "Je n'apprécie pas",
             "selectedLabel": "Je n'apprécie pas (sélectionné)"
         },
-        "elaborate": "Un commentaire à rajouter ?",
+        "elaborate": "Un commentaire à rajouter ?",
         "introA": "Avant de découvrir l’identité des modèles, nous avons besoin de votre préférence.",
         "introB": "Elle permet de constituer un jeu de données afin d'analyser les caractéristiques de chaque modèle dans le cadre de l'apprentissage des langues étrangères assisté par IA.",
         "introC": "Votre vote permet de constituer un jeu de données afin d'analyser les caractéristiques de chaque modèle dans le cadre de l'apprentissage des langues étrangères assisté par IA.",
@@ -2118,7 +2123,7 @@
         "qualify": {
             "addDetails": "Ajouter des détails",
             "placeholder": "Les réponses du modèle {model} sont...",
-            "question": "Comment qualifiez-vous ses réponses ?"
+            "question": "Comment qualifiez-vous ses réponses ?"
         },
         "stars": {
             "title": {
@@ -2131,7 +2136,7 @@
             "4": "Très satisfait",
             "5": "Entièrement satisfait"
         },
-        "title": "Quel modèle d’IA préférez-vous ?",
+        "title": "Quel modèle d’IA préférez-vous ?",
         "wait": "En attente des réponses des modèles…",
         "yours": "Votre vote"
     },
