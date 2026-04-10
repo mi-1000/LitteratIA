@@ -29,12 +29,12 @@
                 class="me-4 sm:block hidden h-max rounded-lg"
               />
               <div class="min-w-0">
-                <p class="fr-header__service-title mb-0! leading-normal! truncate">
+                <p class="fr-header__service-title mb-0! leading-tight! text-[12px]! sm:text-[14px]! md:text-[16px]! lg:text-[24px]! truncate">
                   <a href="/" title={m['header.homeTitle']()} data-sveltekit-reload>
                     {m['header.title']()}
                   </a>
                 </p>
-                <p class="fr-header__service-tagline mb-0! leading-normal! text-dark-grey md:text-[14px]! text-[10px]! truncate">
+                <p class="fr-header__service-tagline mb-0! leading-normal! text-dark-grey hidden sm:block text-[10px]! md:text-[12px]! lg:text-[14px]! truncate">
                   {m['header.subtitle']()}
                 </p>
               </div>
@@ -44,7 +44,8 @@
 
         <div class="justify-self-center flex flex-row items-center gap-2 md:gap-6 px-2 z-10">
           <div class="flex flex-row">
-            <div class="text-black">
+            <a href="https://defle.univ-lorraine.fr" title="DéFLE Lorraine" target="_blank">
+              <div class="text-black hidden min-[320px]:block">
               <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                 class="h-8 md:h-12 w-auto" viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet">
                 <g transform="translate(0,220) scale(0.1,-0.1)" fill="currentColor" stroke="none">
@@ -58,9 +59,11 @@
                   <path fill="var(--ul-yellow)" d="M2228 841 c9 -1 12 -36 12 -141 0 -178 10 -199 88 -200 20 0 22 -5 22 -55 l0 -55 -50 0 c-103 0 -163 52 -180 156 -10 58 -14 287 -6 295 4 3 43 3 114 0z"/>
                 </g>
               </svg>
-            </div>
+              </div>
+            </a>
 
-            <div class="text-black">
+            <a href="https://msh-lorraine.fr" title="MSH Lorraine" target="_blank">
+              <div class="text-black hidden min-[320px]:block">
               <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                 class="h-8 md:h-12 w-auto" viewBox="0 0 400 231" preserveAspectRatio="xMidYMid meet">
                 <g transform="translate(0,231) scale(0.1,-0.1)" fill="currentColor" stroke="none">
@@ -78,9 +81,11 @@
                   <path d="M3110 350 l0 -140 30 0 30 0 0 140 0 140 -30 0 -30 0 0 -140z"/>
                 </g>
               </svg>
-            </div>
+              </div>
+            </a>
 
-            <div class="text-black hidden sm:block">
+            <a href="https://www.loria.fr" title="Loria" target="_blank">
+              <div class="text-black hidden md:block">
               <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
               class="h-8 md:h-12 w-auto" viewBox="0 0 1961 818"
               preserveAspectRatio="xMidYMid meet">
@@ -414,9 +419,11 @@
                   67 3 3 6 3 26 2 42 -1 17 -3 74 -3 128 -1 53 -5 97 -9 97 -5 0 -16 -8 -24 -17z"/>
                 </g>
               </svg>
-            </div>
+              </div>
+            </a>
 
-            <div class="text-black hidden md:block">
+            <a href="https://www.atilf.fr" title="Atilf" target="_blank">
+              <div class="text-black hidden md:block">
               <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
               class="h-8 md:h-12 w-auto" viewBox="0 0 1743 1422"
               preserveAspectRatio="xMidYMid meet">
@@ -496,7 +503,8 @@
                   2776 1667 3739 2736 126 141 207 235 201 235 -2 0 -10 -7 -18 -16z"/>
                 </g>
               </svg>
-            </div>
+              </div>
+            </a>
           </div>
         </div>
 
