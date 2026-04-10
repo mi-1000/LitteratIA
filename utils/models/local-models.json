@@ -32,6 +32,38 @@
       "simple_name": "Gemma3 4B",
       "specific_portals": null,
       "status": "enabled"
+    },
+    "gemma4-e4b": {
+      "new": false,
+      "active_params": null,
+      "distribution": "open-weights",
+      "reuse": true,
+      "commercial_use": null,
+      "organisation": "local",
+      "data": null,
+      "prefs": null,
+      "url": null,
+      "endpoint": {
+        "api_type": "ollama",
+        "api_base": null,
+        "api_model_id": "gemma4:e4b"
+      },
+      "friendly_size": "S",
+      "fully_open_source": true,
+      "icon_path": "",
+      "id": "gemma4:e4b",
+      "license": "unknown",
+      "arch": "generic",
+      "params": 4,
+      "required_ram": 16,
+      "wh_per_million_token": 0,
+      "pricey": false,
+      "quantization": null,
+      "reasoning": false,
+      "release_date": "04/2026",
+      "simple_name": "Gemma4 E4B",
+      "specific_portals": null,
+      "status": "enabled"
     }
   }
 }
