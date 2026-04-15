@@ -1,7 +1,7 @@
 {
   "timestamp": 1767484800,
   "models": {
-    "gemma4-31b": {
+    "gemma4-e4b": {
       "new": false,
       "active_params": null,
       "distribution": "open-weights",
@@ -12,14 +12,14 @@
       "prefs": null,
       "url": null,
       "endpoint": {
-        "api_type": "openrouter",
-        "api_base": "https://openrouter.ai/api/v1/chat/completions",
-        "api_model_id": "arcee-ai/trinity-large-preview:free"
+        "api_type": "ollama",
+        "api_base": null,
+        "api_model_id": "gemma4:e4b"
       },
       "friendly_size": "S",
       "fully_open_source": true,
       "icon_path": "",
-      "id": "arcee-ai/trinity-large-preview:free",
+      "id": "gemma4:e4b",
       "license": "unknown",
       "arch": "generic",
       "params": 4,
@@ -29,7 +29,7 @@
       "quantization": null,
       "reasoning": true,
       "release_date": "04/2026",
-      "simple_name": "Gemma 4 31B",
+      "simple_name": "Gemma 4 E4B",
       "specific_portals": null,
       "status": "enabled"
     },"gemma3-4b": {
