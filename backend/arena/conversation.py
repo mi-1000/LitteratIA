@@ -30,8 +30,10 @@ async def bot_response_async(
     position,
     state: Conversation,
     request: Request,
-    temperature=0.7,
-    max_new_tokens=16384,
+    temperature: float | None = None,
+    max_new_tokens: int | None = None,
+    top_p: float | None = None,
+    top_k: int | None = None,
 ) -> AsyncGenerator[list[AnyMessage]]:
     """
     Stream a response from an AI model asynchronously.
@@ -43,8 +45,10 @@ async def bot_response_async(
         position: Which model position ("a" or "b") to respond
         state: Conversation (Pydantic model) with messages and model info
         request: FastAPI request for logging
-        temperature: Sampling temperature (default 0.7)
-        max_new_tokens: Maximum tokens to generate (default 4096)
+        temperature: Sampling temperature (model override, else global default)
+        max_new_tokens: Maximum tokens to generate (model override, else global default)
+        top_p: Nucleus sampling parameter (model override, else global default)
+        top_k: Top-k sampling parameter (model override, else global default)
 
     Yields:
         Updated message list as response chunks arrive
@@ -52,6 +56,15 @@ async def bot_response_async(
     Raises:
         EmptyResponseError: If model returns empty response
     """
+    if temperature is None:
+        temperature = state.llm.effective_temperature
+    if max_new_tokens is None:
+        max_new_tokens = state.llm.effective_max_new_tokens
+    if top_p is None:
+        top_p = state.llm.effective_top_p
+    if top_k is None:
+        top_k = state.llm.effective_top_k
+
     # Add new partial AssistantMessage to chat
     metadata = AssistantMessageMetadata(generation_id="", bot=position)
     current_msg = AssistantMessage(metadata=metadata)
@@ -67,6 +80,10 @@ async def bot_response_async(
         messages=state.messages,
         temperature=temperature,
         max_new_tokens=max_new_tokens,
+        top_p=top_p,
+        top_k=top_k,
+        stream_timeout_seconds=state.llm.effective_stream_timeout_seconds,
+        retry_timeout_seconds=state.llm.effective_retry_timeout_seconds,
         request=request,
     )
 

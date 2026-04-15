@@ -80,6 +80,10 @@ def litellm_stream_iter(
     messages: list["AnyMessage"],
     temperature: float,
     max_new_tokens: int,
+    top_p: float | None = None,
+    top_k: int | None = None,
+    stream_timeout_seconds: float | None = None,
+    retry_timeout_seconds: float | None = None,
     request: Union["Request", None] = None,
     include_reasoning: bool = False,  # FIXME Legacy ?
     enable_reasoning: bool = False,  # FIXME Legacy ?
@@ -96,6 +100,10 @@ def litellm_stream_iter(
         messages: List of messages to be serialized for llm call
         temperature: Sampling temperature for response diversity
         max_new_tokens: Maximum tokens to generate
+        top_p: Nucleus sampling parameter
+        top_k: Top-k sampling parameter
+        stream_timeout_seconds: Streaming timeout for upstream provider call
+        retry_timeout_seconds: Timeout for one-shot non-streaming fallback retry
         request: FastAPI request for logging
         include_reasoning: Whether to include reasoning in response
         enable_reasoning: Whether to enable reasoning mode
@@ -167,9 +175,14 @@ def litellm_stream_iter(
 
     logger.debug("Serialized messages for LLM: %s", serialized_messages)
 
+    if stream_timeout_seconds is None:
+        stream_timeout_seconds = settings.LLM_STREAM_TIMEOUT_SECONDS
+    if retry_timeout_seconds is None:
+        retry_timeout_seconds = settings.LLM_RETRY_TIMEOUT_SECONDS
+
     kwargs = {
         "timeout": GLOBAL_TIMEOUT,
-        "stream_timeout": 30,
+        "stream_timeout": stream_timeout_seconds,
         "api_version": (endpoint.api_version if endpoint is not None else None),
         "base_url": base_url,
         "api_key": api_key,
@@ -183,6 +196,11 @@ def litellm_stream_iter(
         "vertex_credentials": vertex_credentials_json,
         "vertex_ai_location": litellm.vertex_location,
     }
+
+    if top_p is not None:
+        kwargs["top_p"] = top_p
+    if top_k is not None:
+        kwargs["top_k"] = top_k
 
     # Use mock response for testing if enabled
     if settings.MOCK_RESPONSE:
@@ -262,7 +280,7 @@ Etiam sed semper mauris, et gravida diam. Ut suscipit quis elit vel condimentum.
                         data["content"] += content
                     # Get reasoning content (for reasoning models)
                     if reasoning := delta.get("reasoning_content") or delta.get(
-                        "reasoning"
+                        "reasoning" or delta.get("thinking")
                     ):
                         data["reasoning"] += reasoning
 
@@ -310,8 +328,7 @@ Etiam sed semper mauris, et gravida diam. Ut suscipit quis elit vel condimentum.
             # Prepare retry kwargs: copy and switch off streaming
             retry_kwargs = dict(kwargs)
             retry_kwargs["stream"] = False
-            # increase timeout for final response
-            retry_kwargs["timeout"] = max(GLOBAL_TIMEOUT, 60)
+            retry_kwargs["timeout"] = retry_timeout_seconds
             try:
                 final_resp = litellm.completion(**retry_kwargs)
                 # Try to extract text from common response shapes

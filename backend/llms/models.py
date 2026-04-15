@@ -29,7 +29,7 @@ from pydantic import (
     field_validator,
 )
 
-from backend.config import CountryPortal
+from backend.config import CountryPortal, settings
 
 # Type definitions for model categorization
 FriendlySize = Literal["XS", "S", "M", "L", "XL"]  # Human-readable size categories
@@ -160,6 +160,13 @@ class LLMDataBase(BaseModel):
     endpoint: Endpoint | None
     pricey: bool
     specific_portals: list[CountryPortal] | None
+    # Optional model-level overrides for runtime generation settings.
+    default_temperature: float | None = None
+    default_max_new_tokens: int | None = None
+    default_top_p: float | None = None
+    default_top_k: int | None = None
+    stream_timeout_seconds: float | None = None
+    retry_timeout_seconds: float | None = None
 
 
 class LLMDataEnhanced(BaseModel):
@@ -203,23 +210,71 @@ class LLMData(LLMDataBase, LLMDataEnhanced):
     @property
     def system_prompt(self) -> str | None:
         """
-        Get model-specific system prompt if configured.
+        Get the universal system prompt if configured.
 
-        Allows customization of model behavior through system prompts.
-        Currently only specific French models (chocolatine, lfm-40b) have custom prompts.
-        Other models use None (no system prompt by default).
+        This is the single source of truth for system prompt injection across
+        all providers (Ollama/OpenRouter/etc.).
 
         Args:
             model_name: Model identifier (e.g., "openai/gpt-4", "chocolatine")
 
         Returns:
-            str: French system prompt, or None for no custom system prompt
+            str: Universal system prompt, or None if unset/empty.
 
         Note:
             The system prompt is included in conversations when provided.
             This ensures consistent behavior across multiple conversations.
         """
-        return None
+        prompt = (settings.SYSTEM_PROMPT or "").strip()
+        return prompt or None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def effective_temperature(self) -> float:
+        """Resolve temperature with model override fallback to global default."""
+        if self.default_temperature is not None:
+            return self.default_temperature
+        return settings.LLM_DEFAULT_TEMPERATURE
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def effective_max_new_tokens(self) -> int:
+        """Resolve max_new_tokens with model override fallback to global default."""
+        if self.default_max_new_tokens is not None:
+            return self.default_max_new_tokens
+        return settings.LLM_DEFAULT_MAX_NEW_TOKENS
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def effective_top_p(self) -> float | None:
+        """Resolve top_p with model override fallback to global default."""
+        if self.default_top_p is not None:
+            return self.default_top_p
+        return settings.LLM_DEFAULT_TOP_P
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def effective_top_k(self) -> int | None:
+        """Resolve top_k with model override fallback to global default."""
+        if self.default_top_k is not None:
+            return self.default_top_k
+        return settings.LLM_DEFAULT_TOP_K
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def effective_stream_timeout_seconds(self) -> float:
+        """Resolve stream timeout with model override fallback to global default."""
+        if self.stream_timeout_seconds is not None:
+            return self.stream_timeout_seconds
+        return settings.LLM_STREAM_TIMEOUT_SECONDS
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def effective_retry_timeout_seconds(self) -> float:
+        """Resolve retry timeout with model override fallback to global default."""
+        if self.retry_timeout_seconds is not None:
+            return self.retry_timeout_seconds
+        return settings.LLM_RETRY_TIMEOUT_SECONDS
 
 
 class LLMDataArchived(LLMData):
