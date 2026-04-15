@@ -1,0 +1,53 @@
+variables:
+  SRC_DOCKER_DIR: "docker"
+  # Python requirements file
+  REQUIREMENTS_FILE: "pyproject.toml"
+  DOCKERFILE_PATH: "Dockerfile"
+  DOCKERBUILD_ARGS: ""
+  STORAGE_DRIVER: vfs
+  BUILDAH_FORMAT: docker
+
+  CI_REGISTRY_IMAGE: "${CI_REGISTRY}/litteratia"
+
+.job_template: &job_definition
+  stage: package
+  image: quay.io/buildah/stable:v1.40.0
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - buildah build -t ${CI_REGISTRY_IMAGE}/frontend:${CI_COMMIT_REF_NAME} -f docker/Dockerfile.front ./frontend
+    - buildah push ${CI_REGISTRY_IMAGE}/frontend:${CI_COMMIT_REF_NAME}
+    - buildah build -t ${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_REF_NAME} -f docker/Dockerfile .
+    - buildah push ${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_REF_NAME}
+
+stages:
+  - package
+  - deploy
+
+# Master = Continuous Integration
+## Package when default branch and merge request with commit message containing "stage:package"
+package_docker_image_master:
+  <<: *job_definition
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - backend/**/*
+        - frontend/**/*
+        - ${SRC_DOCKER_DIR}/**/*
+        - ${REQUIREMENTS_FILE}
+        - .gitlab-ci.yml
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_MESSAGE =~ /stage:package/'
+    
+# Tags
+package_docker_image_tag:
+  <<: *job_definition
+  after_script:
+    - buildah tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/frontend:latest
+    - buildah push $CI_REGISTRY_IMAGE/frontend:latest
+    - buildah tag $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/backend:latest
+    - buildah push $CI_REGISTRY_IMAGE/backend:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: '$CI_COMMIT_BRANCH == "production"'
+      when: never
+
