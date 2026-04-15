@@ -82,6 +82,12 @@ Properties:
 - `endpoint`: Endpoint (optional) *API access configuration (None for unavailable LLMs)*  
 - `pricey`: bool  *Whether LLM has high API costs (triggers stricter rate limits)*  
 - `specific_portals`: list (optional) *Custom allow list of country portals on which the LLM is available*  
+- `default_temperature`: float (optional) *Model-level override for sampling temperature*  
+- `default_max_new_tokens`: int (optional) *Model-level override for max generated tokens*  
+- `default_top_p`: float (optional) *Model-level override for nucleus sampling (top_p)*  
+- `default_top_k`: int (optional) *Model-level override for top-k sampling*  
+- `stream_timeout_seconds`: float (optional) *Model-level override for stream timeout*  
+- `retry_timeout_seconds`: float (optional) *Model-level override for non-streaming retry timeout*  
 - `desc`: str  *Detailed LLM description*  
 - `size_desc`: str  *Detailed description of LLM size*  
 - `fyi`: str  *Additional notes for users*
@@ -112,6 +118,12 @@ Properties:
   },
   "pricey": false,
   "specific_portals": null,
+  "default_temperature": null,
+  "default_max_new_tokens": null,
+  "default_top_p": null,
+  "default_top_k": null,
+  "stream_timeout_seconds": null,
+  "retry_timeout_seconds": null,
   "desc": "",
   "size_desc": "",
   "fyi": ""

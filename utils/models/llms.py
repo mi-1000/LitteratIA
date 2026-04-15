@@ -38,6 +38,12 @@ descs = {
     "endpoint": "API access configuration (None for unavailable LLMs)",
     "pricey": "Whether LLM has high API costs (triggers stricter rate limits)",
     "specific_portals": "Custom allow list of country portals on which the LLM is available",
+    "default_temperature": "Optional model-level override for sampling temperature",
+    "default_max_new_tokens": "Optional model-level override for max generated tokens",
+    "default_top_p": "Optional model-level override for nucleus sampling (top_p)",
+    "default_top_k": "Optional model-level override for top-k sampling",
+    "stream_timeout_seconds": "Optional model-level override for streaming timeout",
+    "retry_timeout_seconds": "Optional model-level override for fallback retry timeout",
     "desc": "Detailed LLM description",
     "size_desc": "Detailed description of LLM size",
     "fyi": "Additional notes for users",
@@ -86,6 +92,24 @@ class LLMDataRawBase(LLMDataBase):
     pricey: Annotated[bool, Field(description=descs["pricey"])] = False
     specific_portals: Annotated[
         list[CountryPortal] | None, Field(description=descs["specific_portals"])
+    ] = None
+    default_temperature: Annotated[
+        float | None, Field(description=descs["default_temperature"])
+    ] = None
+    default_max_new_tokens: Annotated[
+        int | None, Field(description=descs["default_max_new_tokens"])
+    ] = None
+    default_top_p: Annotated[
+        float | None, Field(description=descs["default_top_p"])
+    ] = None
+    default_top_k: Annotated[int | None, Field(description=descs["default_top_k"])] = (
+        None
+    )
+    stream_timeout_seconds: Annotated[
+        float | None, Field(description=descs["stream_timeout_seconds"])
+    ] = None
+    retry_timeout_seconds: Annotated[
+        float | None, Field(description=descs["retry_timeout_seconds"])
     ] = None
 
     # Raw specific fields

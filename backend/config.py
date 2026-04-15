@@ -5,6 +5,8 @@ from typing import Literal, get_args
 from httpx import Timeout
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from .system_prompt import SYSTEM_PROMPT as UNIVERSAL_SYSTEM_PROMPT
+
 BACKEND_DIR = Path(__file__).parent
 ROOT_DIR = BACKEND_DIR.parent
 
@@ -32,10 +34,16 @@ class Settings(BaseSettings):
     ORDBOGEN_API_KEY: str | None = None
     HF_PUSH_DATASET_KEY: str = ""
     REPO_ORG: str = "ministere-culture/"
-    # Default local Ollama API base (can be overridden in .env)
+    SYSTEM_PROMPT: str | None = UNIVERSAL_SYSTEM_PROMPT or None
     OLLAMA_API_BASE: str | None = "http://127.0.0.1:11434"
-
     enable_postgres_handler: bool = True
+    # Default hyperparameters for all LLM calls
+    LLM_DEFAULT_TEMPERATURE: float = 0.7
+    LLM_DEFAULT_MAX_NEW_TOKENS: int = 16384
+    LLM_DEFAULT_TOP_P: float | None = 0.95
+    LLM_DEFAULT_TOP_K: int | None = 64
+    LLM_STREAM_TIMEOUT_SECONDS: float = 30.0
+    LLM_RETRY_TIMEOUT_SECONDS: float = 60.0
 
 
 settings = Settings()
