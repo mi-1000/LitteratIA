@@ -1,0 +1,49 @@
+version: '3.5'
+
+services:
+
+  litteratia:
+    image: registry.atilf.fr/litteratia/frontend:develop
+    environment: 
+      # URL for server-side rendering (inside Docker network)
+      PUBLIC_API_LOCAL_URL: "https://litteratia.atilf.fr"
+      # URL for client-side browser requests (exposed to host)
+      PUBLIC_API_URL: "https://litteratia.atilf.fr"
+      PUBLIC_API_DEV_MODE: "false"
+    deploy:
+      labels:
+        traefik.http.routers.litteratia.rule: Host(`litteratia.atilf.fr`)
+        traefik.http.services.litteratia-service.loadbalancer.server.port: "3000"
+        traefik.http.routers.litteratia.tls: "true"
+    networks:
+      - proxy
+      - litteratia
+
+  backend:
+    image: registry.atilf.fr/litteratia/backend:develop
+    environment: 
+      LOGDIR: /data
+      COMPARIA_DB_URI: "${COMPARIA_DB_URI}"
+      COMPARIA_REDIS_HOST: "redis"
+      OLLAMA_API_BASE: "${OLLAMA_API_BASE}"
+      SECRET_PEPPER: "${SECRET_PEPPER}"
+    volumes:
+      - /ceph/litteratia-storage/data:/data
+    deploy:
+      labels:
+        traefik.http.routers.litteratia-backend.rule: "Host(`litteratia.atilf.fr`) && (PathPrefix(`/models`) || PathPrefix(`/errors`) || PathPrefix(`/counter`) || PathPrefix(`/arena`))"
+        traefik.http.services.litteratia-backend-service.loadbalancer.server.port: "80"
+        traefik.http.routers.litteratia-backend.tls: "true"
+    networks:
+      - proxy
+      - litteratia
+
+  redis:
+    image: redis
+    networks:
+      - litteratia
+
+networks:
+  proxy:
+    external: true
+  litteratia:
