@@ -33,6 +33,7 @@ package_docker_image_master:
       changes:
         - backend/**/*
         - frontend/**/*
+        - utils/**/*
         - ${SRC_DOCKER_DIR}/**/*
         - ${REQUIREMENTS_FILE}
         - .gitlab-ci.yml
