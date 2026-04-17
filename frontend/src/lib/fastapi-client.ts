@@ -26,7 +26,11 @@ function getBackendUrl(): string {
 /**
  * SSE event types from backend
  */
-type SSEEventInit = { type: 'init'; session_hash: string }
+type SSEEventInit = {
+  type: 'init'
+  session_hash: string
+  models?: { a?: string; b?: string }
+}
 type SSEEventChunk = { type: 'chunk'; pos: LLMPos; messages: Array<UserMessage | AssistantMessage> }
 type SSEEventError = { type: 'error'; error: string; pos?: LLMPos } //; chat: APIChat }
 type SSEEventComplete = { type: 'complete'; pos?: LLMPos }
@@ -35,6 +39,7 @@ export type AnySSEEvent = SSEEventInit | SSEEventError | SSEEventChunk | SSEEven
 interface SSEInitEvent {
   type: 'init'
   session_hash: string
+  models?: { a?: string; b?: string }
 }
 
 interface SSEUpdateEvent {

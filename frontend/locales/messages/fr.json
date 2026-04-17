@@ -2088,9 +2088,23 @@
                 "superficial": "Superficielle"
             },
             "neutral": {
+                "categories": {
+                    "content": "Contenu",
+                    "pedagogy": "Pédagogie",
+                    "interaction": "Interaction"
+                },
+                "relevant": "Pertinence",
+                "concise": "Concision",
                 "complete": "Exhaustivité",
                 "correct": "Exactitude",
-                "useful": "Utilité",
+                "guiding": "Guidage",
+                "scaffolding": "Aide à réfléchir",
+                "actionable": "Pratique",
+                "understandable": "Langage adapté",
+                "empathetic": "Encouragement",
+                "engaging": "Interactivité",
+                "anthropomorphic": "Côté humain",
+                "coherent": "Cohérence",
                 "question": "Pourquoi avoir donné cette note (plusieurs réponses possibles) ?"
             },
             "other": "Autre…",

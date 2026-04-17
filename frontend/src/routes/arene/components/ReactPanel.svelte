@@ -1,18 +1,18 @@
 <script lang="ts">
+  import { page } from '$app/state'
   import TextPrompt from '$components/TextPrompt.svelte'
-  import type { APIReactionData, BotChoice } from '$lib/chatService.svelte'
-  import { APIGeneralReactions, updateReaction } from '$lib/chatService.svelte'
+  import type { APIDetailReactionPref, APIReactionData, BotChoice } from '$lib/chatService.svelte'
+  import { updateReaction } from '$lib/chatService.svelte'
   import { m } from '$lib/i18n/messages'
+  import { getLocale } from '$lib/i18n/runtime'
   import { debounce } from 'lodash-es'
   import { LikePanel, StarRating, VoteRadioGroup } from '.'
-  import { getLocale } from '$lib/i18n/runtime'
-  import { page } from '$app/state'
 
   export type Ratings = 0 | 1 | 2 | 3 | 4 | 5
 
   let selected_model: BotChoice | undefined = $state(undefined)
   let rating: Ratings = $state(0 as Ratings)
-  let selection: (typeof APIGeneralReactions)[number][] = $state([])
+  let selection: APIDetailReactionPref[] = $state([])
   let comment: string = $state('')
 
   let { disabled = false, index }: { disabled?: boolean; index: number } = $props()
@@ -40,7 +40,7 @@
       index: index,
       value: comment,
       interface_lang: page.data?.locale || getLocale(),
-      liked: rating !== undefined && (rating) > (3 as Ratings), // Consider ratings of 4 and 5 as "liked" -- this is legacy behaviour anyway
+      liked: rating !== undefined && rating > (3 as Ratings), // Consider ratings of 4 and 5 as "liked" -- this is legacy behaviour anyway
       comment: comment,
       rating: rating,
       prefs: selection
@@ -72,7 +72,7 @@
       <StarRating bind:value={rating} {selected_model} {disabled} />
     </div>
     {#if rating > 0}
-      <div class="mt-4">
+      <div class="mt-4 w-full">
         <LikePanel
           id="like-panel"
           show={true}

@@ -39,9 +39,7 @@ from backend.llms.utils import get_active_params, get_total_params
 
 # TODO: apply add token ecologits + topics pii + ip_map just before export
 # FIXME import path from 'utils.utils'
-LLMS_GENERATED_DATA_FILE = os.path.join(
-    SCRIPT_DIR, "models", "generated-models.json"
-)
+LLMS_GENERATED_DATA_FILE = os.path.join(SCRIPT_DIR, "models", "generated-models.json")
 MODELS_DATA = {}
 
 # Configure logging
@@ -115,8 +113,11 @@ reactions_db_query = """
 SELECT id, timestamp, model_a_name, model_b_name, refers_to_model, msg_index, opening_msg,
     conversation_a, conversation_b, model_pos, conv_turns, conversation_pair_id, conv_a_id,
     conv_b_id, refers_to_conv_id, session_hash, visitor_id, response_content, question_content,
-    liked, disliked, comment, useful, creative, complete, clear_formatting, incorrect, superficial,
-    instructions_not_followed, model_pair_name, msg_rank, question_id, system_prompt
+    liked, disliked, comment,
+    relevant, concise, complete, correct,
+    guiding, scaffolding, actionable, understandable,
+    empathetic, engaging, anthropomorphic, coherent,
+    model_pair_name, msg_rank, question_id, system_prompt
 
 FROM reactions r
 
@@ -393,18 +394,24 @@ def export_data(dataframe, table_name, export_dir):
         logger.debug(f"  Writing {table_name}.parquet...")
         dataframe.to_parquet(f"{export_dir}/{table_name}.parquet")
 
-        logger.debug(f"  Writing {table_name}.jsonl (this may take several minutes for large datasets)...")
+        logger.debug(
+            f"  Writing {table_name}.jsonl (this may take several minutes for large datasets)..."
+        )
         # Write in chunks to avoid OOM for large datasets
         chunk_size = 10_000
         with open(f"{export_dir}/{table_name}.jsonl", "w") as f:
             for i in range(0, len(dataframe), chunk_size):
-                chunk = dataframe.iloc[i:i+chunk_size]
-                chunk_json = chunk.to_json(orient="records", lines=True, date_format="iso")
+                chunk = dataframe.iloc[i : i + chunk_size]
+                chunk_json = chunk.to_json(
+                    orient="records", lines=True, date_format="iso"
+                )
                 f.write(chunk_json)
                 if i + chunk_size < len(dataframe):
                     f.write("\n")
                 if (i // chunk_size) % 10 == 0:
-                    logger.debug(f"    Progress: {i+len(chunk):,}/{len(dataframe):,} rows")
+                    logger.debug(
+                        f"    Progress: {i+len(chunk):,}/{len(dataframe):,} rows"
+                    )
 
         # Sample dataset exports (max 1000 rows)
         logger.debug(f"  Creating sample ({min(len(dataframe), 1000)} rows)...")
@@ -417,13 +424,17 @@ def export_data(dataframe, table_name, export_dir):
 
         logger.debug(f"  Writing {table_name}_samples.jsonl...")
         sample_df.to_json(
-            f"{export_dir}/{table_name}_samples.jsonl", orient="records", lines=True, date_format="iso"
+            f"{export_dir}/{table_name}_samples.jsonl",
+            orient="records",
+            lines=True,
+            date_format="iso",
         )
 
         logger.info(f"Export completed for table: {table_name}")
     except Exception as e:
         logger.error(f"Failed to export data for table {table_name}: {e}")
         import traceback
+
         logger.error(traceback.format_exc())
 
 

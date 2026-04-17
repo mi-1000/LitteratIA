@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict O9qaKc9fxo12ujXTYjbqtcmqUcwhja8Z1aiDPfHa46euZpNuathApcLC1hge1OO
+\restrict SIjFyeGXO9lZi0jqtqFTSyv2tDDt4a01mR56LSgz9MWc3gimZrX7XQrlN4rvvDr
 
 -- Dumped from database version 16.13 (Debian 16.13-1.pgdg13+1)
 -- Dumped by pg_dump version 16.13
 
--- Started on 2026-04-07 14:36:08 UTC
+-- Started on 2026-04-17 14:48:47 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE IF EXISTS litteratia;
 --
 -- TOC entry 3453 (class 1262 OID 16384)
 -- Name: litteratia; Type: DATABASE; Schema: -; Owner: -
@@ -29,9 +28,9 @@ DROP DATABASE IF EXISTS litteratia;
 CREATE DATABASE litteratia WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
 
 
-\unrestrict O9qaKc9fxo12ujXTYjbqtcmqUcwhja8Z1aiDPfHa46euZpNuathApcLC1hge1OO
+\unrestrict SIjFyeGXO9lZi0jqtqFTSyv2tDDt4a01mR56LSgz9MWc3gimZrX7XQrlN4rvvDr
 \connect litteratia
-\restrict O9qaKc9fxo12ujXTYjbqtcmqUcwhja8Z1aiDPfHa46euZpNuathApcLC1hge1OO
+\restrict SIjFyeGXO9lZi0jqtqFTSyv2tDDt4a01mR56LSgz9MWc3gimZrX7XQrlN4rvvDr
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -43,10 +42,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- TOC entry 216 (class 1259 OID 16386)
@@ -179,6 +174,16 @@ CREATE TABLE public.reactions (
     correct boolean DEFAULT false,
     device_type character varying(20),
     interface_lang character varying(10),
+    relevant boolean,
+    concise boolean,
+    guiding boolean,
+    scaffolding boolean,
+    actionable boolean,
+    understandable boolean,
+    empathetic boolean,
+    engaging boolean,
+    anthropomorphic boolean,
+    coherent boolean,
     CONSTRAINT reactions_model_pos_check CHECK (((model_pos)::text = ANY ((ARRAY['a'::character varying, 'b'::character varying, 'both_equal'::character varying])::text[])))
 );
 
@@ -343,11 +348,11 @@ ALTER TABLE ONLY public.votes
     ADD CONSTRAINT votes_pkey PRIMARY KEY (id);
 
 
--- Completed on 2026-04-07 14:36:08 UTC
+-- Completed on 2026-04-17 14:48:47 UTC
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict O9qaKc9fxo12ujXTYjbqtcmqUcwhja8Z1aiDPfHa46euZpNuathApcLC1hge1OO
+\unrestrict SIjFyeGXO9lZi0jqtqFTSyv2tDDt4a01mR56LSgz9MWc3gimZrX7XQrlN4rvvDr
 

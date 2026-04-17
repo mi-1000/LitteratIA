@@ -1966,9 +1966,23 @@
                 "superficial": "Superficial"
             },
             "neutral": {
-                "complete": "Completeness",
-                "correct": "Correctness",
-                "useful": "Usefulness",
+                "categories": {
+                    "content": "Content",
+                    "pedagogy": "Pedagogy",
+                    "interaction": "Interaction"
+                },
+                "relevant": "Relevant",
+                "concise": "Concise",
+                "complete": "Complete",
+                "correct": "Correct",
+                "guiding": "Guiding",
+                "scaffolding": "Thought-provoking",
+                "actionable": "Actionable",
+                "understandable": "Understandable",
+                "empathetic": "Encouraging",
+                "engaging": "Interactive",
+                "anthropomorphic": "Human-like",
+                "coherent": "Coherent",
                 "question": "Why did you give this rating (several answers possible)?"
             },
             "other": "Other…",

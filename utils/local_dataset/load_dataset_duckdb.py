@@ -8,9 +8,9 @@ Use start_duckdb.sh to launch the DuckDB CLI.
 import duckdb
 from pathlib import Path
 
-print("="*80)
+print("=" * 80)
 print("PREPARING DUCKDB WITH COMPARIA LOCAL DATASETS")
-print("="*80)
+print("=" * 80)
 
 # Paths - parquets are in subdirectories from dry-run export
 local_dataset_dir = Path(__file__).parent
@@ -28,10 +28,12 @@ con.execute("LOAD json")
 reactions_parquet = local_dataset_dir / "comparia-reactions" / "reactions.parquet"
 if reactions_parquet.exists():
     print(f"\n📊 Loading reactions from: {reactions_parquet}")
-    con.execute(f"""
+    con.execute(
+        f"""
         CREATE OR REPLACE TABLE reactions AS
         SELECT * FROM read_parquet('{reactions_parquet}')
-    """)
+    """
+    )
     count = con.execute("SELECT COUNT(*) FROM reactions").fetchone()[0]
     print(f"   ✓ Loaded {count:,} reactions")
 else:
@@ -39,13 +41,17 @@ else:
     print("   Run: uv run python ../export_dataset.py --dry-run")
 
 # Load conversations
-conversations_parquet = local_dataset_dir / "comparia-conversations" / "conversations.parquet"
+conversations_parquet = (
+    local_dataset_dir / "comparia-conversations" / "conversations.parquet"
+)
 if conversations_parquet.exists():
     print(f"\n📊 Loading conversations from: {conversations_parquet}")
-    con.execute(f"""
+    con.execute(
+        f"""
         CREATE OR REPLACE TABLE conversations AS
         SELECT * FROM read_parquet('{conversations_parquet}')
-    """)
+    """
+    )
     count = con.execute("SELECT COUNT(*) FROM conversations").fetchone()[0]
     print(f"   ✓ Loaded {count:,} conversations")
 else:
@@ -56,10 +62,12 @@ else:
 votes_parquet = local_dataset_dir / "comparia-votes" / "votes.parquet"
 if votes_parquet.exists():
     print(f"\n📊 Loading votes from: {votes_parquet}")
-    con.execute(f"""
+    con.execute(
+        f"""
         CREATE OR REPLACE TABLE votes AS
         SELECT * FROM read_parquet('{votes_parquet}')
-    """)
+    """
+    )
     count = con.execute("SELECT COUNT(*) FROM votes").fetchone()[0]
     print(f"   ✓ Loaded {count:,} votes")
 else:
@@ -69,27 +77,37 @@ else:
 print(f"\n🔧 Creating useful views...")
 
 # View: Reactions summary by model
-con.execute("""
+con.execute(
+    """
     CREATE OR REPLACE VIEW reactions_by_model AS
     SELECT
         refers_to_model,
         COUNT(*) as total_reactions,
         SUM(CASE WHEN liked THEN 1 ELSE 0 END) as likes,
         SUM(CASE WHEN disliked THEN 1 ELSE 0 END) as dislikes,
-        SUM(CASE WHEN useful THEN 1 ELSE 0 END) as useful_count,
-        SUM(CASE WHEN creative THEN 1 ELSE 0 END) as creative_count,
+        SUM(CASE WHEN relevant THEN 1 ELSE 0 END) as relevant_count,
+        SUM(CASE WHEN concise THEN 1 ELSE 0 END) as concise_count,
         SUM(CASE WHEN complete THEN 1 ELSE 0 END) as complete_count,
-        SUM(CASE WHEN incorrect THEN 1 ELSE 0 END) as incorrect_count,
-        SUM(CASE WHEN superficial THEN 1 ELSE 0 END) as superficial_count
+        SUM(CASE WHEN correct THEN 1 ELSE 0 END) as correct_count,
+        SUM(CASE WHEN guiding THEN 1 ELSE 0 END) as guiding_count,
+        SUM(CASE WHEN scaffolding THEN 1 ELSE 0 END) as scaffolding_count,
+        SUM(CASE WHEN actionable THEN 1 ELSE 0 END) as actionable_count,
+        SUM(CASE WHEN understandable THEN 1 ELSE 0 END) as understandable_count,
+        SUM(CASE WHEN empathetic THEN 1 ELSE 0 END) as empathetic_count,
+        SUM(CASE WHEN engaging THEN 1 ELSE 0 END) as engaging_count,
+        SUM(CASE WHEN anthropomorphic THEN 1 ELSE 0 END) as anthropomorphic_count,
+        SUM(CASE WHEN coherent THEN 1 ELSE 0 END) as coherent_count
     FROM reactions
     WHERE refers_to_model IS NOT NULL
     GROUP BY refers_to_model
     ORDER BY total_reactions DESC
-""")
+"""
+)
 print("   ✓ Created view: reactions_by_model")
 
 # View: Check for ModelResponseStream issues (should be 0 after filtering)
-con.execute("""
+con.execute(
+    """
     CREATE OR REPLACE VIEW check_modelresponsestream AS
     SELECT
         'response_content' as location,
@@ -108,11 +126,13 @@ con.execute("""
         COUNT(*) as issue_count
     FROM reactions
     WHERE CAST(conversation_b AS VARCHAR) LIKE '%ModelResponseStream%'
-""")
+"""
+)
 print("   ✓ Created view: check_modelresponsestream")
 
 # View: Reactions with comments
-con.execute("""
+con.execute(
+    """
     CREATE OR REPLACE VIEW reactions_with_comments AS
     SELECT
         id,
@@ -126,17 +146,20 @@ con.execute("""
     FROM reactions
     WHERE comment IS NOT NULL AND comment != ''
     ORDER BY timestamp DESC
-""")
+"""
+)
 print("   ✓ Created view: reactions_with_comments")
 
 # Show available tables and views
 print("\n📋 Available tables and views:")
-tables = con.execute("""
+tables = con.execute(
+    """
     SELECT table_name, table_type
     FROM information_schema.tables
     WHERE table_schema = 'main'
     ORDER BY table_type, table_name
-""").fetchdf()
+"""
+).fetchdf()
 print(tables.to_string(index=False))
 
 # Show basic statistics
@@ -148,7 +171,9 @@ if reactions_parquet.exists():
     print(f"  Reactions: {reactions_count:,}")
 
 if conversations_parquet.exists():
-    conversations_count = con.execute("SELECT COUNT(*) FROM conversations").fetchone()[0]
+    conversations_count = con.execute("SELECT COUNT(*) FROM conversations").fetchone()[
+        0
+    ]
     print(f"  Conversations: {conversations_count:,}")
 
 if votes_parquet.exists():
@@ -160,10 +185,11 @@ print("\nℹ️  To verify data quality, run queries from: verify_dataset.sql")
 # Close connection
 con.close()
 
-print("\n" + "="*80)
+print("\n" + "=" * 80)
 print("DATABASE READY")
-print("="*80)
-print(f"""
+print("=" * 80)
+print(
+    f"""
 Database created: {db_path.absolute()}
 
 Available tables:
@@ -185,4 +211,5 @@ To launch the DuckDB CLI, run:
 
 Or manually:
   duckdb comparia_local.duckdb
-""")
+"""
+)

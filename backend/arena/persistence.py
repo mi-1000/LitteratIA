@@ -26,13 +26,14 @@ from pydantic import BaseModel, Field, PlainSerializer, WrapSerializer
 from user_agents import parse
 
 from backend.arena.models import (
-    REACTIONS,
     BotChoice,
     BotPos,
     Conversation,
     Conversations,
+    DETAIL_REACTIONS,
     MessageRole,
     ReactionData,
+    VOTE_REACTIONS,
     VoteBody,
 )
 from backend.config import CountryPortal, SelectionMode, settings
@@ -46,13 +47,17 @@ logger = logging.getLogger("litteratia")
 JSONSerializer = PlainSerializer(lambda v: json.dumps(v))
 JSONModelSerializer = WrapSerializer(lambda v, handler: json.dumps(handler(v)))
 
+
 def is_not(v: Any) -> bool:
     return not v
 
-def get_metadata(request: Request) -> tuple[Literal['mobile', 'tablet', 'desktop', 'unknown'], str]:
+
+def get_metadata(
+    request: Request,
+) -> tuple[Literal["mobile", "tablet", "desktop", "unknown"], str]:
     ua_string = request.headers.get("user-agent", "")
     user_agent = parse(ua_string)
-    
+
     # Determining device type
     if user_agent.is_mobile:
         device = "mobile"
@@ -65,15 +70,17 @@ def get_metadata(request: Request) -> tuple[Literal['mobile', 'tablet', 'desktop
 
     # Determining language (e.g., "fr-FR,fr;q=0.9" -> "fr")
     accept_lang = request.headers.get("accept-language", "unknown")
-    lang = accept_lang.split(",")[0].split("-")[0] 
+    lang = accept_lang.split(",")[0].split("-")[0]
 
     return device, lang
 
+
 def hash_ip(ip: str) -> str:
     """Hash IP address using SHA-256 + pepper to avoid linking IPs with hashes."""
-    if not PEPPER: # Should not happen, but at least default to plain hashing
+    if not PEPPER:  # Should not happen, but at least default to plain hashing
         return hashlib.sha256(ip.encode()).hexdigest()
     return hmac.new(PEPPER, ip.encode(), hashlib.sha256).hexdigest()
+
 
 @contextmanager
 def db(
@@ -134,17 +141,17 @@ def save_vote_to_db(data: dict) -> dict:
     # Hash IP
     if data.get("ip"):
         data["ip"] = hash_ip(data["ip"])
-    
+
     with db(data, "save 'vote'") as (cursor, fields, values):
         # SQL INSERT for votes table
-        insert_statement = sql.SQL( 
-        """
+        insert_statement = sql.SQL(
+            """
             INSERT INTO votes ({fields})
             VALUES ({values})
         """
         ).format(
-            fields=sql.SQL(', ').join(map(sql.Identifier, data.keys())),
-            values=sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
+            fields=sql.SQL(", ").join(map(sql.Identifier, data.keys())),
+            values=sql.SQL(", ").join([sql.Placeholder(name) for name in data.keys()]),
         )
 
         cursor.execute(insert_statement, data)
@@ -187,7 +194,7 @@ def upsert_reaction_to_db(data: dict) -> dict:
 
     with db(data, "upsert 'reaction'") as (cursor, fields, values):
         # SQL UPSERT for reactions table
-        
+
         query = sql.SQL(
             """
             INSERT INTO reactions ({fields})
@@ -215,25 +222,30 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 disliked = EXCLUDED.disliked,
                 rating = EXCLUDED.rating,
                 comment = EXCLUDED.comment,
-                useful = EXCLUDED.useful,
+                relevant = EXCLUDED.relevant,
+                concise = EXCLUDED.concise,
                 complete = EXCLUDED.complete,
-                creative = EXCLUDED.creative,
-                clear_formatting = EXCLUDED.clear_formatting,
                 correct = EXCLUDED.correct,
-                incorrect = EXCLUDED.incorrect,
-                superficial = EXCLUDED.superficial,
-                instructions_not_followed = EXCLUDED.instructions_not_followed,
+                guiding = EXCLUDED.guiding,
+                scaffolding = EXCLUDED.scaffolding,
+                actionable = EXCLUDED.actionable,
+                understandable = EXCLUDED.understandable,
+                empathetic = EXCLUDED.empathetic,
+                engaging = EXCLUDED.engaging,
+                anthropomorphic = EXCLUDED.anthropomorphic,
+                coherent = EXCLUDED.coherent,
                 model_pair_name = EXCLUDED.model_pair_name,
                 msg_rank = EXCLUDED.msg_rank,
                 chatbot_index = EXCLUDED.chatbot_index,
                 device_type = EXCLUDED.device_type,
                 interface_lang = EXCLUDED.interface_lang,
                 question_id = EXCLUDED.question_id;
-        """).format(
-            fields=sql.SQL(', ').join(map(sql.Identifier, data.keys())),
-            values=sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
+        """
+        ).format(
+            fields=sql.SQL(", ").join(map(sql.Identifier, data.keys())),
+            values=sql.SQL(", ").join([sql.Placeholder(name) for name in data.keys()]),
         )
-        
+
         # TODO: fixes some edge case
         #     RETURNING
         # (CASE
@@ -325,10 +337,11 @@ def upsert_conv_to_db(data: dict) -> dict:
     # Hash IP
     if data.get("ip"):
         data["ip"] = hash_ip(data["ip"])
-    
+
     with db(data, "upsert 'conversations'") as (cursor, fields, values):
         # SQL UPSERT for conversations table
-        upsert_query = sql.SQL("""
+        upsert_query = sql.SQL(
+            """
             INSERT INTO conversations ({fields}, timestamp, last_message_timestamp)
             VALUES ({values}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             ON CONFLICT (conversation_pair_id)
@@ -341,11 +354,12 @@ def upsert_conv_to_db(data: dict) -> dict:
                 total_conv_b_output_tokens = EXCLUDED.total_conv_b_output_tokens,
                 cohorts = EXCLUDED.cohorts,
                 last_message_timestamp = CURRENT_TIMESTAMP
-        """).format(
-            fields = sql.SQL(', ').join(map(sql.Identifier, data.keys())),
-            values = sql.SQL(', ').join([sql.Placeholder(name) for name in data.keys()])
+        """
+        ).format(
+            fields=sql.SQL(", ").join(map(sql.Identifier, data.keys())),
+            values=sql.SQL(", ").join([sql.Placeholder(name) for name in data.keys()]),
         )
-        
+
         cursor.execute(upsert_query, data)
 
     logger.info(f"[DB] Upserted conversation {data['conversation_pair_id']}")
@@ -476,7 +490,7 @@ def record_vote(
     for pos in {"a", "b"}:
         # Vote
         vote_data[f"conv_comments_{pos}"] = getattr(vote, f"comment_{pos}")
-        for key in REACTIONS:
+        for key in VOTE_REACTIONS:
             vote_data[f"conv_{key}_{pos}"] = key in getattr(vote, f"prefs_{pos}")
 
         # Language model pairs specific
@@ -571,19 +585,23 @@ class ReactionRecord(BaseModel):
     question_id: str
 
     # Reaction
-    
+
     # liked: bool
     # disliked: bool
     comment: str | None = None
-    useful: bool
-    correct: bool
+    relevant: bool
+    concise: bool
     complete: bool
+    correct: bool
+    guiding: bool
+    scaffolding: bool
+    actionable: bool
+    understandable: bool
+    empathetic: bool
+    engaging: bool
+    anthropomorphic: bool
+    coherent: bool
     rating: Literal[0, 1, 2, 3, 4, 5]
-    # creative: bool
-    # clear_formatting: bool
-    # incorrect: bool
-    # superficial: bool
-    # instructions_not_followed: bool
 
     # Additional? (not found in record_reaction but present in reactions.sql)
     # archived: bool = False
@@ -591,6 +609,7 @@ class ReactionRecord(BaseModel):
     # FIXME add?
     # country_portal: CountryPortal
     # cohorts: str
+
 
 def delete_reaction(conv: Conversation, msg_index: int) -> dict:
     """
@@ -641,12 +660,14 @@ def record_reaction(
     conv = conv_a if reaction.bot == "a" else conv_b
 
     t = datetime.now()  # FIXME
-    
+
     # Save metadata
     device, lang = get_metadata(request)
-    if reaction.interface_lang: # Override browser language with actual interface language if provided
+    if (
+        reaction.interface_lang
+    ):  # Override browser language with actual interface language if provided
         lang = reaction.interface_lang
-    
+
     reaction_data = (
         # Conversations
         conversations.model_dump()
@@ -677,7 +698,7 @@ def record_reaction(
         | {
             # Reaction
             key: key in reaction.prefs
-            for key in REACTIONS
+            for key in DETAIL_REACTIONS
         }
     )
 

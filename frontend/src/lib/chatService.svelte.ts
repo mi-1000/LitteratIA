@@ -73,11 +73,34 @@ export const APINegativeReactions = [
   'superficial',
   'instructions_not_followed'
 ] as const
-export const APIGeneralReactions = ['useful', 'complete', 'correct'] as const
-export type APIReactionPref =
-  // | (typeof APIPositiveReactions)[number]
-  // | (typeof APINegativeReactions)[number] |
-  (typeof APIGeneralReactions)[number]
+
+export type APIVoteReactionPref =
+  | (typeof APIPositiveReactions)[number]
+  | (typeof APINegativeReactions)[number]
+
+export const APIDetailReactionGroups = [
+  {
+    id: 'content',
+    reactions: ['correct', 'relevant', 'complete', 'concise'] as const
+  },
+  {
+    id: 'pedagogy',
+    reactions: ['guiding', 'scaffolding', 'actionable', 'understandable'] as const
+  },
+  {
+    id: 'interaction',
+    reactions: ['empathetic', 'engaging', 'anthropomorphic', 'coherent'] as const
+  }
+] as const
+
+export type APIDetailReactionGroup = (typeof APIDetailReactionGroups)[number]['id']
+export type APIDetailReactionPref = (typeof APIDetailReactionGroups)[number]['reactions'][number]
+
+export const APIGeneralReactions: APIDetailReactionPref[] = APIDetailReactionGroups.flatMap(
+  (group) => group.reactions
+)
+
+export type APIReactionPref = APIVoteReactionPref
 
 export type ReactionKind = 'like' | 'comment'
 export type APIReactionData = {
@@ -87,7 +110,7 @@ export type APIReactionData = {
   rating: Ratings
   interface_lang: Locale
   liked: boolean // unused, legacy
-  prefs: APIReactionPref[]
+  prefs: APIDetailReactionPref[]
   comment?: string
 }
 export type OnReactionFn = (reaction: APIReactionData) => void
@@ -96,15 +119,15 @@ export type OnReactionFn = (reaction: APIReactionData) => void
 
 export interface APIVoteData {
   chosen_llm: BotChoice
-  prefs_a: APIReactionPref[]
-  prefs_b: APIReactionPref[]
+  prefs_a: APIVoteReactionPref[]
+  prefs_b: APIVoteReactionPref[]
   comment_a: string
   comment_b: string
 }
 
 interface VoteDetails {
-  like: APIReactionPref[]
-  dislike: APIReactionPref[]
+  like: APIVoteReactionPref[]
+  dislike: APIVoteReactionPref[]
   comment: string
 }
 export interface VoteData {
@@ -196,11 +219,10 @@ export const arena = $state<{
 function onSSEEvent(event: AnySSEEvent) {
   if (event.type === 'init') {
     arena.chat.status = 'pending'
-    if ((event as any).models) {
-      try {
-        arena.chat.model_map = { a: (event as any).models.a, b: (event as any).models.b }
-      } catch (e) {
-        // ignore
+    if (event.models) {
+      arena.chat.model_map = {
+        a: event.models.a,
+        b: event.models.b
       }
     }
   } else if (event.type === 'error') {

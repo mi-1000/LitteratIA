@@ -299,24 +299,48 @@ class AddTextBody(BaseModel):
     message: str = PromptField
 
 
-# PositiveReaction = Literal["useful", "complete", "creative", "clear_formatting"]
-# POSITIVE_REACTIONS: tuple[PositiveReaction, ...] = get_args(PositiveReaction)
-# NegativeReaction = Literal["incorrect", "superficial", "instructions_not_followed"]
-# NEGATIVE_REACTIONS: tuple[NegativeReaction, ...] = get_args(NegativeReaction)
-# REACTIONS = POSITIVE_REACTIONS + NEGATIVE_REACTIONS
-Reaction = Literal["useful", "complete", "correct"]
+DetailReaction = Literal[
+    "relevant",
+    "concise",
+    "complete",
+    "correct",
+    "guiding",
+    "scaffolding",
+    "actionable",
+    "understandable",
+    "empathetic",
+    "engaging",
+    "anthropomorphic",
+    "coherent",
+]
+DETAIL_REACTIONS: tuple[DetailReaction, ...] = get_args(DetailReaction)
+
+VoteReaction = Literal[
+    "useful",
+    "complete",
+    "creative",
+    "clear_formatting",
+    "incorrect",
+    "superficial",
+    "instructions_not_followed",
+]
+VOTE_REACTIONS: tuple[VoteReaction, ...] = get_args(VoteReaction)
+
+# Backward compatible reaction preference union used in stored conversation payloads.
+Reaction = DetailReaction | VoteReaction
 REACTIONS: tuple[Reaction, ...] = get_args(Reaction)
 
 
 class ReactionBody(BaseModel):
     """Request body for updating message reactions."""
+
     bot: BotChoice
     index: int
     value: str
     liked: bool
     interface_lang: str
     rating: Literal[0, 1, 2, 3, 4, 5]
-    prefs: list[Reaction]
+    prefs: list[DetailReaction]
     comment: str | None = None
 
 
@@ -328,8 +352,8 @@ class VoteBody(BaseModel):
     """Request body for submitting a vote after conversation."""
 
     chosen_llm: BotChoice
-    prefs_a: list[Reaction] = []
-    prefs_b: list[Reaction] = []
+    prefs_a: list[VoteReaction] = []
+    prefs_b: list[VoteReaction] = []
     comment_a: str
     comment_b: str
 

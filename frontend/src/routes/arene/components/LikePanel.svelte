@@ -1,25 +1,32 @@
 <script lang="ts">
+  import { browser } from '$app/environment'
   import { Button } from '$components/dsfr'
   import Selector from '$components/Selector.svelte'
   import {
+    APIDetailReactionGroups,
     APIGeneralReactions,
     APINegativeReactions,
     APIPositiveReactions,
-    type APIReactionPref
+    type APIDetailReactionGroup,
+    type APIDetailReactionPref,
+    type APIVoteReactionPref
   } from '$lib/chatService.svelte'
+  import { useLocalStorage } from '$lib/helpers/useLocalStorage.svelte'
   import { m } from '$lib/i18n/messages'
   import { noop } from '$lib/utils/commons'
+
+  type PanelReactionPref = APIDetailReactionPref | APIVoteReactionPref
 
   export interface LikePanelProps {
     id: string
     show?: boolean
     kind?: 'like' | 'dislike' | 'neutral'
     model: string
-    selection: APIReactionPref[]
+    selection: PanelReactionPref[]
     comment?: string
     disabled?: boolean
     mode?: 'react' | 'vote' | 'detail'
-    onSelectionChange?: (selection: APIReactionPref[]) => void
+    onSelectionChange?: (selection: PanelReactionPref[]) => void
     onCommentChange?: (comment: string) => void
   }
 
@@ -39,14 +46,70 @@
   let like_panel: HTMLDivElement
   let hasBeenShown = $state(false)
 
+  const LABEL_SEED_STORAGE_KEY = 'litteratia:reaction-label-seed'
+  const initialSeed = browser ? Math.floor(Math.random() * 2147483647) + 1 : 1
+  const labelSeed = useLocalStorage<number>(LABEL_SEED_STORAGE_KEY, initialSeed, (value) =>
+    Number.isInteger(value) && value > 0 ? value : initialSeed
+  )
+
+  type MessageGetter = () => string
+  const messageDictionary = m as unknown as Record<string, MessageGetter>
+  const t = (key: string): string => messageDictionary[key]?.() ?? key
+
+  function seededRandom(seed: number) {
+    /**
+     * @link{https://github.com/cprosche/mulberry32}
+    */
+    return () => {
+      let t = (seed += 0x6d2b79f5)
+      t = Math.imul(t ^ (t >>> 15), t | 1)
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+  }
+
+  function shuffleWithSeed<T>(items: T[], seed: number): T[] {
+    const result = [...items]
+    const random = seededRandom(seed)
+
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1))
+      ;[result[i], result[j]] = [result[j], result[i]]
+    }
+
+    return result
+  }
+
+  type DetailGroup = {
+    id: APIDetailReactionGroup
+    label: string
+    choices: { value: APIDetailReactionPref; label: string }[]
+  }
+
+  const detailReactionGroups = $derived.by<DetailGroup[]>(() => {
+    const seed = labelSeed.value
+    const shuffledGroups = shuffleWithSeed([...APIDetailReactionGroups], seed)
+
+    // We shuffle both the order groups and labels within groups to mitigate position bias across users, but keep the order consistent across sessions for a same user
+    return shuffledGroups.map((group, groupIndex) => ({
+      id: group.id,
+      label: t(`vote.choices.neutral.categories.${group.id}`),
+      choices: shuffleWithSeed([...group.reactions], seed + groupIndex + 1).map((value) => ({
+        value,
+        label: t(`vote.choices.neutral.${value}`)
+      }))
+    }))
+  })
+
   const reactions = {
-    like: { // TODO fix: only neutral labels still exist, others should be removed, but this introduces breaking changes
+    like: {
+      // TODO fix: only neutral labels still exist, others should be removed, but this introduces breaking changes
       label: m['vote.choices.positive.question'](),
       icon: 'i-bi-hand-thumbs-up-fill',
       choices: APIPositiveReactions.map((value) => ({
         value,
         label: m[`vote.choices.positive.${value}`]()
-      })) as { value: APIReactionPref; label: string }[]
+      })) as { value: PanelReactionPref; label: string }[]
     },
     dislike: {
       label: m['vote.choices.negative.question'](),
@@ -54,18 +117,18 @@
       choices: APINegativeReactions.map((value) => ({
         value,
         label: m[`vote.choices.negative.${value}`]()
-      })) as { value: APIReactionPref; label: string }[]
+      })) as { value: PanelReactionPref; label: string }[]
     },
     neutral: {
       label: m['vote.choices.neutral.question'](),
       icon: 'i-bi-question-circle-fill',
       choices: APIGeneralReactions.map((value) => ({
         value,
-        label: m[`vote.choices.neutral.${value}`]()
-      })) as { value: APIReactionPref; label: string }[]
+        label: t(`vote.choices.neutral.${value}`)
+      })) as { value: PanelReactionPref; label: string }[]
     }
   }
-  const reaction = $derived(reactions[kind])
+  const reaction = $derived(reactions[kind] ?? reactions.neutral)
 
   function scrollIntoViewWithOffset(element: HTMLElement, offset: number) {
     // For offset 0 just consider a footer of 100px (really is 114px)
@@ -114,70 +177,113 @@
   class:hidden={show === false}
   class:flex={mode === 'vote'}
 >
-  <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'} flex items-center justify-center">
-    <i
-      class="{reaction.icon} text-lg block"
-      style="color: {kind === 'like'
-        ? 'var(--cg-green)'
-        : kind === 'neutral'
-          ? 'var(--cg-grey)'
-          : '#e1000f'}"
-    ></i>
-    <span
-      class="ms-2 font-bold text-dark-grey md:text-base text-[14px] -translate-y-[0.75px]"
-      class:sr-only={mode === 'vote'}
-    >
-      {reaction.label}
-    </span>
-  </p>
-  <Selector
-    id="{id}-selector"
-    kind="checkbox"
-    bind:value={selection}
-    choices={reaction.choices}
-    multiple
-    {disabled}
-    containerClass="flex flex-wrap gap-3 justify-center"
-    choiceClass="like-choice"
-    onChange={onSelectionChange}
-  >
-    {#snippet option(choice, props, _input)}
-      <button
-        type="button"
-        {disabled}
-        class={[props.class, selection.includes(choice.value) ? 'is-selected' : '']}
-        onclick={() => {
-          if (disabled) return
-          if (selection.includes(choice.value)) {
-            selection = selection.filter((v) => v !== choice.value)
-          } else {
-            selection = [...selection, choice.value]
-          }
-          onSelectionChange(selection)
-        }}
+  {#if mode === 'detail'}
+    <div class="w-full">
+      <p class="mb-4! font-bold text-dark-grey md:text-base text-center text-[14px]">
+        {m['vote.choices.neutral.question']()}
+      </p>
+
+      <div class="flex flex-col w-full xl:w-2/3 max-w-[600px] mx-auto gap-10 md:grid md:grid-cols-3 md:gap-0 md:justify-items-center">
+        {#each detailReactionGroups as group (group.id)}
+          <section class="flex flex-col items-center w-full md:items-start md:w-fit">
+            <p class="mb-3! w-full md:text-left font-bold text-dark-grey text-sm text-center!">
+              {group.label}
+            </p>
+
+            <!-- <div class="gap-3 md:justify-start flex! flex-col! flex-wrap! justify-center!"> -->
+            <div class="grid grid-cols-2 max-[340px]:grid-cols-1 gap-3 sm:flex sm:flex-row sm:justify-center md:flex-col w-fit">
+              {#each group.choices as choice (choice.value)}
+                <button
+                  type="button"
+                  {disabled}
+                  class={[
+                    'text-center justify-center like-choice detail-like-choice',
+                    selection.includes(choice.value) ? 'is-selected' : ''
+                  ]}
+                  onclick={() => {
+                    if (disabled) return
+                    if (selection.includes(choice.value)) {
+                      selection = selection.filter((v) => v !== choice.value)
+                    } else {
+                      selection = [...selection, choice.value]
+                    }
+                    onSelectionChange(selection)
+                  }}
+                >
+                  {choice.label}
+                </button>
+              {/each}
+            </div>
+          </section>
+        {/each}
+      </div>
+    </div>
+  {:else}
+    <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'} flex items-center justify-center">
+      <i
+        class="{reaction.icon} text-lg block"
+        style="color: {kind === 'like'
+          ? 'var(--cg-green)'
+          : kind === 'neutral'
+            ? 'var(--cg-grey)'
+            : '#e1000f'}"
+      ></i>
+      <span
+        class="ms-2 font-bold text-dark-grey md:text-base -translate-y-[0.75px] text-[14px]"
+        class:sr-only={mode === 'vote'}
       >
-        {choice.label}
-      </button>
-    {/snippet}
-    {#snippet extra(props)}
-      {#if mode === 'react'}
+        {reaction.label}
+      </span>
+    </p>
+    <Selector
+      id="{id}-selector"
+      kind="checkbox"
+      bind:value={selection}
+      choices={reaction.choices}
+      multiple
+      {disabled}
+      containerClass="flex flex-wrap gap-3 justify-center"
+      choiceClass="like-choice"
+      onChange={onSelectionChange}
+    >
+      {#snippet option(choice, props, _input)}
         <button
+          type="button"
           {disabled}
-          class={[props.class, comment !== '' ? 'is-selected' : '']}
-          data-fr-opened="false"
-          aria-controls="{id}-modal"
+          class={[props.class, selection.includes(choice.value) ? 'is-selected' : '']}
           onclick={() => {
-            // Focus textarea once DSFR modal finishes opening
-            setTimeout(() => {
-              document.querySelector<HTMLTextAreaElement>(`#${id}-modal textarea`)?.focus()
-            }, 400)
+            if (disabled) return
+            if (selection.includes(choice.value)) {
+              selection = selection.filter((v) => v !== choice.value)
+            } else {
+              selection = [...selection, choice.value]
+            }
+            onSelectionChange(selection)
           }}
         >
-          {m['vote.choices.other']()}
+          {choice.label}
         </button>
-      {/if}
-    {/snippet}
-  </Selector>
+      {/snippet}
+      {#snippet extra(props)}
+        {#if mode === 'react'}
+          <button
+            {disabled}
+            class={[props.class, comment !== '' ? 'is-selected' : '']}
+            data-fr-opened="false"
+            aria-controls="{id}-modal"
+            onclick={() => {
+              // Focus textarea once DSFR modal finishes opening
+              setTimeout(() => {
+                document.querySelector<HTMLTextAreaElement>(`#${id}-modal textarea`)?.focus()
+              }, 400)
+            }}
+          >
+            {m['vote.choices.other']()}
+          </button>
+        {/if}
+      {/snippet}
+    </Selector>
+  {/if}
 </div>
 
 <!-- Weird way to catch the comment if not validated but modal closed -->
@@ -300,5 +406,9 @@
   :global(.like-choice:disabled) {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  :global(.detail-like-choice) {
+    min-width: fit-content;
   }
 </style>
