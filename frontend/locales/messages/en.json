@@ -1959,6 +1959,7 @@
         "bothEqual": "No preference",
         "choices": {
             "altText": "{choice} for model {model}",
+            "clearSelection": "Clear all",
             "negative": {
                 "incorrect": "Incorrect",
                 "instructions_not_followed": "Instructions not followed",
@@ -2087,6 +2088,7 @@
         "close": "Close",
         "deactivated": "Disabled",
         "detail": "Detail",
+        "esc": "Esc",
         "loading": "Loading",
         "new": "New",
         "random": "Random",

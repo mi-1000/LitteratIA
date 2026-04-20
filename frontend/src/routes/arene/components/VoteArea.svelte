@@ -42,7 +42,7 @@
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/\"/g, '&quot;')
+      .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;')
   }
 
@@ -114,7 +114,7 @@
     </p>
   </div>
 
-  <VoteRadioGroup bind:value={form.selected} {disabled} {showModelName} {invertModelLabels} />
+  <VoteRadioGroup bind:value={form.selected} {disabled} {showModelName} {invvoteareaertModelLabels} />
 
   {#if form.selected}
     <div class="mt-11 gap-6 md:flex-row flex flex-col">

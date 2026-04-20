@@ -40,7 +40,7 @@
     selection = $bindable([]),
     comment = $bindable(''),
     disabled = false,
-    showTooltip = browser ? window.matchMedia('(pointer: coarse)').matches : true, // Show tooltip on touch devices by default
+    showTooltip: isTouchScreen = browser ? window.matchMedia('(pointer: coarse)').matches : true, // Show tooltip on touch devices by default, otherwise trigger keyboard functionalities
     mode = 'react',
     onSelectionChange = noop,
     onCommentChange = noop
@@ -48,14 +48,14 @@
 
   let like_panel: HTMLDivElement
   let hasBeenShown = $state(false)
-  let helpContent = $state<{ title: string, description: string } | null>(null);
+  let helpContent = $state<{ title: string; description: string } | null>(null)
 
   async function openHelp(choice: ReactionChoice) {
-    helpContent = { title: choice.label, description: choice.description ?? '' };
+    helpContent = { title: choice.label, description: choice.description ?? '' }
 
     await tick()
 
-    const dialog = document.getElementById('label-tooltip-modal');
+    const dialog = document.getElementById('label-tooltip-modal')
     // @ts-expect-error - DSFR is globally available
     if (dialog && window.dsfr) {
       // @ts-expect-error - DSFR is globally available
@@ -69,9 +69,9 @@
     Number.isInteger(value) && value > 0 ? value : initialSeed
   )
 
-  type MessageGetter = () => string
-  const messageDictionary = m as unknown as Record<string, MessageGetter>
-  const t = (key: string): string => messageDictionary[key]?.() ?? key
+  const SHORTCUT_KEYS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+  const LABEL_SELECTION_DEBOUNCE_MS = 300
+  let selectionDebounceTimer: ReturnType<typeof setTimeout> | undefined
 
   type ReactionChoice = {
     value: PanelReactionPref
@@ -82,7 +82,7 @@
   function seededRandom(seed: number) {
     /**
      * @link{https://github.com/cprosche/mulberry32}
-    */
+     */
     return () => {
       let t = (seed += 0x6d2b79f5)
       t = Math.imul(t ^ (t >>> 15), t | 1)
@@ -106,7 +106,6 @@
   type DetailGroup = {
     id: APIDetailReactionGroup
     label: string
-    description: string
     choices: { value: APIDetailReactionPref; label: string; description: string }[]
   }
 
@@ -117,14 +116,91 @@
     // We shuffle both the order groups and labels within groups to mitigate position bias across users, but keep the order consistent across sessions for a same user
     return shuffledGroups.map((group, groupIndex) => ({
       id: group.id,
-      label: t(`vote.choices.neutral.categories.${group.id}`),
+      label: m[`vote.choices.neutral.categories.${group.id}`](),
       choices: shuffleWithSeed([...group.reactions], seed + groupIndex + 1).map((value) => ({
         value,
-        label: t(`vote.choices.neutral.${value}.label`),
-        description: t(`vote.choices.neutral.${value}.description`)
+        label: m[`vote.choices.neutral.${value}.label`](),
+        description: m[`vote.choices.neutral.${value}.description`]()
       }))
     }))
   })
+
+  const detailShortcuts = $derived.by(() => {
+    const byValue: Partial<Record<APIDetailReactionPref, string>> = {}
+    const byKey: Partial<Record<string, APIDetailReactionPref>> = {}
+
+    const values = detailReactionGroups.flatMap((group) =>
+      group.choices.map((choice) => choice.value)
+    )
+    const max = Math.min(values.length, SHORTCUT_KEYS.length)
+
+    for (let index = 0; index < max; index++) {
+      const key = SHORTCUT_KEYS[index]
+      const value = values[index]
+      byValue[value] = key
+      byKey[key] = value
+    }
+
+    return { byValue, byKey }
+  })
+
+  function toggleChoice(value: PanelReactionPref) {
+    if (disabled) return
+
+    if (selection.includes(value)) {
+      selection = selection.filter((v) => v !== value)
+    } else {
+      selection = [...selection, value]
+    }
+
+    emitSelectionChange(selection)
+  }
+
+  function emitSelectionChange(nextSelection: PanelReactionPref[]) {
+    if (selectionDebounceTimer) {
+      clearTimeout(selectionDebounceTimer)
+    }
+
+    const snapshot = [...nextSelection]
+    selectionDebounceTimer = setTimeout(() => {
+      onSelectionChange(snapshot)
+      selectionDebounceTimer = undefined
+    }, LABEL_SELECTION_DEBOUNCE_MS)
+  }
+
+  function clearSelection() {
+    if (disabled || selection.length === 0) return
+
+    selection = []
+    emitSelectionChange(selection)
+  }
+
+  function handleKeydown(event: KeyboardEvent) {
+    if (!show || disabled || mode !== 'detail' || helpContent !== null) return
+
+    // If user is already typing, we don't trigger anything
+    const target = event.target as HTMLElement | null
+    const isTyping =
+      target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable
+
+    if (isTyping) return
+    if (event.ctrlKey || event.altKey || event.metaKey) return
+
+    if (event.key === 'Escape') {
+      if (selection.length > 0) {
+        event.preventDefault()
+        clearSelection()
+      }
+      return
+    }
+
+    const key = event.key.length === 1 ? event.key.toUpperCase() : ''
+    const mappedChoice = detailShortcuts.byKey[key]
+    if (!mappedChoice) return
+
+    event.preventDefault()
+    toggleChoice(mappedChoice)
+  }
 
   const reactions = {
     like: {
@@ -149,8 +225,8 @@
       icon: 'i-bi-question-circle-fill',
       choices: APIGeneralReactions.map((value) => ({
         value,
-        label: t(`vote.choices.neutral.${value}.label`),
-        description: t(`vote.choices.neutral.${value}.description`)
+        label: m[`vote.choices.neutral.${value}.label`](),
+        description: m[`vote.choices.neutral.${value}.description`]()
       })) as ReactionChoice[]
     }
   }
@@ -195,7 +271,17 @@
       hasBeenShown = false
     }
   })
+
+  $effect(() => {
+    return () => {
+      if (selectionDebounceTimer) {
+        clearTimeout(selectionDebounceTimer)
+      }
+    }
+  })
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <div
   bind:this={like_panel}
@@ -209,55 +295,70 @@
         {m['vote.choices.neutral.question']()}
       </p>
 
-      <div class="flex flex-col w-full xl:w-2/3 max-w-[600px] mx-auto gap-10 md:grid md:grid-cols-3 md:gap-0 md:justify-items-center">
+      <div
+        class="xl:w-2/3 gap-10 md:grid md:grid-cols-3 md:gap-0 md:justify-items-center mx-auto flex w-full max-w-[800px] flex-col"
+      >
         {#each detailReactionGroups as group (group.id)}
-          <section class="flex flex-col items-center w-full md:items-start md:w-fit">
-            <p class="mb-3! w-full md:text-left font-bold text-dark-grey text-sm text-center!">
+          <section class="md:items-start md:w-fit flex w-full flex-col items-center">
+            <p class="mb-3! md:text-left font-bold text-dark-grey text-sm w-full text-center!">
               {group.label}
             </p>
-            <div class="grid grid-cols-2 max-[340px]:grid-cols-1 gap-3 sm:flex sm:flex-row sm:justify-center md:flex-col w-fit">
+            <div
+              class="gap-3 sm:flex sm:flex-row sm:justify-center md:flex-col grid w-fit grid-cols-2 max-[340px]:grid-cols-1"
+            >
               {#each group.choices as choice (choice.value)}
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <div
                   role="button"
                   tabindex="0"
                   class={[
-                    'flex items-center min-w-0 justify-between w-full p-2 like-choice detail-like-choice',
+                    'min-w-0 p-2 like-choice detail-like-choice flex w-full items-center justify-between',
                     selection.includes(choice.value) ? 'is-selected' : ''
                   ]}
-                  title={!showTooltip ? choice.description : undefined}
+                  title={!isTouchScreen ? choice.description : undefined}
                   onclick={() => {
-                    if (disabled) return
-                    if (selection.includes(choice.value)) {
-                      selection = selection.filter((v) => v !== choice.value)
-                    } else {
-                      selection = [...selection, choice.value]
-                    }
-                    onSelectionChange(selection)
+                    toggleChoice(choice.value)
                   }}
                 >
-                  <span class="flex-1 min-w-0 text-center leading-tight tracking-tight wrap-break-word hyphens-auto px-1 text-[14px] md:text-[15px] lg:text-[16px]">
+                  <span
+                    class="min-w-0 leading-tight tracking-tight px-1 md:text-[15px] lg:text-[16px] flex-1 text-center text-[14px] wrap-break-word hyphens-auto"
+                  >
                     {choice.label}
                   </span>
-                  {#if showTooltip && choice.description}
-                    <button
-                      type="button"
-                      title={m['words.detail']()}
-                      class="i-bi-patch-question-fill text-gray transition-colors ml-1 h-4 w-4 shrink-0"
-                      onclick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation() // Prevents from selecting the main button
-                        openHelp(choice)
-                      }}
-                    >
-                    </button>
-                  {/if}
+                  <span class="ml-1 gap-1 flex shrink-0 items-center">
+                    {#if isTouchScreen && choice.description}
+                      <button
+                        type="button"
+                        title={m['words.detail']()}
+                        class="i-bi-patch-question-fill text-gray h-4 w-4 transition-colors"
+                        onclick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation() // Prevents from selecting the main button
+                          openHelp(choice)
+                        }}
+                      >
+                      </button>
+                    {:else if detailShortcuts.byValue[choice.value]}
+                      <kbd class="shortcut-key" aria-hidden="true">
+                        {detailShortcuts.byValue[choice.value]}
+                      </kbd>
+                    {/if}
+                  </span>
                 </div>
               {/each}
             </div>
           </section>
         {/each}
       </div>
+
+      {#if selection.length > 0 && !isTouchScreen}
+        <div class="mt-4 text-center flex items-center justify-center gap-2">
+          <button type="button" class="clear-selection-line" {disabled} onclick={clearSelection}>
+            {m['vote.choices.clearSelection']()}
+          </button>
+          <kbd class="shortcut-key">{m['words.esc']()}</kbd>
+        </div>
+      {/if}
     </div>
   {:else}
     <p class="me-3! {mode === 'vote' ? 'mt-1! mb-0!' : 'mb-3!'} flex items-center justify-center">
@@ -285,7 +386,7 @@
       {disabled}
       containerClass="flex flex-wrap gap-3 justify-center"
       choiceClass="like-choice"
-      onChange={onSelectionChange}
+      onChange={(nextSelection) => emitSelectionChange(nextSelection as PanelReactionPref[])}
     >
       {#snippet option(choice, props, _input)}
         <button
@@ -293,13 +394,7 @@
           {disabled}
           class={[props.class, selection.includes(choice.value) ? 'is-selected' : '']}
           onclick={() => {
-            if (disabled) return
-            if (selection.includes(choice.value)) {
-              selection = selection.filter((v) => v !== choice.value)
-            } else {
-              selection = [...selection, choice.value]
-            }
-            onSelectionChange(selection)
+            toggleChoice(choice.value)
           }}
         >
           {choice.label}
@@ -331,8 +426,8 @@
   <Modal
     id="label-tooltip-modal"
     titleId="label-tooltip-modal-title"
-    sizeClass="fr-col-12 fr-col-md-6" 
-    onClose={() => helpContent = null}
+    sizeClass="fr-col-12 fr-col-md-6"
+    onClose={() => (helpContent = null)}
   >
     <h1 id="label-tooltip-modal-title" class="fr-modal__title mb-4">
       {helpContent.title}
@@ -446,8 +541,10 @@
     border-color: var(--blue-france-main-525);
     background: var(--blue-france-975-75);
     color: var(--blue-france-main-525);
-    font-weight: 600;
-    border-width: 2px;
+    font-weight: 700;
+    filter: drop-shadow(
+      2px 2px 3px color-mix(in srgb, var(--border-default-grey), transparent 30%)
+    );
   }
 
   :global(.like-choice.is-selected:active) {
@@ -466,5 +563,39 @@
 
   :global(.detail-like-choice) {
     min-width: fit-content;
+  }
+
+  .shortcut-key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--border-default-grey);
+    background: var(--background-alt-grey);
+    color: var(--text-mention-grey);
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .clear-selection-line {
+    border: none;
+    background: none;
+    color: var(--text-mention-grey);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .clear-selection-line:hover {
+    color: var(--cg-blue-france-main-525-active);
+    background: none;
+  }
+
+  .clear-selection-line:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>

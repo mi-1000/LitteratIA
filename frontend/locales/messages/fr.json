@@ -2081,6 +2081,7 @@
         "bothEqual": "Pas de préférence",
         "choices": {
             "altText": "{choice} pour le modèle {model}",
+            "clearSelection": "Tout désélectionner",
             "negative": {
                 "incorrect": "Incorrecte",
                 "instructions_not_followed": "Instructions non suivies",
@@ -2208,6 +2209,7 @@
         "close": "Fermer",
         "deactivated": "Désactivé",
         "detail": "Détails",
+        "esc": "Échap",
         "loading": "Chargement",
         "NA": "N/A",
         "new": "Nouveau",

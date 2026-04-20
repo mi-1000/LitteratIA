@@ -31,10 +31,24 @@
   let invertModelLabels = $derived(arena.invertModelLabels)
   const chatbotDisabled = $derived(arena.chat.status !== 'complete' || step !== 'chat')
 
+  let debounceTimers: Record<number, ReturnType<typeof setTimeout>> = {}
+
   const onReactionChange: OnReactionFn = async (reaction) => {
     // keep a map of reactions by message index and compute canVote from all reactions
     reactionsByIndex = { ...reactionsByIndex, [reaction.index]: reaction }
-    await updateReaction(reaction)
+
+    if (debounceTimers[reaction.index]) {
+      clearTimeout(debounceTimers[reaction.index]);
+    }
+
+    debounceTimers[reaction.index] = setTimeout(async () => {
+      try { // Debounce database calls to avoid overloading the server
+        await updateReaction(reaction)
+        delete debounceTimers[reaction.index] // Clear timers
+      } catch (e) {
+        //
+      }
+    }, 500);
   }
 
   function onRetry() {
