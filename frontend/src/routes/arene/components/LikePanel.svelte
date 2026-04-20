@@ -117,8 +117,7 @@
     // We shuffle both the order groups and labels within groups to mitigate position bias across users, but keep the order consistent across sessions for a same user
     return shuffledGroups.map((group, groupIndex) => ({
       id: group.id,
-      label: t(`vote.choices.neutral.categories.${group.id}.label`),
-      description: t(`vote.choices.neutral.categories.${group.id}.description`),
+      label: t(`vote.choices.neutral.categories.${group.id}`),
       choices: shuffleWithSeed([...group.reactions], seed + groupIndex + 1).map((value) => ({
         value,
         label: t(`vote.choices.neutral.${value}.label`),
@@ -223,7 +222,7 @@
                   role="button"
                   tabindex="0"
                   class={[
-                    'text-center justify-center like-choice detail-like-choice',
+                    'flex items-center min-w-0 justify-between w-full p-2 like-choice detail-like-choice',
                     selection.includes(choice.value) ? 'is-selected' : ''
                   ]}
                   title={showTooltip ? choice.description : undefined}
@@ -237,12 +236,12 @@
                     onSelectionChange(selection)
                   }}
                 >
-                  <span class="flex-1">{choice.label}</span>
+                  <span class="flex-1 min-w-0 text-center leading-tight tracking-tight wrap-break-word hyphens-auto px-1">{choice.label}</span>
                   {#if showTooltip && choice.description}
                     <button
                       type="button"
                       title={m['words.detail']()}
-                      class="i-bi-patch-question-fill text-gray-400 transition-colors ml-1 h-4 w-4 shrink-0"
+                      class="i-bi-patch-question-fill text-gray transition-colors ml-1 h-4 w-4 shrink-0"
                       onclick={(e) => {
                         e.preventDefault()
                         e.stopPropagation() // Prevents from selecting the main button

@@ -2089,18 +2089,9 @@
             },
             "neutral": {
                 "categories": {
-                    "content": {
-                        "label": "Contenu",
-                        "description": "Qualité du contenu informatif de la réponse"
-                    },
-                    "pedagogy": {
-                        "label": "Pédagogie",
-                        "description": "Qualité de l'accompagnement dans l'apprentissage"
-                    },
-                    "interaction": {
-                        "label": "Interaction",
-                        "description": "Qualité du ton et de l'interaction avec l'apprenant"
-                    }
+                    "content": "Contenu",
+                    "pedagogy": "Pédagogie",
+                    "interaction": "Interaction"
                 },
                 "relevant": {
                     "label": "Pertinence",
@@ -2120,7 +2111,7 @@
                 },
                 "guiding": {
                     "label": "Guidage",
-                    "description": "Aide l'apprenant à progresser étape par étape"
+                    "description": "Aide à progresser étape par étape"
                 },
                 "scaffolding": {
                     "label": "Aide à réfléchir",
@@ -2135,7 +2126,7 @@
                     "description": "Répond dans la bonne langue, avec un niveau et ton adaptés"
                 },
                 "empathetic": {
-                    "label": "Encouragement",
+                    "label": "Encourage\u00ADment",
                     "description": "Exprime du soutien et de l'encouragement"
                 },
                 "engaging": {

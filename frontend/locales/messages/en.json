@@ -1967,18 +1967,9 @@
             },
             "neutral": {
                 "categories": {
-                    "content": {
-                        "label": "Content",
-                        "description": "Quality of informational content in the answer"
-                    },
-                    "pedagogy": {
-                        "label": "Pedagogy",
-                        "description": "How well the answer supports learning"
-                    },
-                    "interaction": {
-                        "label": "Interaction",
-                        "description": "Quality of tone and interaction with the learner"
-                    }
+                    "content": "Content",
+                    "pedagogy": "Pedagogy",
+                    "interaction": "Interaction"
                 },
                 "relevant": {
                     "label": "Relevant",
@@ -1990,7 +1981,7 @@
                 },
                 "complete": {
                     "label": "Complete",
-                    "description": "doesn't leave out important parts of the answer"
+                    "description": "Doesn't leave out important parts of the answer"
                 },
                 "correct": {
                     "label": "Correct",
@@ -2009,7 +2000,7 @@
                     "description": "Provides concrete steps the learner can apply"
                 },
                 "understandable": {
-                    "label": "Understandable",
+                    "label": "Under\u00ADstandable",
                     "description": "Uses the right language, with adapted level and tone"
                 },
                 "empathetic": {
