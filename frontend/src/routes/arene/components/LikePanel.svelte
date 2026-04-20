@@ -446,7 +446,6 @@
     color: var(--blue-france-main-525);
     font-weight: 600;
     border-width: 2px;
-    padding: calc(0.375rem - 1px) calc(0.75rem - 1px);
   }
 
   :global(.like-choice.is-selected:active) {

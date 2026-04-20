@@ -97,13 +97,13 @@
   <fieldset id="vote-cards" aria-labelledby="vote-cards-legend" class="flex flex-col md:flex-row items-center justify-center">
     <legend class="sr-only" id="vote-cards-legend">{m['vote.title']()}</legend>
 
-    <div class="flex flex-col sm:flex-row gap-3 sm:justify-center md:gap-5">
+    <div class="flex flex-col sm:flex-row gap-3 sm:justify-center md:gap-5 sm:items-stretch">
       {#each choices as value (value)}
         {@const displaySide = value === 'both_equal' ? 'both_equal' : (invertModelLabels ? (value === 'a' ? 'b' : 'a') : value)}
-        <div class="h-full self-center">
+        <div class="flex w-full md:w-auto">
           <button
             type="button"
-            class="cg-border flex flex-row items-center justify-center gap-2 px-3 py-4 text-center font-medium transition-all md:rounded-[56px]! btn-color btn-vote-models"
+            class="cg-border flex flex-row items-center justify-center gap-2 px-3 py-4 text-center font-medium transition-all md:rounded-[56px]! btn-color btn-vote-models w-full h-full md:w-auto md:h-fit"
             aria-pressed={selected === value}
             disabled={disabled}
             onclick={() => { if (!disabled) selected = value }}
