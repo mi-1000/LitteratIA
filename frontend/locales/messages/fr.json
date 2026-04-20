@@ -2102,7 +2102,7 @@
                     "description": "Va à l'essentiel sans détails inutiles"
                 },
                 "complete": {
-                    "label": "Exhaustivité",
+                    "label": "Exhausti\u00ADvité",
                     "description": "Il ne manque pas d'informations importantes"
                 },
                 "correct": {
@@ -2130,7 +2130,7 @@
                     "description": "Exprime du soutien et de l'encouragement"
                 },
                 "engaging": {
-                    "label": "Interactivité",
+                    "label": "Interacti\u00ADvité",
                     "description": "Invite à interagir et maintient l'attention"
                 },
                 "anthropomorphic": {

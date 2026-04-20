@@ -225,7 +225,7 @@
                     'flex items-center min-w-0 justify-between w-full p-2 like-choice detail-like-choice',
                     selection.includes(choice.value) ? 'is-selected' : ''
                   ]}
-                  title={showTooltip ? choice.description : undefined}
+                  title={!showTooltip ? choice.description : undefined}
                   onclick={() => {
                     if (disabled) return
                     if (selection.includes(choice.value)) {
@@ -236,7 +236,9 @@
                     onSelectionChange(selection)
                   }}
                 >
-                  <span class="flex-1 min-w-0 text-center leading-tight tracking-tight wrap-break-word hyphens-auto px-1">{choice.label}</span>
+                  <span class="flex-1 min-w-0 text-center leading-tight tracking-tight wrap-break-word hyphens-auto px-1 text-[14px] md:text-[15px] lg:text-[16px]">
+                    {choice.label}
+                  </span>
                   {#if showTooltip && choice.description}
                     <button
                       type="button"
