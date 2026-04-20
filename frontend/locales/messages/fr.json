@@ -2089,22 +2089,67 @@
             },
             "neutral": {
                 "categories": {
-                    "content": "Contenu",
-                    "pedagogy": "Pédagogie",
-                    "interaction": "Interaction"
+                    "content": {
+                        "label": "Contenu",
+                        "description": "Qualité du contenu informatif de la réponse"
+                    },
+                    "pedagogy": {
+                        "label": "Pédagogie",
+                        "description": "Qualité de l'accompagnement dans l'apprentissage"
+                    },
+                    "interaction": {
+                        "label": "Interaction",
+                        "description": "Qualité du ton et de l'interaction avec l'apprenant"
+                    }
                 },
-                "relevant": "Pertinence",
-                "concise": "Concision",
-                "complete": "Exhaustivité",
-                "correct": "Exactitude",
-                "guiding": "Guidage",
-                "scaffolding": "Aide à réfléchir",
-                "actionable": "Pratique",
-                "understandable": "Langage adapté",
-                "empathetic": "Encouragement",
-                "engaging": "Interactivité",
-                "anthropomorphic": "Côté humain",
-                "coherent": "Cohérence",
+                "relevant": {
+                    "label": "Pertinence",
+                    "description": "Répond à la demande et au contexte de l'apprenant"
+                },
+                "concise": {
+                    "label": "Concision",
+                    "description": "Va à l'essentiel sans détails inutiles"
+                },
+                "complete": {
+                    "label": "Exhaustivité",
+                    "description": "Il ne manque pas d'informations importantes"
+                },
+                "correct": {
+                    "label": "Exactitude",
+                    "description": "Est factuellement et logiquement juste"
+                },
+                "guiding": {
+                    "label": "Guidage",
+                    "description": "Aide l'apprenant à progresser étape par étape"
+                },
+                "scaffolding": {
+                    "label": "Aide à réfléchir",
+                    "description": "Soutient la réflexion avec des pistes ou des indices"
+                },
+                "actionable": {
+                    "label": "Pratique",
+                    "description": "Donne des actions concrètes à appliquer dans le futur"
+                },
+                "understandable": {
+                    "label": "Langage adapté",
+                    "description": "Répond dans la bonne langue, avec un niveau et ton adaptés"
+                },
+                "empathetic": {
+                    "label": "Encouragement",
+                    "description": "Exprime du soutien et de l'encouragement"
+                },
+                "engaging": {
+                    "label": "Interactivité",
+                    "description": "Invite à interagir et maintient l'attention"
+                },
+                "anthropomorphic": {
+                    "label": "Côté humain",
+                    "description": "Adopte un ton ou une posture similaires à ceux d'un tuteur humain"
+                },
+                "coherent": {
+                    "label": "Cohérence",
+                    "description": "Est bien structuré et cohérent dans son ensemble"
+                },
                 "question": "Pourquoi avoir donné cette note (plusieurs réponses possibles) ?"
             },
             "other": "Autre…",
@@ -2171,6 +2216,7 @@
         "back": "Retour",
         "close": "Fermer",
         "deactivated": "Désactivé",
+        "detail": "Détails",
         "loading": "Chargement",
         "NA": "N/A",
         "new": "Nouveau",

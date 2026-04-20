@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment'
-  import { Button } from '$components/dsfr'
+  import { Button, Modal } from '$components/dsfr'
   import Selector from '$components/Selector.svelte'
   import {
     APIDetailReactionGroups,
@@ -14,6 +14,7 @@
   import { useLocalStorage } from '$lib/helpers/useLocalStorage.svelte'
   import { m } from '$lib/i18n/messages'
   import { noop } from '$lib/utils/commons'
+  import { tick } from 'svelte'
 
   type PanelReactionPref = APIDetailReactionPref | APIVoteReactionPref
 
@@ -25,6 +26,7 @@
     selection: PanelReactionPref[]
     comment?: string
     disabled?: boolean
+    showTooltip?: boolean
     mode?: 'react' | 'vote' | 'detail'
     onSelectionChange?: (selection: PanelReactionPref[]) => void
     onCommentChange?: (comment: string) => void
@@ -38,6 +40,7 @@
     selection = $bindable([]),
     comment = $bindable(''),
     disabled = false,
+    showTooltip = browser ? window.matchMedia('(pointer: coarse)').matches : true, // Show tooltip on touch devices by default
     mode = 'react',
     onSelectionChange = noop,
     onCommentChange = noop
@@ -45,6 +48,20 @@
 
   let like_panel: HTMLDivElement
   let hasBeenShown = $state(false)
+  let helpContent = $state<{ title: string, description: string } | null>(null);
+
+  async function openHelp(choice: ReactionChoice) {
+    helpContent = { title: choice.label, description: choice.description ?? '' };
+
+    await tick()
+
+    const dialog = document.getElementById('label-tooltip-modal');
+    // @ts-expect-error - DSFR is globally available
+    if (dialog && window.dsfr) {
+      // @ts-expect-error - DSFR is globally available
+      window.dsfr(dialog).modal.disclose()
+    }
+  }
 
   const LABEL_SEED_STORAGE_KEY = 'litteratia:reaction-label-seed'
   const initialSeed = browser ? Math.floor(Math.random() * 2147483647) + 1 : 1
@@ -55,6 +72,12 @@
   type MessageGetter = () => string
   const messageDictionary = m as unknown as Record<string, MessageGetter>
   const t = (key: string): string => messageDictionary[key]?.() ?? key
+
+  type ReactionChoice = {
+    value: PanelReactionPref
+    label: string
+    description?: string
+  }
 
   function seededRandom(seed: number) {
     /**
@@ -83,7 +106,8 @@
   type DetailGroup = {
     id: APIDetailReactionGroup
     label: string
-    choices: { value: APIDetailReactionPref; label: string }[]
+    description: string
+    choices: { value: APIDetailReactionPref; label: string; description: string }[]
   }
 
   const detailReactionGroups = $derived.by<DetailGroup[]>(() => {
@@ -93,10 +117,12 @@
     // We shuffle both the order groups and labels within groups to mitigate position bias across users, but keep the order consistent across sessions for a same user
     return shuffledGroups.map((group, groupIndex) => ({
       id: group.id,
-      label: t(`vote.choices.neutral.categories.${group.id}`),
+      label: t(`vote.choices.neutral.categories.${group.id}.label`),
+      description: t(`vote.choices.neutral.categories.${group.id}.description`),
       choices: shuffleWithSeed([...group.reactions], seed + groupIndex + 1).map((value) => ({
         value,
-        label: t(`vote.choices.neutral.${value}`)
+        label: t(`vote.choices.neutral.${value}.label`),
+        description: t(`vote.choices.neutral.${value}.description`)
       }))
     }))
   })
@@ -109,7 +135,7 @@
       choices: APIPositiveReactions.map((value) => ({
         value,
         label: m[`vote.choices.positive.${value}`]()
-      })) as { value: PanelReactionPref; label: string }[]
+      })) as ReactionChoice[]
     },
     dislike: {
       label: m['vote.choices.negative.question'](),
@@ -117,15 +143,16 @@
       choices: APINegativeReactions.map((value) => ({
         value,
         label: m[`vote.choices.negative.${value}`]()
-      })) as { value: PanelReactionPref; label: string }[]
+      })) as ReactionChoice[]
     },
     neutral: {
       label: m['vote.choices.neutral.question'](),
       icon: 'i-bi-question-circle-fill',
       choices: APIGeneralReactions.map((value) => ({
         value,
-        label: t(`vote.choices.neutral.${value}`)
-      })) as { value: PanelReactionPref; label: string }[]
+        label: t(`vote.choices.neutral.${value}.label`),
+        description: t(`vote.choices.neutral.${value}.description`)
+      })) as ReactionChoice[]
     }
   }
   const reaction = $derived(reactions[kind] ?? reactions.neutral)
@@ -189,17 +216,17 @@
             <p class="mb-3! w-full md:text-left font-bold text-dark-grey text-sm text-center!">
               {group.label}
             </p>
-
-            <!-- <div class="gap-3 md:justify-start flex! flex-col! flex-wrap! justify-center!"> -->
             <div class="grid grid-cols-2 max-[340px]:grid-cols-1 gap-3 sm:flex sm:flex-row sm:justify-center md:flex-col w-fit">
               {#each group.choices as choice (choice.value)}
-                <button
-                  type="button"
-                  {disabled}
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <div
+                  role="button"
+                  tabindex="0"
                   class={[
                     'text-center justify-center like-choice detail-like-choice',
                     selection.includes(choice.value) ? 'is-selected' : ''
                   ]}
+                  title={showTooltip ? choice.description : undefined}
                   onclick={() => {
                     if (disabled) return
                     if (selection.includes(choice.value)) {
@@ -210,8 +237,21 @@
                     onSelectionChange(selection)
                   }}
                 >
-                  {choice.label}
-                </button>
+                  <span class="flex-1">{choice.label}</span>
+                  {#if showTooltip && choice.description}
+                    <button
+                      type="button"
+                      title={m['words.detail']()}
+                      class="i-bi-patch-question-fill text-gray-400 transition-colors ml-1 h-4 w-4 shrink-0"
+                      onclick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation() // Prevents from selecting the main button
+                        openHelp(choice)
+                      }}
+                    >
+                    </button>
+                  {/if}
+                </div>
               {/each}
             </div>
           </section>
@@ -285,6 +325,22 @@
     </Selector>
   {/if}
 </div>
+
+{#if helpContent}
+  <Modal
+    id="label-tooltip-modal"
+    titleId="label-tooltip-modal-title"
+    sizeClass="fr-col-12 fr-col-md-6" 
+    onClose={() => helpContent = null}
+  >
+    <h1 id="label-tooltip-modal-title" class="fr-modal__title mb-4">
+      {helpContent.title}
+    </h1>
+    <p class="text-gray leading-relaxed">
+      {helpContent.description}
+    </p>
+  </Modal>
+{/if}
 
 <!-- Weird way to catch the comment if not validated but modal closed -->
 {#if mode === 'react'}

@@ -1967,22 +1967,67 @@
             },
             "neutral": {
                 "categories": {
-                    "content": "Content",
-                    "pedagogy": "Pedagogy",
-                    "interaction": "Interaction"
+                    "content": {
+                        "label": "Content",
+                        "description": "Quality of informational content in the answer"
+                    },
+                    "pedagogy": {
+                        "label": "Pedagogy",
+                        "description": "How well the answer supports learning"
+                    },
+                    "interaction": {
+                        "label": "Interaction",
+                        "description": "Quality of tone and interaction with the learner"
+                    }
                 },
-                "relevant": "Relevant",
-                "concise": "Concise",
-                "complete": "Complete",
-                "correct": "Correct",
-                "guiding": "Guiding",
-                "scaffolding": "Thought-provoking",
-                "actionable": "Actionable",
-                "understandable": "Understandable",
-                "empathetic": "Encouraging",
-                "engaging": "Interactive",
-                "anthropomorphic": "Human-like",
-                "coherent": "Coherent",
+                "relevant": {
+                    "label": "Relevant",
+                    "description": "Addresses the learner's request and context"
+                },
+                "concise": {
+                    "label": "Concise",
+                    "description": "Gets to the point without unnecessary detail"
+                },
+                "complete": {
+                    "label": "Complete",
+                    "description": "doesn't leave out important parts of the answer"
+                },
+                "correct": {
+                    "label": "Correct",
+                    "description": "Factually and logically accurate"
+                },
+                "guiding": {
+                    "label": "Guiding",
+                    "description": "Helps the learner move forward step by step"
+                },
+                "scaffolding": {
+                    "label": "Thought-provoking",
+                    "description": "Supports reflection with prompts or hints"
+                },
+                "actionable": {
+                    "label": "Actionable",
+                    "description": "Provides concrete steps the learner can apply"
+                },
+                "understandable": {
+                    "label": "Understandable",
+                    "description": "Uses the right language, with adapted level and tone"
+                },
+                "empathetic": {
+                    "label": "Encouraging",
+                    "description": "Shows encouragement and emotional support"
+                },
+                "engaging": {
+                    "label": "Interactive",
+                    "description": "Invites interaction and maintains attention"
+                },
+                "anthropomorphic": {
+                    "label": "Human-like",
+                    "description": "Uses a human-like tone or persona"
+                },
+                "coherent": {
+                    "label": "Coherent",
+                    "description": "Well-structured and internally consistent"
+                },
                 "question": "Why did you give this rating (several answers possible)?"
             },
             "other": "Other…",
@@ -2003,7 +2048,7 @@
             "label": "I dislike",
             "selectedLabel": "I dislike (selected)"
         },
-        "elaborate": "Something to add?",
+        "elaborate": "Anything to add?",
         "introA": "Before finding out the identity of the models, we need your vote.",
         "introB": "It allows us to build up a dataset in order to analyze the properties of each model regarding AI-powered language learning.",
         "introC": "Your vote helps us build a dataset to analyze the properties of each model regarding AI-powered language learning.",
@@ -2050,6 +2095,7 @@
         "back": "Back",
         "close": "Close",
         "deactivated": "Disabled",
+        "detail": "Detail",
         "loading": "Loading",
         "new": "New",
         "random": "Random",
