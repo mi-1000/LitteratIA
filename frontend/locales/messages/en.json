@@ -1974,7 +1974,7 @@
                 },
                 "relevant": {
                     "label": "Relevant",
-                    "description": "Addresses the learner's request and context"
+                    "description": "Addresses the question's request and context"
                 },
                 "concise": {
                     "label": "Concise",
@@ -1990,7 +1990,7 @@
                 },
                 "guiding": {
                     "label": "Guiding",
-                    "description": "Helps the learner move forward step by step"
+                    "description": "Helps move forward step by step"
                 },
                 "scaffolding": {
                     "label": "Thought-provoking",
@@ -1998,7 +1998,7 @@
                 },
                 "actionable": {
                     "label": "Actionable",
-                    "description": "Provides concrete steps the learner can apply"
+                    "description": "Provides concrete steps that can be applied in the future"
                 },
                 "understandable": {
                     "label": "Under\u00ADstandable",

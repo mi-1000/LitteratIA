@@ -2096,7 +2096,7 @@
                 },
                 "relevant": {
                     "label": "Pertinence",
-                    "description": "Répond à la demande et au contexte de l'apprenant"
+                    "description": "Répond à la demande et au contexte"
                 },
                 "concise": {
                     "label": "Concision",
