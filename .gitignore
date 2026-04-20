@@ -78,3 +78,6 @@ CLAUDE.md
 AGENTS.md
 .claude
 ignored_files
+
+# Models file
+local-models.json
