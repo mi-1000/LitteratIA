@@ -507,11 +507,6 @@
     user-select: none;
   }
 
-  :global(.like-choice:hover) {
-    border-color: var(--text-action-high-blue-france);
-    color: var(--text-action-high-blue-france);
-  }
-
   :global(.like-choice.is-selected) {
     border-color: var(--blue-france-main-525);
     background: var(--blue-france-975-75);
