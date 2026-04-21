@@ -56,7 +56,25 @@
                 "12": "How do you place the negation \"ne... pas\" with a compound tense?",
                 "13": "Any tips for guessing the gender of words (masculine/feminine)?",
                 "14": "What is the nuance between \"parce que\", \"car\", and \"puisque\"?",
-                "15": "Can you simply explain the use of the imparfait subjonctif?"
+                "15": "Can you simply explain the use of the imparfait subjonctif?",
+                "16": "How can I get better at reading?",
+                "17": "Teach me the past tense in French.",
+                "18": "Advise me something to read in order to develop my reading skills.",
+                "19": "Translate this sentence to level B2: *[sentence]*.",
+                "20": "Make a list of words in French about nature.",
+                "21": "Rephrase this sentence with simpler words.",
+                "22": "Provide synonyms for the word \"accrocher\".",
+                "23": "Give me examples of sentences with future tense in French.",
+                "24": "Define the word \"emprunter\" in French.",
+                "25": "Generate an activity to train imparfait conjugation.",
+                "26": "Generate a text about *[theme]* with comprehension questions.",
+                "27": "Generate five examples of an application letter for a master's degree in biology.",
+                "28": "Generate an argumentative text defending the use of nuclear energy. The text must be at B2 level and include area-specific vocabulary.",
+                "29": "Correct my text and explain my errors: *[text]*.",
+                "30": "Give me interesting ideas of trips in French-speaking countries.",
+                "31": "What are some cultural trends in France right now?",
+                "32": "Give me a list of arguments for/against regulation of private businesses.",
+                "33": "What are the differences between French from Switzerland, Lebanon, Canada and Congo?"
             },
             "title": "Suggested prompts"
         },
@@ -2013,8 +2031,8 @@
                     "description": "Invites interaction and maintains attention"
                 },
                 "anthropomorphic": {
-                    "label": "Human-like",
-                    "description": "Uses a human-like tone or persona"
+                    "label": "Natural",
+                    "description": "Uses a tone, style and/or persona that feels like it could be a real tutor"
                 },
                 "coherent": {
                     "label": "Coherent",

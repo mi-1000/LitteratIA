@@ -78,27 +78,18 @@ export type APIVoteReactionPref =
   | (typeof APIPositiveReactions)[number]
   | (typeof APINegativeReactions)[number]
 
-export const APIDetailReactionGroups = [
-  {
-    id: 'content',
-    reactions: ['correct', 'relevant', 'complete', 'concise'] as const
-  },
-  {
-    id: 'pedagogy',
-    reactions: ['guiding', 'scaffolding', 'actionable', 'understandable'] as const
-  },
-  {
-    id: 'interaction',
-    reactions: ['empathetic', 'engaging', 'anthropomorphic', 'coherent'] as const
-  }
+export const APIActiveDetailReactions = [
+  'correct',
+  'relevant',
+  'complete',
+  'concise',
+  'scaffolding',
+  'understandable'
 ] as const
 
-export type APIDetailReactionGroup = (typeof APIDetailReactionGroups)[number]['id']
-export type APIDetailReactionPref = (typeof APIDetailReactionGroups)[number]['reactions'][number]
+export type APIDetailReactionPref = (typeof APIActiveDetailReactions)[number]
 
-export const APIGeneralReactions: APIDetailReactionPref[] = APIDetailReactionGroups.flatMap(
-  (group) => group.reactions
-)
+export const APIGeneralReactions: APIDetailReactionPref[] = [...APIActiveDetailReactions]
 
 export type APIReactionPref = APIVoteReactionPref
 
