@@ -4,6 +4,7 @@ import GithubSlugger from 'github-slugger'
 import { type Renderer, Marked } from 'marked'
 import { gfmHeadingId } from 'marked-gfm-heading-id'
 import { markedHighlight } from 'marked-highlight'
+import markedKatex from 'marked-katex-extension'
 import * as Prism from 'prismjs'
 import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-c'
@@ -138,6 +139,13 @@ export function create_marked({
   line_breaks: boolean
 }): typeof marked {
   const marked = new Marked()
+
+  marked.use(markedKatex({
+      throwOnError: false,
+      displayMode: false,
+      output: 'html'
+    }))
+
   marked.use(
     {
       gfm: true,
