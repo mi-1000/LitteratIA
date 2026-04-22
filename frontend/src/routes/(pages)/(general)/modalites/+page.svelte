@@ -1,11 +1,9 @@
 <script>
   import SeoHead from '$components/SEOHead.svelte'
-  import { getI18nContext } from '$lib/global.svelte'
   import { m } from '$lib/i18n/messages'
   import { getModelsContext } from '$lib/models'
   import { externalLinkProps, sanitize } from '$lib/utils/commons'
 
-  const i18nData = getI18nContext()
   const models = getModelsContext().models.filter((model) => model.status === 'enabled')
 </script>
 
@@ -49,20 +47,14 @@
       <li>{m['general.tos.featuresVoteMore']()}</li>
     </ul>
     <p>{m['general.tos.featuresDatasets']()}</p>
-    <p>
-      {@html sanitize(
-        m['general.tos.featuresDatasetsMore']({
-          linkProps: externalLinkProps('https://huggingface.co/ministere-culture')
-        })
-      )}
-    </p>
+    <p>{m['general.tos.featuresDatasetsMore']()}</p>
 
     <h2 id="5-responsabilites">{m['general.tos.respTitle']()}</h2>
     <p>{m['general.tos.respUser']()}</p>
     <p>{m['general.tos.respLegal']()}</p>
     <p>{m['general.tos.respLegalMore']()}</p>
     <p>{m['general.tos.respPrivacy']()}</p>
-    <p>{m['general.tos.respPrivacyMore']()}</p>
+    <p>{@html sanitize(m['general.tos.respPrivacyMore']({ linkProps: externalLinkProps('mailto:emile.alexandre@loria.fr') }))}</p>
     <p>{m['general.tos.respEditor']()}</p>
 
     <h2 id="6-code-et-licences">{m['general.tos.licenceTitle']()}</h2>
@@ -116,10 +108,7 @@
     <h2 id="9-contact">{m['general.tos.contactTitle']()}</h2>
     <p>
       {@html sanitize(
-        m['general.tos.contactDesc']({
-          linkProps: externalLinkProps(`mailto:${i18nData.contact}`),
-          contactLink: i18nData.contact
-        })
+        m['general.tos.contactDesc']({ linkProps: externalLinkProps('mailto:emile.alexandre@loria.fr') })
       )}
     </p>
   </div>

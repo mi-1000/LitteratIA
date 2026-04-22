@@ -20,7 +20,7 @@
     <p>
       {@html sanitize(
         m['general.legal.hostingDesc']({
-          linkProps: externalLinkProps('https://www.ovh.com/')
+          linkProps: externalLinkProps('http://atilf.atilf.fr/')
         })
       )}
     </p>
@@ -51,7 +51,7 @@
             etalabLinkProps: externalLinkProps(
               'https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf'
             ),
-            githubLinkProps: externalLinkProps('https://github.com/betagouv/ComparIA')
+            githubLinkProps: externalLinkProps('https://github.com/mi-1000/LitteratIA')
           })
         )}
       </strong>

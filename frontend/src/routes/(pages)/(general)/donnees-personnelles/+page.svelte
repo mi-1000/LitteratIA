@@ -32,30 +32,11 @@
       )}
     </p>
 
-    <h2 id="data-access">{m['general.privacy.dataAccessTitle']()}</h2>
-    <p>
-      {@html sanitize(
-        m['general.privacy.dataAccessDesc']({
-          linkProps: externalLinkProps(
-            'https://stats.beta.gouv.fr/index.php?module=CoreHome&action=index&idSite=126&period=day&date=yesterday#?period=day&date=yesterday&category=Dashboard_Dashboard&subcategory=1&idSite=126'
-          )
-        })
-      )}
-    </p>
-    <p>
-      {@html sanitize(
-        m['general.privacy.dataAccessDatasets']({
-          linkProps: externalLinkProps('https://huggingface.co/ministere-culture')
-        })
-      )}
-    </p>
-
     <h2 id="privacy">{m['general.privacy.privacyTitle']()}</h2>
     <p>{m['general.privacy.privacyDesc']()}</p>
     <p>{m['general.privacy.privacyData']()}</p>
     <ul>
       <li>{m['general.privacy.privacyDataArena']()}</li>
-      <li>{m['general.privacy.privacyDataForm']()}</li>
     </ul>
     <p>
       {@html sanitize(m['general.privacy.privacyResp']({ linkProps: 'href="/modalites"' }))}
@@ -75,15 +56,6 @@
       <li>{m['general.privacy.dataExtraHost']()}</li>
       <li>{m['general.privacy.dataExtraCountry']()}</li>
       <li>{m['general.privacy.dataExtraWhat']()}</li>
-      <li>
-        {@html sanitize(
-          m['general.privacy.dataExtraWarranty']({
-            linkProps: externalLinkProps(
-              'https://storage.gra.cloud.ovh.net/v1/AUTH_325716a587c64897acbef9a4a4726e38/contracts/9e74492-OVH_Data_Protection_Agreement-FR-6.0.pdf'
-            )
-          })
-        )}
-      </li>
     </ul>
   </div>
 

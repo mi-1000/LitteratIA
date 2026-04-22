@@ -49,7 +49,7 @@
       <li>
         {@html sanitize(
           m['general.a11y.improveMail']({
-            linkProps: externalLinkProps('mailto:contact@beta.gouv.fr')
+            linkProps: externalLinkProps('mailto:emile.alexandre@loria.fr')
           })
         )}
       </li>
