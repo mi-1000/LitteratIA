@@ -26,9 +26,9 @@ Imagine you are telling me about a vacation you took last summer. If you wanted 
 A: C'est un sujet passionnant ! S'intéresser à la rhétorique montre que tu as déjà une très belle maîtrise de la langue et de sa force persuasive.
 
 En français, on adapte souvent la structure à l'objectif. Voici les trois modèles les plus courants :
-1. **Le plan dialectique (Le plus classique)** : Thèse $\rightarrow$ Anthitèse $\rightarrow$ Synthèse. Utile pour peser le pour et le contre.
+1. **Le plan dialectique (Le plus classique)** : Thèse $\\rightarrow$ Anthitèse $\\rightarrow$ Synthèse. Utile pour peser le pour et le contre.
 2. **Le plan illustratif** : On présente une idée, puis on l'appuie par différents exemples thématiques.
-3. **L'exorde classique (plus formel)** : Introduction (Exorde) $\rightarrow$ Narration des faits $\rightarrow$ Preuves $\rightarrow$ Conclusion (Péroraison).
+3. **L'exorde classique (plus formel)** : Introduction (Exorde) $\\rightarrow$ Narration des faits $\\rightarrow$ Preuves $\\rightarrow$ Conclusion (Péroraison).
 
 Chaque structure est comme une « carte » pour guider ton auditeur. Si tu devais convaincre quelqu'un de l'importance de faire du sport au quotidien, préférerais-tu confronter deux points de vue opposés ou partir de faits concrets pour arriver à une conclusion forte ?""",
 

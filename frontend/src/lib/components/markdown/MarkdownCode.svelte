@@ -6,8 +6,7 @@
   import { standardHtmlAndSvgTags } from './html-tags'
   import './prism.css'
   import 'katex/dist/katex.min.css'
-  // @ts-expect-error no file for auto-render
-  import renderMathInElement from 'katex/dist/contrib/auto-render'
+  // import renderMathInElement from 'katex/dist/contrib/auto-render'
   import { copy, create_marked, sanitize } from './utils'
 
   let {
@@ -91,13 +90,13 @@
 
   async function render_html(): Promise<void> {
     if (el) {
-      renderMathInElement(el, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false }
-        ],
-        throwOnError: false
-      })
+      // renderMathInElement(el, {
+      //   delimiters: [
+      //     { left: '$$', right: '$$', display: true },
+      //     { left: '$', right: '$', display: false }
+      //   ],
+      //   throwOnError: false
+      // })
 
       const mermaidDivs = el.querySelectorAll('.mermaid')
       if (mermaidDivs.length > 0) {
