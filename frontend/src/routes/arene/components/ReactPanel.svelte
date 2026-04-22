@@ -22,15 +22,15 @@
     rating = 0 as Ratings
   })
 
-  $effect(() => {
-    const _ = rating
-    selection = []
-  })
+  // $effect(() => {
+  //   const _ = rating
+  //   selection = []
+  // })
 
-  $effect(() => {
-    const _ = selection
-    comment = ''
-  })
+  // $effect(() => {
+  //   const _ = selection
+  //   comment = ''
+  // })
 
   const saveVote = debounce(async () => {
     if (!selected_model) return

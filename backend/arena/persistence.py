@@ -26,11 +26,11 @@ from pydantic import BaseModel, Field, PlainSerializer, WrapSerializer
 from user_agents import parse
 
 from backend.arena.models import (
+    ACTIVE_DETAIL_REACTIONS,
     BotChoice,
     BotPos,
     Conversation,
     Conversations,
-    DETAIL_REACTIONS,
     MessageRole,
     ReactionData,
     VOTE_REACTIONS,
@@ -226,14 +226,8 @@ def upsert_reaction_to_db(data: dict) -> dict:
                 concise = EXCLUDED.concise,
                 complete = EXCLUDED.complete,
                 correct = EXCLUDED.correct,
-                guiding = EXCLUDED.guiding,
                 scaffolding = EXCLUDED.scaffolding,
-                actionable = EXCLUDED.actionable,
                 understandable = EXCLUDED.understandable,
-                empathetic = EXCLUDED.empathetic,
-                engaging = EXCLUDED.engaging,
-                anthropomorphic = EXCLUDED.anthropomorphic,
-                coherent = EXCLUDED.coherent,
                 model_pair_name = EXCLUDED.model_pair_name,
                 msg_rank = EXCLUDED.msg_rank,
                 chatbot_index = EXCLUDED.chatbot_index,
@@ -593,14 +587,8 @@ class ReactionRecord(BaseModel):
     concise: bool
     complete: bool
     correct: bool
-    guiding: bool
     scaffolding: bool
-    actionable: bool
     understandable: bool
-    empathetic: bool
-    engaging: bool
-    anthropomorphic: bool
-    coherent: bool
     rating: Literal[0, 1, 2, 3, 4, 5]
 
     # Additional? (not found in record_reaction but present in reactions.sql)
@@ -658,6 +646,7 @@ def record_reaction(
     conv_a = conversations.conversation_a
     conv_b = conversations.conversation_b
     conv = conv_a if reaction.bot == "a" else conv_b
+    active_reaction_prefs = set(reaction.prefs).intersection(ACTIVE_DETAIL_REACTIONS)
 
     t = datetime.now()  # FIXME
 
@@ -697,8 +686,8 @@ def record_reaction(
         }
         | {
             # Reaction
-            key: key in reaction.prefs
-            for key in DETAIL_REACTIONS
+            key: key in active_reaction_prefs
+            for key in ACTIVE_DETAIL_REACTIONS
         }
     )
 

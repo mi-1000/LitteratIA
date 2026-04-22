@@ -299,6 +299,18 @@ class AddTextBody(BaseModel):
     message: str = PromptField
 
 
+ActiveDetailReaction = Literal[
+    "relevant",
+    "concise",
+    "complete",
+    "correct",
+    "scaffolding",
+    "understandable",
+]
+ACTIVE_DETAIL_REACTIONS: tuple[ActiveDetailReaction, ...] = get_args(
+    ActiveDetailReaction
+)
+
 DetailReaction = Literal[
     "relevant",
     "concise",
@@ -340,12 +352,20 @@ class ReactionBody(BaseModel):
     liked: bool
     interface_lang: str
     rating: Literal[0, 1, 2, 3, 4, 5]
-    prefs: list[DetailReaction]
+    prefs: list[ActiveDetailReaction]
     comment: str | None = None
 
 
-class ReactionData(ReactionBody):
+class ReactionData(BaseModel):
+    bot: BotChoice
+    index: int
+    value: str
     liked: bool
+    interface_lang: str
+    rating: Literal[0, 1, 2, 3, 4, 5]
+    # Keep broader compatibility for reactions already stored in session payloads.
+    prefs: list[DetailReaction]
+    comment: str | None = None
 
 
 class VoteBody(BaseModel):
