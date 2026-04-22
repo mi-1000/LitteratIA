@@ -56,25 +56,7 @@
                 "12": "Comment placer la négation « ne... pas » avec un temps composé ?",
                 "13": "Est-ce qu'il y a des astuces pour deviner le genre des mots (masculin/féminin) ?",
                 "14": "Quelle est la nuance entre « parce que », « car » et « puisque » ?",
-                "15": "Peux-tu m'expliquer simplement l'usage du subjonctif imparfait ?",
-                "16": "Comment puis-je m'améliorer en lecture ?",
-                "17": "Explique-moi le passé en français.",
-                "18": "Conseille-moi un livre pour développer mes compétences en lecture.",
-                "19": "Traduis la phrase suivante au niveau B2 : *[phrase]*.",
-                "20": "Fais une liste de mots en français sur la nature.",
-                "21": "Reformule cette phrase avec des mots plus simples.",
-                "22": "Donne-moi des synonymes du mot « accrocher ».",
-                "23": "Donne-moi des exemples de phrases au futur en français.",
-                "24": "Définis le mot « emprunter » en français.",
-                "25": "Génère une activité pour s'entraîner à la conjugaison de l'imparfait.",
-                "26": "Génère un texte sur *[thème]* avec des questions de compréhension.",
-                "27": "Génère cinq exemples différents de lettres de motivation pour un master en biologie.",
-                "28": "Génère un texte argumentatif défendant l'usage de l'énergie nucléaire. Le texte doit être de niveau B2 et inclure un vocabulaire spécifique au domaine.",
-                "29": "Corrige mon texte et explique mes erreurs : *[text]*.",
-                "30": "Donne-moi des idées intéressantes de voyage dans des pays francophones.",
-                "31": "Quelles sont des tendances culturelles y a-t-il actuellement en France ?",
-                "32": "Donne-moi une liste d'arguments pour/contre la régulation des entreprises privées.",
-                "33": "Quelles différences y a-t-il entre le français de Suisse, du Liban, du Canada et du Congo ?"
+                "15": "Peux-tu m'expliquer simplement l'usage du subjonctif imparfait ?"
             },
             "title": "Suggestions de prompts"
         },
@@ -2141,7 +2123,7 @@
                     "description": "Donne des actions concrètes à appliquer dans le futur"
                 },
                 "understandable": {
-                    "label": "Clarté",
+                    "label": "Langage adapté",
                     "description": "Répond dans la bonne langue, avec un niveau et ton adaptés"
                 },
                 "empathetic": {
@@ -2153,8 +2135,8 @@
                     "description": "Invite à interagir et maintient l'attention"
                 },
                 "anthropomorphic": {
-                    "label": "Humanité",
-                    "description": "Adopte un ton, un style et/ou une posture similaires à ceux d'un tuteur humain"
+                    "label": "Côté humain",
+                    "description": "Adopte un ton ou une posture similaires à ceux d'un tuteur humain"
                 },
                 "coherent": {
                     "label": "Cohérence",

@@ -3,9 +3,11 @@
   import { Button, Modal } from '$components/dsfr'
   import Selector from '$components/Selector.svelte'
   import {
+    APIDetailReactionGroups,
     APIGeneralReactions,
     APINegativeReactions,
     APIPositiveReactions,
+    type APIDetailReactionGroup,
     type APIDetailReactionPref,
     type APIVoteReactionPref
   } from '$lib/chatService.svelte'
@@ -67,8 +69,8 @@
     Number.isInteger(value) && value > 0 ? value : initialSeed
   )
 
-  const SHORTCUT_KEYS = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
-  const LABEL_SELECTION_DEBOUNCE_MS = 500
+  const SHORTCUT_KEYS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+  const LABEL_SELECTION_DEBOUNCE_MS = 300
   let selectionDebounceTimer: ReturnType<typeof setTimeout> | undefined
 
   type ReactionChoice = {
@@ -101,14 +103,25 @@
     return result
   }
 
-  const detailReactionChoices = $derived.by(() => {
-    const seed = labelSeed.value
-    const shuffledChoices = shuffleWithSeed([...APIGeneralReactions], seed)
+  type DetailGroup = {
+    id: APIDetailReactionGroup
+    label: string
+    choices: { value: APIDetailReactionPref; label: string; description: string }[]
+  }
 
-    return shuffledChoices.map((value) => ({
-      value,
-      label: m[`vote.choices.neutral.${value}.label`](),
-      description: m[`vote.choices.neutral.${value}.description`]()
+  const detailReactionGroups = $derived.by<DetailGroup[]>(() => {
+    const seed = labelSeed.value
+    const shuffledGroups = shuffleWithSeed([...APIDetailReactionGroups], seed)
+
+    // We shuffle both the order groups and labels within groups to mitigate position bias across users, but keep the order consistent across sessions for a same user
+    return shuffledGroups.map((group, groupIndex) => ({
+      id: group.id,
+      label: m[`vote.choices.neutral.categories.${group.id}`](),
+      choices: shuffleWithSeed([...group.reactions], seed + groupIndex + 1).map((value) => ({
+        value,
+        label: m[`vote.choices.neutral.${value}.label`](),
+        description: m[`vote.choices.neutral.${value}.description`]()
+      }))
     }))
   })
 
@@ -116,7 +129,9 @@
     const byValue: Partial<Record<APIDetailReactionPref, string>> = {}
     const byKey: Partial<Record<string, APIDetailReactionPref>> = {}
 
-    const values = detailReactionChoices.map((choice) => choice.value)
+    const values = detailReactionGroups.flatMap((group) =>
+      group.choices.map((choice) => choice.value)
+    )
     const max = Math.min(values.length, SHORTCUT_KEYS.length)
 
     for (let index = 0; index < max; index++) {
@@ -281,53 +296,63 @@
       </p>
 
       <div
-        class="grid w-fit grid-cols-2 md:grid-cols-3 lg:grid-cols-2 mx-auto max-w-[600px]
-        gap-x-3 gap-y-5 md:gap-x-8 md:gap-y-3 lg:gap-x-25 lg:gap-y-2"
+        class="xl:w-2/3 gap-10 md:grid md:grid-cols-3 md:gap-0 md:justify-items-center mx-auto flex w-full max-w-[800px] flex-col"
       >
-        {#each detailReactionChoices as choice (choice.value)}
-          <!-- svelte-ignore a11y_click_events_have_key_events -->
-          <div
-            role="button"
-            tabindex="0"
-            class={[
-              'min-w-0 p-2 like-choice detail-like-choice flex min-h-[3rem] w-full items-center justify-between',
-              selection.includes(choice.value) ? 'is-selected' : ''
-            ]}
-            title={!isTouchScreen ? choice.description : undefined}
-            onclick={() => {
-              toggleChoice(choice.value)
-            }}
-          >
-            <span
-              class="min-w-0 leading-tight tracking-tight px-1 md:text-[13px] lg:text-[15px] flex-1 text-center text-[12px] wrap-break-word hyphens-auto"
+        {#each detailReactionGroups as group (group.id)}
+          <section class="md:items-start md:w-fit flex w-full flex-col items-center">
+            <p class="mb-3! md:text-left font-bold text-dark-grey text-sm w-full text-center!">
+              {group.label}
+            </p>
+            <div
+              class="gap-3 sm:flex sm:flex-row sm:justify-center md:flex-col grid w-fit grid-cols-2 max-[340px]:grid-cols-1"
             >
-              {choice.label}
-            </span>
-            <span class="ml-1 gap-1 flex shrink-0 items-center">
-              {#if isTouchScreen && choice.description}
-                <button
-                  type="button"
-                  title={m['words.detail']()}
-                  class="i-bi-patch-question-fill text-gray h-4 w-4 transition-colors"
-                  onclick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation() // Prevents from selecting the main button
-                    openHelp(choice)
+              {#each group.choices as choice (choice.value)}
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <div
+                  role="button"
+                  tabindex="0"
+                  class={[
+                    'min-w-0 p-2 like-choice detail-like-choice flex w-full items-center justify-between',
+                    selection.includes(choice.value) ? 'is-selected' : ''
+                  ]}
+                  title={!isTouchScreen ? choice.description : undefined}
+                  onclick={() => {
+                    toggleChoice(choice.value)
                   }}
                 >
-                </button>
-              {:else if detailShortcuts.byValue[choice.value]}
-                <kbd class="shortcut-key" aria-hidden="true">
-                  {detailShortcuts.byValue[choice.value]}
-                </kbd>
-              {/if}
-            </span>
-          </div>
+                  <span
+                    class="min-w-0 leading-tight tracking-tight px-1 md:text-[15px] lg:text-[16px] flex-1 text-center text-[14px] wrap-break-word hyphens-auto"
+                  >
+                    {choice.label}
+                  </span>
+                  <span class="ml-1 gap-1 flex shrink-0 items-center">
+                    {#if isTouchScreen && choice.description}
+                      <button
+                        type="button"
+                        title={m['words.detail']()}
+                        class="i-bi-patch-question-fill text-gray h-4 w-4 transition-colors"
+                        onclick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation() // Prevents from selecting the main button
+                          openHelp(choice)
+                        }}
+                      >
+                      </button>
+                    {:else if detailShortcuts.byValue[choice.value]}
+                      <kbd class="shortcut-key" aria-hidden="true">
+                        {detailShortcuts.byValue[choice.value]}
+                      </kbd>
+                    {/if}
+                  </span>
+                </div>
+              {/each}
+            </div>
+          </section>
         {/each}
       </div>
 
       {#if selection.length > 0 && !isTouchScreen}
-        <div class="mt-4 gap-2 flex items-center justify-center text-center">
+        <div class="mt-4 text-center flex items-center justify-center gap-2">
           <button type="button" class="clear-selection-line" {disabled} onclick={clearSelection}>
             {m['vote.choices.clearSelection']()}
           </button>
@@ -507,6 +532,11 @@
     user-select: none;
   }
 
+  :global(.like-choice:hover) {
+    border-color: var(--text-action-high-blue-france);
+    color: var(--text-action-high-blue-france);
+  }
+
   :global(.like-choice.is-selected) {
     border-color: var(--blue-france-main-525);
     background: var(--blue-france-975-75);
@@ -532,8 +562,7 @@
   }
 
   :global(.detail-like-choice) {
-    min-width: 0;
-    width: 100%;
+    min-width: fit-content;
   }
 
   .shortcut-key {

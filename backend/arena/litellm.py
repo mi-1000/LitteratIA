@@ -280,7 +280,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam feugiat arcu non
                         data["content"] += content
                     # Get reasoning content (for reasoning models)
                     if reasoning := delta.get("reasoning_content") or delta.get(
-                        "reasoning") or delta.get("thinking"):
+                        "reasoning" or delta.get("thinking")
+                    ):
                         data["reasoning"] += reasoning
 
                 # Check for generation completion signal

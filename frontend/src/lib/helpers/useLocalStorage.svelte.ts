@@ -9,13 +9,7 @@ export function useLocalStorage<T>(
     if (!browser) return initialValue
     let v = localStorage.getItem(key)
     if (v === null) return initialValue
-    if (typeof initialValue !== 'string') {
-      try {
-        v = JSON.parse(v)
-      } catch {
-        return initialValue
-      }
-    }
+    v = typeof initialValue === 'string' ? v : JSON.parse(v)
     if (typeof v !== typeof initialValue) return initialValue
     if (validator) return validator(v as T)
     return v as T
