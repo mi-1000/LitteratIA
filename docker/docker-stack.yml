@@ -27,6 +27,7 @@ services:
       COMPARIA_REDIS_HOST: "redis"
       OLLAMA_API_BASE: "${OLLAMA_API_BASE}"
       SECRET_PEPPER: "${SECRET_PEPPER}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}"
     volumes:
       - /ceph/litteratia-storage/data:/data
     deploy:
