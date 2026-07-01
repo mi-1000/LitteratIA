@@ -8,7 +8,8 @@ A: C'est un excellent réflexe pour enrichir ton vocabulaire ! « Accrocher » e
 3. Dans un registre plus familier, pour dire que tu as eu un petit accident de voiture, on utilise souvent le verbe **heurter**.
 Parmi ces trois sens, lequel correspond à l'idée que tu voulais exprimer ? Peux-tu essayer de faire une phrase avec l'un d'eux ?""",
 
-"""Q: What is the difference between "imparfait" and "passé composé" in French?
+"""Q: What is the difference between "imparfait" and "passé composé" in French?data/wif_goteborg/wif_goteborg_dataset.json 
+
 A: That is a brilliant question! Mastering the past tenses is a huge milestone in your French journey.
 
 Think of it as a movie:

@@ -7,6 +7,9 @@
   import { m } from '$lib/i18n/messages.js'
   import { getModelsContext } from '$lib/models'
   import { PromptSuggestion } from '.'
+  import { onMount } from 'svelte'
+  import { api } from '$lib/fastapi-client'
+  import { arena } from '$lib/chatService.svelte'
 
   let promptEl = $state<HTMLTextAreaElement>()
   let promptAreaEl = $state<HTMLDivElement>()
@@ -15,6 +18,8 @@
   let focusTick = $state(0)
   let prompt = $state('')
   let promptError = $state<string>()
+  let convFiles = $state<string[]>([])
+  let selectedConv = $state<string | null>(null)
 
   const models = getModelsContext().models.filter((model) => model.status === 'enabled')
   const mode = useLocalStorage<APIModeAndPromptData['mode']>('mode', 'random')
@@ -36,6 +41,33 @@
     if (validationError) {
       promptError = validationError
       disabled = false
+    }
+  }
+
+  onMount(async () => {
+    try {
+      const resp = await api.request<{ files: string[] }>('/arena/list_convs')
+      convFiles = resp.files
+    } catch (err) {
+      console.debug('No conv files available or list failed', err)
+    }
+  })
+
+  async function loadConversation(): Promise<void> {
+    if (!selectedConv) return
+    try {
+      const resp = await api.request<any>(`/arena/load_conv?file=${encodeURIComponent(selectedConv)}`)
+      if (resp.session_hash) api.setSessionHash(resp.session_hash)
+
+      // Populate arena store so frontend renders the loaded conversation
+      arena.currentScreen = 'chat'
+      arena.chat.status = 'complete'
+      arena.chat.model_map = resp.models || {}
+      arena.chat.a.messages = resp.conversations.conversation_a.messages || []
+      arena.chat.b.messages = resp.conversations.conversation_b.messages || []
+      arena.chat.step = 1
+    } catch (err) {
+      console.error('Failed to load conversation', err)
     }
   }
 
@@ -91,7 +123,20 @@
       />
 
       <div class="pb-10 md:order-none md:col-span-full order-3">
-        <PromptSuggestion bind:selectedPrompt={prompt} display={isPromptFocused && prompt === ''} focusTick={focusTick} />
+        <div class="flex flex-col gap-3">
+          <PromptSuggestion bind:selectedPrompt={prompt} display={isPromptFocused && prompt === ''} focusTick={focusTick} />
+          {#if convFiles.length > 0}
+            <div class="flex gap-2 items-center mt-2">
+              <select class="fr-select" bind:value={selectedConv}>
+                <option value={null} selected>{m['arenaHome.loadConv.select']() ?? 'Charger une conversation'}</option>
+                {#each convFiles as file}
+                  <option value={file}>{file}</option>
+                {/each}
+              </select>
+              <button class="fr-btn fr-btn--secondary" onclick={loadConversation} disabled={!selectedConv}>{m['arenaHome.loadConv.loadButton']() ?? 'Charger'}</button>
+            </div>
+          {/if}
+        </div>
       </div>
     </div>
   </div>

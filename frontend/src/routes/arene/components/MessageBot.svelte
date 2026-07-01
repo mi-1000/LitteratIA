@@ -27,10 +27,12 @@
     index,
     disabled = false,
     onReactionChange,
-    showModelName = false,
+    showModelName: initialShowModelName = false,
     side = 'A',
     invertModelLabels = false
   }: MessageBotProps & MessageBotExtra = $props()
+
+  let showModelName = $state(initialShowModelName)
 
   const displaySide = invertModelLabels
     ? side.toLowerCase() === 'a'
@@ -153,6 +155,10 @@
     arena.chat?.a?.status === 'complete' && arena.chat?.b?.status === 'complete'
   )
 
+  function toggleModelNameVisibility() {
+    showModelName = !showModelName
+  }
+
   function onLikedChanged() {
     reaction.prefs = []
     // FIXME reset comment?
@@ -171,7 +177,13 @@
   <div
     class={`message-bot cg-border rounded-lg! bg-white relative flex h-full flex-col overflow-hidden message-bot-${side.toLowerCase()}`}
   >
-    <div class="top-0 pb-5 pt-7 model-label bg-white px-5 sticky z-10 flex items-center">
+    <div
+      class="top-0 pb-5 pt-7 model-label bg-white px-5 sticky z-10 flex items-center"
+      style="cursor: pointer;"
+      onclick={toggleModelNameVisibility}
+      role="button"
+      tabindex="0"
+    >
       <div class="c-bot-disk-{bot}"></div>
       <h3 class="ms-2! mb-0! text-base! flex-1 text-left">
         {#if !shouldShowFor(displaySide)}

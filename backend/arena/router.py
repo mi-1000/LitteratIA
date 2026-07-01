@@ -10,6 +10,7 @@ from backend.arena.models import (
     AddTextBody,
     AssistantMessage,
     Conversations,
+    Conversation,
     ReactionBody,
     ReactionData,
     RevealData,
@@ -195,6 +196,96 @@ async def add_first_text(
         record_conversations(conversations)
 
     return create_sse_response(event_stream())
+
+
+@router.get("/list_convs")
+def list_convs() -> dict:
+    """
+    Return a list of conversation log filenames available in the log directory.
+    """
+    from backend.config import settings
+
+    files = []
+    try:
+        for entry in settings.LOGDIR.iterdir():
+            if entry.is_file() and entry.name.startswith("conv-") and entry.suffix == ".json":
+                files.append(entry.name)
+    except Exception as e:
+        logger.error(f"Error listing conv files: {e}")
+
+    return {"files": sorted(files)}
+
+
+@router.get("/load_conv")
+def load_conv(file: str, request: Request) -> dict:
+    """
+    Load a conversation JSON file into a new session and return the session hash
+    and the conversation payload so the frontend can render it.
+
+    This reuses the existing session + persistence mechanism so subsequent
+    annotation saves use the same autosave flow already implemented.
+    """
+    from backend.config import settings
+    from pathlib import Path
+
+    safe_name = Path(file).name
+    path = settings.LOGDIR / safe_name
+
+    if not path.exists() or not path.is_file():
+        raise HTTPException(status_code=404, detail="Conversation file not found")
+
+    try:
+        raw = path.read_text()
+        # Some log files may contain a JSON string inside a JSON wrapper.
+        payload = json.loads(raw)
+        # Unwrap if double-encoded
+        while isinstance(payload, str):
+            payload = json.loads(payload)
+    except Exception as e:
+        logger.error(f"Could not read conv file {file}: {e}")
+        raise HTTPException(status_code=500, detail="Could not read conversation file")
+
+    # Build Conversations model from payload. Create a new session hash.
+    session_hash = create_session()
+
+    try:
+        conv_a_raw = payload.get("conversation_a") or payload.get("conversationA") or {}
+        conv_b_raw = payload.get("conversation_b") or payload.get("conversationB") or {}
+
+        # If conversation fields are strings, parse them
+        if isinstance(conv_a_raw, str):
+            conv_a_raw = json.loads(conv_a_raw)
+        if isinstance(conv_b_raw, str):
+            conv_b_raw = json.loads(conv_b_raw)
+
+        conv_a = Conversation(**conv_a_raw)
+        conv_b = Conversation(**conv_b_raw)
+
+        conversations = Conversations(
+            session_hash=session_hash,
+            ip=get_ip(request),
+            visitor_id=payload.get("visitor_id"),
+            country_portal=payload.get("country_portal", "fr"),
+            cohorts=payload.get("cohorts", ""),
+            mode=payload.get("mode", "random"),
+            custom_models_selection=payload.get("custom_models_selection"),
+            conversation_a=conv_a,
+            conversation_b=conv_b,
+        )
+
+        # Store to redis/session and record to DB/logs (same mechanism as add_first_text)
+        conversations.store_to_session()
+        record_conversations(conversations)
+
+        return {
+            "session_hash": session_hash,
+            "models": {"a": conv_a.model_name, "b": conv_b.model_name},
+            "conversations": conversations.model_dump(exclude_computed_fields=True),
+        }
+
+    except Exception as e:
+        logger.error(f"Error creating conversations from file {file}: {e}")
+        raise HTTPException(status_code=500, detail="Could not load conversation into session")
 
 
 @router.post("/add_text", dependencies=[Depends(assert_not_rate_limited)])
