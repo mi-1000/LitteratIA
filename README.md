@@ -4,6 +4,9 @@ This platform allows for the collection of learner conversation and feedback dat
 
 It is meant to be used in conjunction with [an adaptation of this platform](https://gitlab.univ-lorraine.fr/labos/loria/mosaik/litteratia/litteratia-profs) for teacher feedback collection as well as a [framework](https://github.com/mi-1000/LitteratIA_Evaluation) suited to structure and evaluate this collected data.
 
+> [!NOTE]
+> This platform was forked from [`compar:IA`](https://github.com/betagouv/ComparIA) [`(Termignon, 2026)`](https://doi.org/10.48550/arXiv.2602.06669).
+
 ## Getting started
 
 The platform is fully open source and self-hostable. The quickest way to get running:
